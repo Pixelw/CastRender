@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <data>
+        <variable
+            name="media"
+            type="tech.pixelw.castrender.entity.MediaEntity" />
+    </data>
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        tools:context=".ui.PlayerActivity">
+
+        <com.google.android.exoplayer2.ui.PlayerView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:id="@+id/exo_player_view" />
+
+        <LinearLayout
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            android:layout_marginStart="32dp"
+            android:layout_marginTop="16dp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:gravity="center_vertical"
+            style="@style/OSDStyle">
+
+            <ImageView
+                android:layout_width="32dp"
+                android:layout_height="32dp"
+                android:src="@drawable/ic_baseline_arrow_back_24"
+                android:layout_marginEnd="16dp"
+                app:tint="?attr/colorOnPrimary"
+                android:contentDescription="@string/back" />
+
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="vertical">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textAppearance="?attr/textAppearanceHeadline6"
+                    android:text="Ted Lasso"
+                    android:textColor="?colorOnPrimary" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="from Samsung Galaxy S5"
+                    android:textAppearance="?attr/textAppearanceSubtitle2"
+                    android:textColor="?colorOnPrimary" />
+            </LinearLayout>
+
+        </LinearLayout>
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</layout>

@@ -1,0 +1,23 @@
+<resources xmlns:tools="http://schemas.android.com/tools">
+    <!-- Base application theme. -->
+    <style name="Theme.CastRender" parent="Theme.MaterialComponents.NoActionBar">
+        <!-- Primary brand color. -->
+        <item name="colorPrimary">@color/primaryColor</item>
+        <item name="colorPrimaryVariant">@color/primaryDarkColor</item>
+        <item name="colorOnPrimary">@color/primaryTextColor</item>
+        <!-- Secondary brand color. -->
+        <item name="colorSecondary">@color/secondaryColor</item>
+        <item name="colorSecondaryVariant">@color/secondaryDarkColor</item>
+        <item name="colorOnSecondary">@color/secondaryTextColor</item>
+        <!-- Status bar color. -->
+        <item name="android:statusBarColor" tools:targetApi="l">?attr/colorPrimaryDark</item>
+        <item name="android:navigationBarColor" tools:targetApi="l">?attr/colorPrimaryDark</item>
+        <item name="android:forceDarkAllowed" tools:targetApi="Q">false</item>
+        <!-- Customize your theme here. -->
+    </style>
+    <style name="OSDStyle">
+        <item name="android:background">@drawable/item_onscreen_bg</item>
+        <item name="android:padding">8dp</item>
+        <item name="android:textColor">?attr/colorOnPrimary</item>
+    </style>
+</resources>

@@ -1,4 +1,4 @@
-package tech.pixelw.castrender.dmr.service;
+package tech.pixelw.dmr_core.service;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;

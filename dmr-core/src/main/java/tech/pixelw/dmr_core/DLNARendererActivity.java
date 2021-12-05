@@ -1,4 +1,4 @@
-package tech.pixelw.castrender.dmr;
+package tech.pixelw.dmr_core;
 
 import android.app.Service;
 import android.content.ComponentName;
@@ -26,6 +26,7 @@ import org.fourthline.cling.support.model.TransportState;
 import org.fourthline.cling.support.renderingcontrol.lastchange.ChannelVolume;
 import org.fourthline.cling.support.renderingcontrol.lastchange.RenderingControlVariable;
 
+@Deprecated
 public class DLNARendererActivity extends AppCompatActivity {
 
     private static final String KEY_EXTRA_CURRENT_URI = "Renderer.KeyExtra.CurrentUri";

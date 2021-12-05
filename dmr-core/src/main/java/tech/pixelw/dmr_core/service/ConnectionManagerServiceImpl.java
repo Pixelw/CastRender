@@ -1,4 +1,4 @@
-package tech.pixelw.castrender.dmr.service;
+package tech.pixelw.dmr_core.service;
 
 import org.fourthline.cling.support.connectionmanager.ConnectionManagerService;
 import org.fourthline.cling.support.model.Protocol;

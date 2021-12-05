@@ -1,4 +1,4 @@
-package tech.pixelw.castrender.dmr.service;
+package tech.pixelw.dmr_core.service;
 
 import android.content.Context;
 import android.media.AudioManager;

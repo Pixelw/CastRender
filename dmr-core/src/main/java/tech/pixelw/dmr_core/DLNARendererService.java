@@ -1,5 +1,6 @@
-package tech.pixelw.castrender.dmr;
+package tech.pixelw.dmr_core;
 
+import android.app.Service;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Bitmap;
@@ -36,14 +37,12 @@ import java.math.BigInteger;
 import java.security.MessageDigest;
 import java.util.UUID;
 
-import tech.pixelw.castrender.R;
-import tech.pixelw.castrender.dmr.service.AVTransportController;
-import tech.pixelw.castrender.dmr.service.AVTransportServiceImpl;
-import tech.pixelw.castrender.dmr.service.AudioRenderController;
-import tech.pixelw.castrender.dmr.service.AudioRenderServiceImpl;
-import tech.pixelw.castrender.dmr.service.ConnectionManagerServiceImpl;
-import tech.pixelw.castrender.dmr.service.RenderControlManager;
-import tech.pixelw.castrender.util.Utils;
+import tech.pixelw.dmr_core.service.AVTransportController;
+import tech.pixelw.dmr_core.service.AVTransportServiceImpl;
+import tech.pixelw.dmr_core.service.AudioRenderController;
+import tech.pixelw.dmr_core.service.AudioRenderServiceImpl;
+import tech.pixelw.dmr_core.service.ConnectionManagerServiceImpl;
+import tech.pixelw.dmr_core.service.RenderControlManager;
 
 /**
  *
@@ -75,7 +74,7 @@ public class DLNARendererService extends AndroidUpnpServiceImpl {
     public void onCreate() {
         org.seamless.util.logging.LoggingUtil.resetRootHandler(new FixedAndroidLogHandler());
         super.onCreate();
-        String ipAddress = Utils.getWifiIpAddress(); // 确保拿到Wifi接口的IP地址
+        String ipAddress = Utils.getWifiIpAddress(getApplicationContext()); // 确保拿到Wifi接口的IP地址
         mRenderControlManager.addControl(new AudioRenderController(getApplicationContext()));
         mRenderControlManager.addControl(new AVTransportController(getApplicationContext(), new IDLNARenderControl.DefaultRenderControl()));
         try {
@@ -89,7 +88,7 @@ public class DLNARendererService extends AndroidUpnpServiceImpl {
 
     @Override
     public int onStartCommand(Intent intent, int flags, int startId) {
-        return START_STICKY;
+        return Service.START_STICKY;
     }
 
     @Override

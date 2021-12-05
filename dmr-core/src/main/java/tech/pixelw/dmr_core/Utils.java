@@ -1,4 +1,4 @@
-package tech.pixelw.castrender.util;
+package tech.pixelw.dmr_core;
 
 import android.content.Context;
 import android.net.wifi.WifiInfo;
@@ -6,16 +6,14 @@ import android.net.wifi.WifiManager;
 import android.text.TextUtils;
 import android.text.format.Formatter;
 
-import tech.pixelw.castrender.CastRenderApp;
-
 /**
  * @author Carl Su "Pixelw"
  * @date 2021/10/25
  */
 public class Utils {
 
-    public static String getWifiIpAddress(){
-        WifiManager wifiMgr = (WifiManager) CastRenderApp.getAppContext().getApplicationContext().getSystemService(Context.WIFI_SERVICE);
+    public static String getWifiIpAddress(Context context){
+        WifiManager wifiMgr = (WifiManager) context.getApplicationContext().getSystemService(Context.WIFI_SERVICE);
         WifiInfo wifiInfo = wifiMgr.getConnectionInfo();
         int ip = wifiInfo.getIpAddress();
         return Formatter.formatIpAddress(ip);

@@ -1,13 +1,14 @@
-package tech.pixelw.castrender.dmr;
+package tech.pixelw.dmr_core;
 
 import android.widget.VideoView;
 
-import com.google.android.exoplayer2.SimpleExoPlayer;
 
 /**
  *
  */
 public interface IDLNARenderControl {
+    void prepare(String uri);
+
     void play();
 
     void pause();
@@ -29,6 +30,11 @@ public interface IDLNARenderControl {
 
         public VideoViewRenderControl(VideoView videoView) {
             this.videoView = videoView;
+        }
+
+        @Override
+        public void prepare(String uri) {
+            videoView.setVideoPath(uri);
         }
 
         @Override
@@ -70,6 +76,10 @@ public interface IDLNARenderControl {
         }
 
         @Override
+        public void prepare(String uri) {
+        }
+
+        @Override
         public void play() {
         }
 
@@ -96,43 +106,5 @@ public interface IDLNARenderControl {
         }
     }
 
-    /**
-     * Exoplayer Impl
-     */
-    final class ExoPlayerRenderControl implements IDLNARenderControl{
-        private final SimpleExoPlayer player;
-        public ExoPlayerRenderControl(SimpleExoPlayer player) {
-            this.player = player;
-        }
-
-        @Override
-        public void play() {
-            player.play();
-        }
-
-        @Override
-        public void pause() {
-            player.pause();
-        }
-
-        @Override
-        public void seek(long position) {
-            player.seekTo(position);
-        }
-
-        @Override
-        public void stop() {
-            player.stop();
-        }
-
-        @Override
-        public long getPosition() {
-            return player.getCurrentPosition();
-        }
-
-        @Override
-        public long getDuration() {
-            return player.getDuration();
-        }
-    }
 }
+

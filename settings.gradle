@@ -12,3 +12,4 @@ dependencyResolutionManagement {
 }
 rootProject.name = "CastRender"
 include ':app'
+include ':dmr-core'

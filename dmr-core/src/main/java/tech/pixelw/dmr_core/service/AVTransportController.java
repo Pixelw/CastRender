@@ -1,7 +1,8 @@
-package tech.pixelw.castrender.dmr.service;
+package tech.pixelw.dmr_core.service;
 
 
 import android.content.Context;
+import android.util.Log;
 
 import org.fourthline.cling.model.types.ErrorCode;
 import org.fourthline.cling.model.types.UnsignedIntegerFourBytes;
@@ -18,9 +19,9 @@ import org.fourthline.cling.support.model.TransportSettings;
 
 import java.net.URI;
 
-import tech.pixelw.castrender.dmr.IDLNARenderControl;
-import tech.pixelw.castrender.ui.PlayerActivity;
-import tech.pixelw.castrender.util.Utils;
+import tech.pixelw.dmr_core.DLNARendererActivity;
+import tech.pixelw.dmr_core.IDLNARenderControl;
+import tech.pixelw.dmr_core.Utils;
 
 public class AVTransportController implements IRendererInterface.IAVTransportControl {
     private static final TransportAction[] TRANSPORT_ACTION_STOPPED = new TransportAction[]{TransportAction.Play};
@@ -34,6 +35,7 @@ public class AVTransportController implements IRendererInterface.IAVTransportCon
     private PositionInfo mOriginPositionInfo = new PositionInfo();
     private MediaInfo mMediaInfo = new MediaInfo();
     private final IDLNARenderControl mMediaControl;
+    private static final String TAG = "AVTransportController";
 
     public AVTransportController(Context context, IDLNARenderControl control) {
         this(context, new UnsignedIntegerFourBytes(0), control);
@@ -95,7 +97,12 @@ public class AVTransportController implements IRendererInterface.IAVTransportCon
         mMediaInfo = new MediaInfo(currentURI, currentURIMetaData, new UnsignedIntegerFourBytes(1), "", StorageMedium.NETWORK);
         mOriginPositionInfo = new PositionInfo(1, currentURIMetaData, currentURI);
 //        DLNARendererActivity.startActivity(mApplicationContext, currentURI);
-        PlayerActivity.newPlayerInstance(mApplicationContext, currentURI);
+//        PlayerActivity.newPlayerInstance(mApplicationContext, currentURI);
+        if (mMediaControl != null) {
+            mMediaControl.prepare(currentURI);
+        } else {
+            Log.e(TAG, "null controller");
+        }
     }
 
     @Override

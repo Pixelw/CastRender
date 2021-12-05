@@ -17,7 +17,7 @@
         android:name=".CastRenderApp"
         android:theme="@style/Theme.CastRender">
         <service
-            android:name=".dmr.DLNARendererService"
+            android:name="tech.pixelw.dmr_core.DLNARendererService"
             android:enabled="true" />
 
         <activity

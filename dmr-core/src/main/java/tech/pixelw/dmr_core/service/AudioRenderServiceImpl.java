@@ -1,4 +1,4 @@
-package tech.pixelw.castrender.dmr.service;
+package tech.pixelw.dmr_core.service;
 
 import org.fourthline.cling.model.types.UnsignedIntegerFourBytes;
 import org.fourthline.cling.model.types.UnsignedIntegerTwoBytes;

@@ -17,6 +17,7 @@ import androidx.databinding.DataBindingUtil;
 import com.google.android.exoplayer2.MediaItem;
 import com.google.android.exoplayer2.SimpleExoPlayer;
 
+
 import org.fourthline.cling.model.types.UnsignedIntegerFourBytes;
 import org.fourthline.cling.support.avtransport.lastchange.AVTransportVariable;
 import org.fourthline.cling.support.model.Channel;
@@ -26,8 +27,7 @@ import org.fourthline.cling.support.renderingcontrol.lastchange.RenderingControl
 
 import tech.pixelw.castrender.R;
 import tech.pixelw.castrender.databinding.ActivityPlayer2Binding;
-import tech.pixelw.castrender.dmr.DLNARendererService;
-import tech.pixelw.castrender.dmr.IDLNARenderControl;
+import tech.pixelw.dmr_core.DLNARendererService;
 
 public class PlayerActivity extends AppCompatActivity {
 
@@ -39,11 +39,11 @@ public class PlayerActivity extends AppCompatActivity {
     private SimpleExoPlayer exoPlayer;
     private DLNARendererService.RendererServiceBinder binder;
 
-    private ServiceConnection connection = new ServiceConnection() {
+    private final ServiceConnection connection = new ServiceConnection() {
         @Override
         public void onServiceConnected(ComponentName name, IBinder service) {
             binder = (DLNARendererService.RendererServiceBinder) service;
-            binder.setRenderControl(new IDLNARenderControl.ExoPlayerRenderControl(exoPlayer));
+            binder.setRenderControl(new ExoRenderControlImpl(exoPlayer));
         }
 
         @Override

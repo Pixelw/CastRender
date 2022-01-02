@@ -14,11 +14,10 @@ import android.view.View;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.databinding.DataBindingUtil;
 
+import com.google.android.exoplayer2.ExoPlayer;
 import com.google.android.exoplayer2.MediaItem;
 import com.google.android.exoplayer2.SimpleExoPlayer;
 
-
-import org.fourthline.cling.model.types.UnsignedIntegerFourBytes;
 import org.fourthline.cling.support.avtransport.lastchange.AVTransportVariable;
 import org.fourthline.cling.support.model.Channel;
 import org.fourthline.cling.support.model.TransportState;
@@ -28,22 +27,21 @@ import org.fourthline.cling.support.renderingcontrol.lastchange.RenderingControl
 import tech.pixelw.castrender.R;
 import tech.pixelw.castrender.databinding.ActivityPlayer2Binding;
 import tech.pixelw.dmr_core.DLNARendererService;
+import tech.pixelw.dmr_core.service.AVTransportController;
 
 public class PlayerActivity extends AppCompatActivity {
 
-    //    public static final String EXAMPLE_URL = "https://lapi.pixelw.tech/2018061823520200-F1C11A22FAEE3B82F21B330E1B786A39.mp4";
     public static final String EXTRA_KEY_URL = "EXTRA_KEY_MEDIA_URL";
     // TODO: 2021/10/25 ??
-    private final UnsignedIntegerFourBytes INSTANCE_ID = new UnsignedIntegerFourBytes(0);
     private ActivityPlayer2Binding binding;
-    private SimpleExoPlayer exoPlayer;
+    private ExoPlayer exoPlayer;
     private DLNARendererService.RendererServiceBinder binder;
 
     private final ServiceConnection connection = new ServiceConnection() {
         @Override
         public void onServiceConnected(ComponentName name, IBinder service) {
             binder = (DLNARendererService.RendererServiceBinder) service;
-            binder.setRenderControl(new ExoRenderControlImpl(exoPlayer));
+            binder.registerController(avTransportController);
         }
 
         @Override
@@ -51,7 +49,15 @@ public class PlayerActivity extends AppCompatActivity {
             binder = null;
         }
     };
+    private AVTransportController avTransportController;
 
+
+    public static void newPlayerInstance(Context context, String url) {
+        Intent intent = new Intent(context, PlayerActivity.class);
+        intent.putExtra(EXTRA_KEY_URL, url);
+        intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+        context.startActivity(intent);
+    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -59,23 +65,34 @@ public class PlayerActivity extends AppCompatActivity {
         binding = DataBindingUtil.setContentView(this, R.layout.activity_player2);
         exoPlayer = new SimpleExoPlayer.Builder(this).build();
         binding.exoPlayerView.setPlayer(exoPlayer);
-        bindService(new Intent(this, DLNARendererService.class), connection, Service.BIND_AUTO_CREATE);
+        connectToService();
+        onNewIntent(getIntent());
+    }
+
+    private void connectToService() {
+        avTransportController = new AVTransportController(PlayerActivity.this, new ExoRenderControlImpl(exoPlayer));
+        Intent intent = new Intent(this, DLNARendererService.class);
+        intent.putExtra("foreground", true);
+        bindService(intent, connection, Service.BIND_AUTO_CREATE);
     }
 
     @Override
     protected void onNewIntent(Intent intent) {
+        if (intent == null) return;
         super.onNewIntent(intent);
         String url = intent.getStringExtra(EXTRA_KEY_URL);
         if (!TextUtils.isEmpty(url)) {
-            playMedia(url);
+            prepareAndPlayMedia(url);
         }
     }
 
-    private void playMedia(String url) {
-        MediaItem mediaItem = MediaItem.fromUri(url);
-        exoPlayer.setMediaItem(mediaItem);
-        exoPlayer.prepare();
-        exoPlayer.play();
+    private void prepareAndPlayMedia(String url) {
+        runOnUiThread(() -> {
+            MediaItem mediaItem = MediaItem.fromUri(url);
+            exoPlayer.setMediaItem(mediaItem);
+            exoPlayer.prepare();
+            exoPlayer.play();
+        });
     }
 
     @Override
@@ -93,13 +110,6 @@ public class PlayerActivity extends AppCompatActivity {
     protected void onPause() {
         super.onPause();
         exoPlayer.pause();
-    }
-
-    public static void newPlayerInstance(Context context, String url) {
-        Intent intent = new Intent(context, PlayerActivity.class);
-        intent.putExtra(EXTRA_KEY_URL, url);
-        intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-        context.startActivity(intent);
     }
 
     @Override
@@ -128,7 +138,7 @@ public class PlayerActivity extends AppCompatActivity {
     private void notifyTransportStateChanged(TransportState state) {
         if (binder != null) {
             binder.avTransportLastChange()
-                    .setEventedValue(INSTANCE_ID,
+                    .setEventedValue(avTransportController.getInstanceId(),
                             new AVTransportVariable.TransportState(state));
         }
     }
@@ -136,7 +146,7 @@ public class PlayerActivity extends AppCompatActivity {
     private void notifyRenderVolumeChanged(int volume) {
         if (binder != null) {
             binder.audioControlLastChange().
-                    setEventedValue(INSTANCE_ID,
+                    setEventedValue(avTransportController.getInstanceId(),
                             new RenderingControlVariable.Volume(
                                     new ChannelVolume(Channel.Master, volume)));
         }
@@ -148,6 +158,13 @@ public class PlayerActivity extends AppCompatActivity {
         exoPlayer.stop();
         notifyTransportStateChanged(TransportState.STOPPED);
         exoPlayer.release();
+        binder.unregisterController(avTransportController);
         unbindService(connection);
+    }
+
+    public final class Handler {
+        public void navigationClick(View view) {
+            finish();
+        }
     }
 }

@@ -1,13 +1,14 @@
 package tech.pixelw.castrender;
 
-import android.app.Application;
 import android.content.Context;
+
+import androidx.multidex.MultiDexApplication;
 
 /**
  * @author Carl Su "Pixelw"
  * @date 2021/10/25
  */
-public class CastRenderApp extends Application {
+public class CastRenderApp extends MultiDexApplication {
     private static Context appContext;
 
     @Override

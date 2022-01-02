@@ -47,7 +47,7 @@ public class DLNARendererActivity extends AppCompatActivity {
         @Override
         public void onServiceConnected(ComponentName name, IBinder service) {
             mRendererService = ((DLNARendererService.RendererServiceBinder) service).getRendererService();
-            mRendererService.setRenderControl(new IDLNARenderControl.VideoViewRenderControl(mVideoView));
+//            mRendererService.setRenderControl(new IDLNARenderControl.VideoViewRenderControl(mVideoView));
         }
 
         @Override

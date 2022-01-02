@@ -7,12 +7,16 @@
         <variable
             name="media"
             type="tech.pixelw.castrender.entity.MediaEntity" />
+        <variable
+            name="handler"
+            type="tech.pixelw.castrender.ui.PlayerActivity.Handler" />
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        tools:context=".ui.PlayerActivity">
+        tools:context=".ui.PlayerActivity"
+        android:animateLayoutChanges="true">
 
         <com.google.android.exoplayer2.ui.PlayerView
             android:layout_width="match_parent"
@@ -34,6 +38,7 @@
                 android:layout_height="32dp"
                 android:src="@drawable/ic_baseline_arrow_back_24"
                 android:layout_marginEnd="16dp"
+                android:onClick="@{handler::navigationClick}"
                 app:tint="?attr/colorOnPrimary"
                 android:contentDescription="@string/back" />
 
@@ -46,13 +51,13 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:textAppearance="?attr/textAppearanceHeadline6"
-                    android:text="Ted Lasso"
+                    tools:text="Ted Lasso"
                     android:textColor="?colorOnPrimary" />
 
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="from Samsung Galaxy S5"
+                    tools:text="from Samsung Galaxy S5"
                     android:textAppearance="?attr/textAppearanceSubtitle2"
                     android:textColor="?colorOnPrimary" />
             </LinearLayout>

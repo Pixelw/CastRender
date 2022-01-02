@@ -1,11 +1,12 @@
 package tech.pixelw.dmr_core;
 
-import android.app.Service;
+import android.app.Notification;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.drawable.BitmapDrawable;
 import android.os.IBinder;
+import android.text.TextUtils;
 
 import androidx.core.content.ContextCompat;
 
@@ -42,12 +43,16 @@ import tech.pixelw.dmr_core.service.AVTransportServiceImpl;
 import tech.pixelw.dmr_core.service.AudioRenderController;
 import tech.pixelw.dmr_core.service.AudioRenderServiceImpl;
 import tech.pixelw.dmr_core.service.ConnectionManagerServiceImpl;
+import tech.pixelw.dmr_core.service.IRendererInterface;
 import tech.pixelw.dmr_core.service.RenderControlManager;
 
 /**
  *
  */
 public class DLNARendererService extends AndroidUpnpServiceImpl {
+
+    public static final String NOTIFICHANNEL_ID = "DMR_DLNA";
+    public static final int NOTIFIID = 211206;
 
     public static void startService(Context context) {
         context.getApplicationContext().startService(new Intent(context, DLNARendererService.class));
@@ -74,7 +79,7 @@ public class DLNARendererService extends AndroidUpnpServiceImpl {
     public void onCreate() {
         org.seamless.util.logging.LoggingUtil.resetRootHandler(new FixedAndroidLogHandler());
         super.onCreate();
-        String ipAddress = Utils.getWifiIpAddress(getApplicationContext()); // 确保拿到Wifi接口的IP地址
+        String ipAddress = Utils.getWifiIpAddress(getApplicationContext()); // todo 确保拿到Wifi接口的IP地址
         mRenderControlManager.addControl(new AudioRenderController(getApplicationContext()));
         mRenderControlManager.addControl(new AVTransportController(getApplicationContext(), new IDLNARenderControl.DefaultRenderControl()));
         try {
@@ -88,13 +93,18 @@ public class DLNARendererService extends AndroidUpnpServiceImpl {
 
     @Override
     public int onStartCommand(Intent intent, int flags, int startId) {
-        return Service.START_STICKY;
+        if (intent != null && !TextUtils.isEmpty(intent.getStringExtra(NOTIFICHANNEL_ID))) {
+            Notification notification = Utils.createNotification(getApplicationContext(), intent.getStringExtra(NOTIFICHANNEL_ID));
+            startForeground(NOTIFIID, notification);
+        }
+        return super.onStartCommand(intent, flags, startId);
     }
 
     @Override
     public IBinder onBind(Intent intent) {
         return mBinder;
     }
+
 
     @Override
     public void onDestroy() {
@@ -112,9 +122,6 @@ public class DLNARendererService extends AndroidUpnpServiceImpl {
         return mAudioControlLastChange;
     }
 
-    public void setRenderControl(IDLNARenderControl control) {
-        mRenderControlManager.addControl(new AVTransportController(getApplicationContext(), control));
-    }
 
     // -------------------------------------------------------------------------------------------
     // - MediaPlayer Device
@@ -203,8 +210,18 @@ public class DLNARendererService extends AndroidUpnpServiceImpl {
             return getAvTransportLastChange();
         }
 
-        public void setRenderControl(IDLNARenderControl control){
-            DLNARendererService.this.setRenderControl(control);
+        public void registerController(IRendererInterface.IControl controller) {
+            if (controller == null) {
+                return;
+            }
+            mRenderControlManager.addControl(controller);
+        }
+
+        public void unregisterController(IRendererInterface.IControl controller) {
+            if (controller == null) {
+                return;
+            }
+            mRenderControlManager.removeControl(controller);
         }
 
         public LastChange audioControlLastChange() {

@@ -7,6 +7,8 @@ import android.widget.VideoView;
  *
  */
 public interface IDLNARenderControl {
+    int type();
+
     void prepare(String uri);
 
     void play();
@@ -30,6 +32,11 @@ public interface IDLNARenderControl {
 
         public VideoViewRenderControl(VideoView videoView) {
             this.videoView = videoView;
+        }
+
+        @Override
+        public int type() {
+            return 1;
         }
 
         @Override
@@ -73,6 +80,11 @@ public interface IDLNARenderControl {
     // -------------------------------------------------------------------------------------------
     final class DefaultRenderControl implements IDLNARenderControl {
         public DefaultRenderControl() {
+        }
+
+        @Override
+        public int type() {
+            return 0;
         }
 
         @Override

@@ -22,7 +22,7 @@ public interface IRendererInterface {
     // -------------------------------------------------------------------------------------------
     // - AvTransport
     // -------------------------------------------------------------------------------------------
-    public interface IAVTransportControl extends IControl {
+    interface IAVTransportControl extends IControl {
         void setAVTransportURI(String currentURI, String currentURIMetaData) throws AVTransportException;
 
         void setNextAVTransportURI(String nextURI, String nextURIMetaData);
@@ -61,7 +61,7 @@ public interface IRendererInterface {
     // -------------------------------------------------------------------------------------------
     // - Audio
     // -------------------------------------------------------------------------------------------
-    public interface IAudioControl extends IControl {
+    interface IAudioControl extends IControl {
         void setMute(String channelName, boolean desiredMute);
 
         boolean getMute(String channelName);

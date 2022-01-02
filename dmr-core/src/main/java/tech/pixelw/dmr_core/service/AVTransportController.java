@@ -19,11 +19,14 @@ import org.fourthline.cling.support.model.TransportSettings;
 
 import java.net.URI;
 
-import tech.pixelw.dmr_core.DLNARendererActivity;
 import tech.pixelw.dmr_core.IDLNARenderControl;
 import tech.pixelw.dmr_core.Utils;
 
+/**
+ * 实现传输到这里控制的各种行为
+ */
 public class AVTransportController implements IRendererInterface.IAVTransportControl {
+    public static IDLNANewSession idlnaNewSession;
     private static final TransportAction[] TRANSPORT_ACTION_STOPPED = new TransportAction[]{TransportAction.Play};
     private static final TransportAction[] TRANSPORT_ACTION_PLAYING = new TransportAction[]{TransportAction.Stop, TransportAction.Pause, TransportAction.Seek};
     private static final TransportAction[] TRANSPORT_ACTION_PAUSE_PLAYBACK = new TransportAction[]{TransportAction.Play, TransportAction.Seek, TransportAction.Stop};
@@ -98,10 +101,14 @@ public class AVTransportController implements IRendererInterface.IAVTransportCon
         mOriginPositionInfo = new PositionInfo(1, currentURIMetaData, currentURI);
 //        DLNARendererActivity.startActivity(mApplicationContext, currentURI);
 //        PlayerActivity.newPlayerInstance(mApplicationContext, currentURI);
-        if (mMediaControl != null) {
+        if (mMediaControl != null && mMediaControl.type() > 0) {
+            Log.i(TAG, "calling via MediaControl");
             mMediaControl.prepare(currentURI);
+        } else if (idlnaNewSession != null) {
+            Log.i(TAG, "calling NewPlayer");
+            idlnaNewSession.newPlayer(mApplicationContext, currentURI);
         } else {
-            Log.e(TAG, "null controller");
+            Log.e(TAG, "null control and new player delegate");
         }
     }
 

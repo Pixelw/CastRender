@@ -4,6 +4,7 @@ package tech.pixelw.dmr_core.service;
 import android.content.Context;
 import android.util.Log;
 
+import org.fourthline.cling.model.ModelUtil;
 import org.fourthline.cling.model.types.ErrorCode;
 import org.fourthline.cling.model.types.UnsignedIntegerFourBytes;
 import org.fourthline.cling.support.avtransport.AVTransportErrorCode;
@@ -26,28 +27,36 @@ import tech.pixelw.dmr_core.Utils;
  * 实现传输到这里控制的各种行为
  */
 public class AVTransportController implements IRendererInterface.IAVTransportControl {
-    public static IDLNANewSession idlnaNewSession;
     private static final TransportAction[] TRANSPORT_ACTION_STOPPED = new TransportAction[]{TransportAction.Play};
     private static final TransportAction[] TRANSPORT_ACTION_PLAYING = new TransportAction[]{TransportAction.Stop, TransportAction.Pause, TransportAction.Seek};
     private static final TransportAction[] TRANSPORT_ACTION_PAUSE_PLAYBACK = new TransportAction[]{TransportAction.Play, TransportAction.Seek, TransportAction.Stop};
 
     private final UnsignedIntegerFourBytes mInstanceId;
-    private final Context mApplicationContext;
-    private final TransportInfo mTransportInfo = new TransportInfo();
+    private TransportInfo mTransportInfo = new TransportInfo();
     private final TransportSettings mTransportSettings = new TransportSettings();
     private PositionInfo mOriginPositionInfo = new PositionInfo();
     private MediaInfo mMediaInfo = new MediaInfo();
-    private final IDLNARenderControl mMediaControl;
+    private final IDLNARenderControl defaultMediaControl;
+    private IDLNARenderControl mMediaControl;
     private static final String TAG = "AVTransportController";
 
-    public AVTransportController(Context context, IDLNARenderControl control) {
-        this(context, new UnsignedIntegerFourBytes(0), control);
+    public AVTransportController(Context context) {
+        this(context, new UnsignedIntegerFourBytes(0));
     }
 
-    public AVTransportController(Context context, UnsignedIntegerFourBytes instanceId, IDLNARenderControl control) {
-        mApplicationContext = context.getApplicationContext();
+    public AVTransportController(Context context, UnsignedIntegerFourBytes instanceId) {
+        Context mApplicationContext = context.getApplicationContext();
         mInstanceId = instanceId;
-        mMediaControl = control;
+        defaultMediaControl = new DefaultRenderControl(mApplicationContext);
+        mMediaControl = defaultMediaControl;
+    }
+
+    public void setMediaControl(IDLNARenderControl control) {
+        if (control != null){
+            mMediaControl = control;
+        } else {
+            mMediaControl = defaultMediaControl;
+        }
     }
 
     public UnsignedIntegerFourBytes getInstanceId() {
@@ -77,11 +86,16 @@ public class AVTransportController implements IRendererInterface.IAVTransportCon
 
     @Override
     public PositionInfo getPositionInfo() {
-        return new PositionInfo(mOriginPositionInfo, mMediaControl.getPosition() / 1000, mMediaControl.getDuration() / 1000);
+        return new PositionInfo(mOriginPositionInfo.getTrack().getValue(),
+                ModelUtil.toTimeString(mMediaControl.getDuration() / 1000),
+                mOriginPositionInfo.getTrackURI(),
+                ModelUtil.toTimeString(mMediaControl.getPosition() / 1000),
+                ModelUtil.toTimeString(mMediaControl.getPosition() / 1000));
     }
 
     @Override
     public TransportInfo getTransportInfo() {
+        mTransportInfo = new TransportInfo(mMediaControl.getTransportState(), "1");
         return mTransportInfo;
     }
 
@@ -97,19 +111,10 @@ public class AVTransportController implements IRendererInterface.IAVTransportCon
         } catch (Exception ex) {
             throw new AVTransportException(ErrorCode.INVALID_ARGS, "CurrentURI can not be null or malformed");
         }
-        mMediaInfo = new MediaInfo(currentURI, currentURIMetaData, new UnsignedIntegerFourBytes(1), "", StorageMedium.NETWORK);
+        Log.i(TAG, "got uri:" + currentURI);
+        mMediaInfo = new MediaInfo(currentURI, currentURIMetaData, new UnsignedIntegerFourBytes(1), "00:00:00", StorageMedium.NETWORK);
         mOriginPositionInfo = new PositionInfo(1, currentURIMetaData, currentURI);
-//        DLNARendererActivity.startActivity(mApplicationContext, currentURI);
-//        PlayerActivity.newPlayerInstance(mApplicationContext, currentURI);
-        if (mMediaControl != null && mMediaControl.type() > 0) {
-            Log.i(TAG, "calling via MediaControl");
-            mMediaControl.prepare(currentURI);
-        } else if (idlnaNewSession != null) {
-            Log.i(TAG, "calling NewPlayer");
-            idlnaNewSession.newPlayer(mApplicationContext, currentURI);
-        } else {
-            Log.e(TAG, "null control and new player delegate");
-        }
+        mMediaControl.prepare(currentURI);
     }
 
     @Override
@@ -158,4 +163,5 @@ public class AVTransportController implements IRendererInterface.IAVTransportCon
     @Override
     public void setRecordQualityMode(String newRecordQualityMode) {
     }
+
 }

@@ -8,31 +8,31 @@ import org.fourthline.cling.support.renderingcontrol.AbstractAudioRenderingContr
 
 public class AudioRenderServiceImpl extends AbstractAudioRenderingControl {
     private static final Channel[] mMasterChannel = new Channel[]{Channel.Master};
-    private final RenderControlManager renderControlManager;
+    private final RenderControlManager IRenderControlManager;
 
-    public AudioRenderServiceImpl(LastChange lastChange, RenderControlManager renderControlManager) {
+    public AudioRenderServiceImpl(LastChange lastChange, RenderControlManager IRenderControlManager) {
         super(lastChange);
-        this.renderControlManager = renderControlManager;
+        this.IRenderControlManager = IRenderControlManager;
     }
 
     @Override
     public void setMute(UnsignedIntegerFourBytes instanceId, String channelName, boolean desiredMute) {
-        renderControlManager.getAudioControl(instanceId).setMute(channelName, desiredMute);
+        IRenderControlManager.getAudioControl(instanceId).setMute(channelName, desiredMute);
     }
 
     @Override
     public boolean getMute(UnsignedIntegerFourBytes instanceId, String channelName) {
-        return renderControlManager.getAudioControl(instanceId).getMute(channelName);
+        return IRenderControlManager.getAudioControl(instanceId).getMute(channelName);
     }
 
     @Override
     public void setVolume(UnsignedIntegerFourBytes instanceId, String channelName, UnsignedIntegerTwoBytes desiredVolume) {
-        renderControlManager.getAudioControl(instanceId).setVolume(channelName, desiredVolume);
+        IRenderControlManager.getAudioControl(instanceId).setVolume(channelName, desiredVolume);
     }
 
     @Override
     public UnsignedIntegerTwoBytes getVolume(UnsignedIntegerFourBytes instanceId, String channelName) {
-        return renderControlManager.getAudioControl(instanceId).getVolume(channelName);
+        return IRenderControlManager.getAudioControl(instanceId).getVolume(channelName);
     }
 
     @Override
@@ -42,6 +42,6 @@ public class AudioRenderServiceImpl extends AbstractAudioRenderingControl {
 
     @Override
     public UnsignedIntegerFourBytes[] getCurrentInstanceIds() {
-        return renderControlManager.getAudioControlCurrentInstanceIds();
+        return IRenderControlManager.getAudioControlCurrentInstanceIds();
     }
 }

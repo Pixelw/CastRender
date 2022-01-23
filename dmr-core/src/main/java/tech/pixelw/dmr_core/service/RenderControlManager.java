@@ -1,53 +1,60 @@
 package tech.pixelw.dmr_core.service;
 
-import androidx.annotation.NonNull;
+import android.content.Context;
+
 import androidx.annotation.Nullable;
 
 import org.fourthline.cling.model.types.UnsignedIntegerFourBytes;
 
-import java.util.LinkedHashMap;
-import java.util.Map;
+import tech.pixelw.dmr_core.IDLNARenderControl;
 
-public final class RenderControlManager {
+/**
+ * @author Carl Su "Pixelw"
+ * @date 2022/1/19
+ */
+public class RenderControlManager {
+    private AVTransportController avControl;
+    private AudioRenderController audioControl;
 
-    // TODO: 2021/12/7 what this var for?
-//    private UnsignedIntegerFourBytes[] avControlInstanceIds = null;
-    private final Map<UnsignedIntegerFourBytes, IRendererInterface.IAVTransportControl> avControlMap = new LinkedHashMap<>();
-    //    private UnsignedIntegerFourBytes[] audioControlInstanceIds = null;
-    private final Map<UnsignedIntegerFourBytes, IRendererInterface.IAudioControl> audioControlMap = new LinkedHashMap<>();
+    private final UnsignedIntegerFourBytes[] nullIds = new UnsignedIntegerFourBytes[0];
+    private final UnsignedIntegerFourBytes[] hasIds = new UnsignedIntegerFourBytes[]{new UnsignedIntegerFourBytes(0)};
 
-    // TODO: 2021/12/6 need remove?
-    public void addControl(@NonNull IRendererInterface.IControl control) {
-        if (control instanceof IRendererInterface.IAVTransportControl) {
-            avControlMap.put(control.getInstanceId(), (IRendererInterface.IAVTransportControl) control);
-        } else if (control instanceof IRendererInterface.IAudioControl) {
-            audioControlMap.put(control.getInstanceId(), (IRendererInterface.IAudioControl) control);
-        }
+    public RenderControlManager(Context context) {
+        audioControl = new AudioRenderController(context);
+        avControl = new AVTransportController(context);
     }
 
-    public void removeControl(@NonNull IRendererInterface.IControl control){
-        if (control instanceof IRendererInterface.IAVTransportControl) {
-            avControlMap.remove(control.getInstanceId());
-        } else if (control instanceof IRendererInterface.IAudioControl) {
-            audioControlMap.remove(control.getInstanceId());
-        }
+    public void attachPlayerControl(IDLNARenderControl control){
+        avControl.setMediaControl(control);
+    }
+
+    public void detachPlayerControl(){
+        avControl.setMediaControl(null);
     }
 
     @Nullable
     public IRendererInterface.IAVTransportControl getAvTransportControl(UnsignedIntegerFourBytes instanceId) {
-        return avControlMap.get(instanceId);
+        return avControl;
     }
 
     public UnsignedIntegerFourBytes[] getAvTransportCurrentInstanceIds() {
-        return avControlMap.keySet().toArray(new UnsignedIntegerFourBytes[0]);
+        if (avControl == null) {
+            return nullIds;
+        } else {
+            return hasIds;
+        }
     }
 
     @Nullable
     public IRendererInterface.IAudioControl getAudioControl(UnsignedIntegerFourBytes instanceId) {
-        return audioControlMap.get(instanceId);
+        return audioControl;
     }
 
     public UnsignedIntegerFourBytes[] getAudioControlCurrentInstanceIds() {
-        return audioControlMap.keySet().toArray(new UnsignedIntegerFourBytes[0]);
+        if (audioControl == null) {
+            return nullIds;
+        } else {
+            return hasIds;
+        }
     }
 }

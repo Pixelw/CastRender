@@ -26,6 +26,7 @@ import org.fourthline.cling.model.meta.ManufacturerDetails;
 import org.fourthline.cling.model.meta.ModelDetails;
 import org.fourthline.cling.model.types.UDADeviceType;
 import org.fourthline.cling.model.types.UDN;
+import org.fourthline.cling.model.types.UnsignedIntegerFourBytes;
 import org.fourthline.cling.support.avtransport.lastchange.AVTransportLastChangeParser;
 import org.fourthline.cling.support.lastchange.LastChange;
 import org.fourthline.cling.support.lastchange.LastChangeAwareServiceManager;
@@ -38,12 +39,9 @@ import java.math.BigInteger;
 import java.security.MessageDigest;
 import java.util.UUID;
 
-import tech.pixelw.dmr_core.service.AVTransportController;
 import tech.pixelw.dmr_core.service.AVTransportServiceImpl;
-import tech.pixelw.dmr_core.service.AudioRenderController;
 import tech.pixelw.dmr_core.service.AudioRenderServiceImpl;
 import tech.pixelw.dmr_core.service.ConnectionManagerServiceImpl;
-import tech.pixelw.dmr_core.service.IRendererInterface;
 import tech.pixelw.dmr_core.service.RenderControlManager;
 
 /**
@@ -58,7 +56,7 @@ public class DLNARendererService extends AndroidUpnpServiceImpl {
         context.getApplicationContext().startService(new Intent(context, DLNARendererService.class));
     }
 
-    private final RenderControlManager mRenderControlManager = new RenderControlManager();
+    private RenderControlManager mRenderControlManager;
 
     private LastChange mAvTransportLastChange;
     private LastChange mAudioControlLastChange;
@@ -79,10 +77,9 @@ public class DLNARendererService extends AndroidUpnpServiceImpl {
     public void onCreate() {
         org.seamless.util.logging.LoggingUtil.resetRootHandler(new FixedAndroidLogHandler());
         super.onCreate();
-        String ipAddress = Utils.getWifiIpAddress(getApplicationContext()); // todo 确保拿到Wifi接口的IP地址
-        mRenderControlManager.addControl(new AudioRenderController(getApplicationContext()));
-        mRenderControlManager.addControl(new AVTransportController(getApplicationContext(), new IDLNARenderControl.DefaultRenderControl()));
+        String ipAddress = Utils.getWifiIpAddress(getApplicationContext());
         try {
+            mRenderControlManager = new RenderControlManager(getApplicationContext());
             mRendererDevice = createRendererDevice(getApplicationContext(), ipAddress);
             upnpService.getRegistry().addDevice(mRendererDevice);
         } catch (Exception e) {
@@ -210,22 +207,23 @@ public class DLNARendererService extends AndroidUpnpServiceImpl {
             return getAvTransportLastChange();
         }
 
-        public void registerController(IRendererInterface.IControl controller) {
-            if (controller == null) {
+        public void registerController(IDLNARenderControl control) {
+            if (control == null) {
                 return;
             }
-            mRenderControlManager.addControl(controller);
+            mRenderControlManager.attachPlayerControl(control);
         }
 
-        public void unregisterController(IRendererInterface.IControl controller) {
-            if (controller == null) {
-                return;
-            }
-            mRenderControlManager.removeControl(controller);
+        public void unregisterController() {
+            mRenderControlManager.detachPlayerControl();
         }
 
         public LastChange audioControlLastChange() {
             return getAudioControlLastChange();
+        }
+
+        public UnsignedIntegerFourBytes getInstanceId(){
+            return new UnsignedIntegerFourBytes(0);
         }
     }
 }

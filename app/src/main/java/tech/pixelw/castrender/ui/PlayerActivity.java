@@ -27,7 +27,6 @@ import org.fourthline.cling.support.renderingcontrol.lastchange.RenderingControl
 import tech.pixelw.castrender.R;
 import tech.pixelw.castrender.databinding.ActivityPlayer2Binding;
 import tech.pixelw.dmr_core.DLNARendererService;
-import tech.pixelw.dmr_core.service.AVTransportController;
 
 public class PlayerActivity extends AppCompatActivity {
 
@@ -41,7 +40,7 @@ public class PlayerActivity extends AppCompatActivity {
         @Override
         public void onServiceConnected(ComponentName name, IBinder service) {
             binder = (DLNARendererService.RendererServiceBinder) service;
-            binder.registerController(avTransportController);
+            binder.registerController(new ExoRenderControlImpl(exoPlayer));
         }
 
         @Override
@@ -49,7 +48,6 @@ public class PlayerActivity extends AppCompatActivity {
             binder = null;
         }
     };
-    private AVTransportController avTransportController;
 
 
     public static void newPlayerInstance(Context context, String url) {
@@ -70,7 +68,6 @@ public class PlayerActivity extends AppCompatActivity {
     }
 
     private void connectToService() {
-        avTransportController = new AVTransportController(PlayerActivity.this, new ExoRenderControlImpl(exoPlayer));
         Intent intent = new Intent(this, DLNARendererService.class);
         intent.putExtra("foreground", true);
         bindService(intent, connection, Service.BIND_AUTO_CREATE);
@@ -138,7 +135,7 @@ public class PlayerActivity extends AppCompatActivity {
     private void notifyTransportStateChanged(TransportState state) {
         if (binder != null) {
             binder.avTransportLastChange()
-                    .setEventedValue(avTransportController.getInstanceId(),
+                    .setEventedValue(binder.getInstanceId(),
                             new AVTransportVariable.TransportState(state));
         }
     }
@@ -146,7 +143,7 @@ public class PlayerActivity extends AppCompatActivity {
     private void notifyRenderVolumeChanged(int volume) {
         if (binder != null) {
             binder.audioControlLastChange().
-                    setEventedValue(avTransportController.getInstanceId(),
+                    setEventedValue(binder.getInstanceId(),
                             new RenderingControlVariable.Volume(
                                     new ChannelVolume(Channel.Master, volume)));
         }
@@ -158,7 +155,7 @@ public class PlayerActivity extends AppCompatActivity {
         exoPlayer.stop();
         notifyTransportStateChanged(TransportState.STOPPED);
         exoPlayer.release();
-        binder.unregisterController(avTransportController);
+        binder.unregisterController();
         unbindService(connection);
     }
 

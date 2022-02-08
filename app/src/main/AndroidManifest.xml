@@ -8,7 +8,7 @@
     <uses-permission android:name="android.permission.ACCESS_WIFI_STATE" />
     <uses-permission android:name="android.permission.CHANGE_WIFI_MULTICAST_STATE" />
     <uses-permission android:name="android.permission.WAKE_LOCK" />
-    <uses-permission android:name="android.permission.FOREGROUND_SERVICE"/>
+    <uses-permission android:name="android.permission.FOREGROUND_SERVICE" />
 
     <application
         android:name=".CastRenderApp"
@@ -20,14 +20,18 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.CastRender"
         tools:targetApi="n">
+        <activity
+            android:name=".ui.SettingsActivity"
+            android:exported="false"
+            android:label="@string/title_activity_settings" />
+
         <service
             android:name="tech.pixelw.dmr_core.DLNARendererService"
             android:enabled="true" />
 
         <activity
             android:name=".ui.PlayerActivity"
-            android:exported="true"
-            android:screenOrientation="sensorLandscape" />
+            android:exported="true" />
         <activity
             android:name=".ui.MainActivity"
             android:exported="true">
@@ -37,7 +41,6 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-
     </application>
 
 </manifest>

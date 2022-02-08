@@ -30,22 +30,18 @@ public class DefaultRenderControl implements IDLNARenderControl {
 
     @Override
     public void play() {
-
     }
 
     @Override
     public void pause() {
-
     }
 
     @Override
     public void seek(long position) {
-
     }
 
     @Override
     public void stop() {
-
     }
 
     @Override
@@ -60,11 +56,11 @@ public class DefaultRenderControl implements IDLNARenderControl {
 
     @Override
     public TransportState getTransportState() {
-        return null;
+        return TransportState.NO_MEDIA_PRESENT;
     }
 
     @Override
     public float getSpeed() {
-        return 0;
+        return 1.0f;
     }
 }

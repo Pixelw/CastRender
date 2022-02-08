@@ -32,10 +32,10 @@ public class AVTransportController implements IRendererInterface.IAVTransportCon
     private static final TransportAction[] TRANSPORT_ACTION_PAUSE_PLAYBACK = new TransportAction[]{TransportAction.Play, TransportAction.Seek, TransportAction.Stop};
 
     private final UnsignedIntegerFourBytes mInstanceId;
-    private TransportInfo mTransportInfo = new TransportInfo();
-    private final TransportSettings mTransportSettings = new TransportSettings();
-    private PositionInfo mOriginPositionInfo = new PositionInfo();
-    private MediaInfo mMediaInfo = new MediaInfo();
+    private TransportInfo mTransportInfo;
+    private final TransportSettings mTransportSettings = new TransportSettings(); // default no changed
+    private PositionInfo mOriginPositionInfo;
+    private MediaInfo mMediaInfo;
     private final IDLNARenderControl defaultMediaControl;
     private IDLNARenderControl mMediaControl;
     private static final String TAG = "AVTransportController";
@@ -49,13 +49,22 @@ public class AVTransportController implements IRendererInterface.IAVTransportCon
         mInstanceId = instanceId;
         defaultMediaControl = new DefaultRenderControl(mApplicationContext);
         mMediaControl = defaultMediaControl;
+        // 初始化默认值
+        initStatusObjects();
+    }
+
+    private void initStatusObjects() {
+        mTransportInfo = new TransportInfo();
+        mOriginPositionInfo = new PositionInfo();
+        mMediaInfo = new MediaInfo();
     }
 
     public void setMediaControl(IDLNARenderControl control) {
-        if (control != null){
+        if (control != null) {
             mMediaControl = control;
         } else {
             mMediaControl = defaultMediaControl;
+            initStatusObjects();
         }
     }
 
@@ -79,6 +88,7 @@ public class AVTransportController implements IRendererInterface.IAVTransportCon
         return new DeviceCapabilities(new StorageMedium[]{StorageMedium.NETWORK});
     }
 
+    // 三个主要的状态返回
     @Override
     public MediaInfo getMediaInfo() {
         return mMediaInfo;
@@ -86,17 +96,26 @@ public class AVTransportController implements IRendererInterface.IAVTransportCon
 
     @Override
     public PositionInfo getPositionInfo() {
-        return new PositionInfo(mOriginPositionInfo.getTrack().getValue(),
-                ModelUtil.toTimeString(mMediaControl.getDuration() / 1000),
-                mOriginPositionInfo.getTrackURI(),
-                ModelUtil.toTimeString(mMediaControl.getPosition() / 1000),
-                ModelUtil.toTimeString(mMediaControl.getPosition() / 1000));
+        if (mMediaControl.type() > 0) {
+            return new PositionInfo(mOriginPositionInfo.getTrack().getValue(),
+                    ModelUtil.toTimeString(mMediaControl.getDuration() / 1000),
+                    mOriginPositionInfo.getTrackURI(),
+                    ModelUtil.toTimeString(mMediaControl.getPosition() / 1000),
+                    ModelUtil.toTimeString(mMediaControl.getPosition() / 1000));
+        } else {
+            return mOriginPositionInfo;
+        }
     }
 
     @Override
     public TransportInfo getTransportInfo() {
-        mTransportInfo = new TransportInfo(mMediaControl.getTransportState(), "1");
-        return mTransportInfo;
+        if (mMediaControl.type() > 0) {
+            mTransportInfo = new TransportInfo(mMediaControl.getTransportState(), "1");
+            return mTransportInfo;
+        } else {
+            return mTransportInfo;
+        }
+
     }
 
     @Override
@@ -140,7 +159,7 @@ public class AVTransportController implements IRendererInterface.IAVTransportCon
         mMediaControl.seek(position);
     }
 
-    synchronized public void stop() {
+    public void stop() {
         mMediaControl.stop();
     }
 

@@ -123,6 +123,7 @@ public class DLNARendererService extends AndroidUpnpServiceImpl {
     // -------------------------------------------------------------------------------------------
     // - MediaPlayer Device
     // -------------------------------------------------------------------------------------------
+    // TODO: 2022/1/25 custom model desc outside
     private static final String DMS_DESC = "MPI MediaPlayer";
     private static final String ID_SALT = "MediaPlayer";
     public final static String TYPE_MEDIA_PLAYER = "MediaRenderer";
@@ -143,18 +144,18 @@ public class DLNARendererService extends AndroidUpnpServiceImpl {
             ByteArrayInputStream byteArrayInputStream = new ByteArrayInputStream(stream.toByteArray());
             icons = new Icon[]{new Icon("image/png", 48, 48, 8, "icon.png", byteArrayInputStream)};
         }
-        return new LocalDevice(deviceIdentity, deviceType, details, icons, generateLocalServices());
+        return new LocalDevice(deviceIdentity, deviceType, details, icons, generateLocalServices(context));
     }
 
     @SuppressWarnings("unchecked")
-    protected LocalService<?>[] generateLocalServices() {
+    protected LocalService<?>[] generateLocalServices(final Context context) {
 
         // connection
         LocalService<ConnectionManagerServiceImpl> connectionManagerService = new AnnotationLocalServiceBinder().read(ConnectionManagerServiceImpl.class);
         connectionManagerService.setManager(new DefaultServiceManager<ConnectionManagerServiceImpl>(connectionManagerService, ConnectionManagerServiceImpl.class) {
             @Override
             protected ConnectionManagerServiceImpl createServiceInstance() {
-                return new ConnectionManagerServiceImpl();
+                return new ConnectionManagerServiceImpl(context);
             }
         });
 

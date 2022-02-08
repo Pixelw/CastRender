@@ -3,8 +3,11 @@ package tech.pixelw.castrender.ui;
 import android.os.Handler;
 import android.os.Looper;
 
+import androidx.annotation.NonNull;
+
 import com.google.android.exoplayer2.ExoPlayer;
 import com.google.android.exoplayer2.MediaItem;
+import com.google.android.exoplayer2.PlaybackParameters;
 import com.google.android.exoplayer2.Player;
 
 import org.fourthline.cling.support.model.TransportState;
@@ -23,21 +26,46 @@ public class ExoRenderControlImpl implements IDLNARenderControl {
     public static final int TYPE = 101;
 
     private final ExoPlayer player;
+    private final ActivityCallback activityCallback;
 
-    public ExoRenderControlImpl(ExoPlayer player) {
+    public ExoRenderControlImpl(ExoPlayer player, ActivityCallback callback) {
         this.player = player;
+        activityCallback = callback;
+        // call this first
         player.addListener(new Player.Listener() {
             @Override
+            public void onPlaybackStateChanged(int playbackState) {
+                switch (playbackState) {
+                    case com.google.android.exoplayer2.Player.STATE_IDLE:   // 1
+                        transportState = TransportState.NO_MEDIA_PRESENT;
+                        break;
+                    case com.google.android.exoplayer2.Player.STATE_BUFFERING:  // 2
+                    case com.google.android.exoplayer2.Player.STATE_READY:      // 3
+                        break;
+                    case com.google.android.exoplayer2.Player.STATE_ENDED:  // 4
+                        transportState = TransportState.STOPPED;
+                        position = duration; // fix inconsistency
+                        break;
+                }
+            }
+
+            // then call this
+            @Override
             public void onIsPlayingChanged(boolean isPlaying) {
+                if (player.getPlaybackState() == Player.STATE_READY) {
+                    if (isPlaying) {
+                        transportState = TransportState.PLAYING;
+                    } else {
+                        transportState = TransportState.PAUSED_PLAYBACK;
+                    }
+                }
                 handler.removeCallbacks(refreshThread);
-                handler.post(refreshThread);
+                handler.postDelayed(refreshThread, 100);
             }
 
             @Override
-            public void onPlaybackStateChanged(int playbackState) {
-                if (playbackState == Player.STATE_ENDED || playbackState == Player.STATE_IDLE){
-                    position = duration = 0;
-                }
+            public void onPlaybackParametersChanged(@NonNull PlaybackParameters playbackParameters) {
+                speed = playbackParameters.speed;
             }
         });
     }
@@ -55,25 +83,7 @@ public class ExoRenderControlImpl implements IDLNARenderControl {
             if (player == null) return;
             position = player.getCurrentPosition();
             duration = player.getDuration();
-            switch (player.getPlaybackState()) {
-                case com.google.android.exoplayer2.Player.STATE_IDLE:
-                    transportState = TransportState.NO_MEDIA_PRESENT;
-                    break;
-                case com.google.android.exoplayer2.Player.STATE_ENDED:
-                    transportState = TransportState.STOPPED;
-                    break;
-                case com.google.android.exoplayer2.Player.STATE_BUFFERING:
-                    transportState = TransportState.PLAYING;
-                    break;
-                case com.google.android.exoplayer2.Player.STATE_READY:
-                    if (player.isPlaying()) {
-                        transportState = TransportState.PLAYING;
-                    } else {
-                        transportState = TransportState.PAUSED_PLAYBACK;
-                    }
-                    break;
-            }
-            speed = player.getPlaybackParameters().speed;
+
             if (player.isPlaying() || player.getPlaybackState() == Player.STATE_BUFFERING) {
                 handler.postDelayed(this, UPDATE_INTERVAL);
             }
@@ -90,6 +100,7 @@ public class ExoRenderControlImpl implements IDLNARenderControl {
         handler.post(() -> {
             MediaItem mediaItem = MediaItem.fromUri(uri);
             player.setMediaItem(mediaItem);
+            position = duration = 0;
             player.prepare();
         });
     }
@@ -114,6 +125,10 @@ public class ExoRenderControlImpl implements IDLNARenderControl {
     public void seek(long position) {
         handler.post(() -> {
             LogUtil.i(TAG, "seekTo: " + position);
+            if (position < 3000 && Math.abs(player.getCurrentPosition() - position) < 1000) {
+                LogUtil.w(TAG, "ignored just start seek");
+                return;
+            }
             player.seekTo(position);
         });
     }
@@ -123,6 +138,7 @@ public class ExoRenderControlImpl implements IDLNARenderControl {
         handler.post(() -> {
             LogUtil.i(TAG, "stop called");
             player.stop();
+            activityCallback.finishPlayer();
         });
     }
 
@@ -147,5 +163,9 @@ public class ExoRenderControlImpl implements IDLNARenderControl {
     @Override
     public float getSpeed() {
         return speed;
+    }
+
+    interface ActivityCallback {
+        void finishPlayer();
     }
 }

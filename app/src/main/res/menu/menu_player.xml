@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+    <item
+        android:id="@+id/menu_speed_settings"
+        android:icon="@drawable/ic_baseline_fast_forward_24"
+        android:title="@string/playback_speed" />
+    <item
+        android:id="@+id/menu_video_audio_settings"
+        android:icon="@drawable/ic_baseline_video_settings_24"
+        android:title="@string/video_audio_settings" />
+    <item
+        android:id="@+id/menu_media_info"
+        android:icon="@drawable/ic_baseline_info_24"
+        android:title="@string/media_info" />
+    <item
+        android:id="@+id/menu_close"
+        android:icon="@drawable/ic_baseline_close_24"
+        android:title="@string/close" />
+</menu>

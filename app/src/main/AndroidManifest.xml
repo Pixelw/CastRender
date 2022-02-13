@@ -31,6 +31,7 @@
 
         <activity
             android:name=".ui.PlayerActivity"
+            android:screenOrientation="sensorLandscape"
             android:exported="true" />
         <activity
             android:name=".ui.MainActivity"

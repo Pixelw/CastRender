@@ -18,4 +18,10 @@
     <string name="attachment_summary_on">Automatically download attachments for incoming emails
     </string>
     <string name="attachment_summary_off">Only download attachments when manually requested</string>
+    <string name="playback_speed">Playback Speed</string>
+    <string name="video_audio_settings">Video/Audio Settings</string>
+    <string name="media_info">Media Info</string>
+    <string name="close">Close</string>
+    <string name="track">Track </string>
+    <string name="unknown">Unknown</string>
 </resources>

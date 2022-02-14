@@ -1,6 +1,7 @@
 plugins {
     id 'com.android.application'
 }
+apply plugin: 'kotlin-android'
 
 android {
     compileSdk 30
@@ -47,4 +48,8 @@ dependencies {
 
     implementation(project(':dmr-core'))
     implementation 'androidx.preference:preference:1.1.1'
+    implementation "androidx.core:core-ktx:1.5.0"
+    implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk7:$kotlin_version"
+}
+repositories {
 }

@@ -9,6 +9,7 @@
 
     <com.google.android.material.appbar.MaterialToolbar
         android:id="@+id/player_toolbar"
+        android:focusable="false"
         android:background="@android:color/transparent"
         app:layout_constraintTop_toTopOf="parent"
         android:layout_width="match_parent"

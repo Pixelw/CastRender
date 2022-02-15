@@ -35,6 +35,7 @@ import com.google.android.exoplayer2.MediaItem;
 import com.google.android.exoplayer2.SeekParameters;
 import com.google.android.exoplayer2.SimpleExoPlayer;
 import com.google.android.exoplayer2.audio.AudioAttributes;
+import com.google.android.exoplayer2.ui.PlayerControlView;
 import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 
 import org.fourthline.cling.support.avtransport.lastchange.AVTransportVariable;
@@ -60,6 +61,7 @@ public class PlayerActivity extends AppCompatActivity implements ExoRenderContro
     private static final String TAG = "PlayerActivity";
 
     private KeyHandler keyHandler;
+    private OSDHelper osdHelper;
 
     private final ServiceConnection connection = new ServiceConnection() {
         @Override
@@ -96,10 +98,12 @@ public class PlayerActivity extends AppCompatActivity implements ExoRenderContro
             SafeZoneHelper.observe(safeZone, true, true, insets -> {
                 LogUtil.i(TAG, "SafeZone in pixels " + insets);
                 ViewGroup.MarginLayoutParams lp = (ViewGroup.MarginLayoutParams) safeZone.getLayoutParams();
+                ViewGroup.MarginLayoutParams lpOsd = (ViewGroup.MarginLayoutParams) binding.frOsdSafeZone.getLayoutParams();
                 int horizontal = Math.max(Math.max(insets.left, insets.right), Math.max(lp.leftMargin, lp.rightMargin));
                 int top = Math.max(lp.topMargin, insets.top);
                 int bottom = Math.max(lp.bottomMargin, insets.bottom);
                 lp.setMargins(horizontal, top, horizontal, bottom);
+                lpOsd.setMargins(horizontal, top, horizontal, bottom);
             });
         }
         exoPlayer = new SimpleExoPlayer.Builder(this)
@@ -109,9 +113,13 @@ public class PlayerActivity extends AppCompatActivity implements ExoRenderContro
                         .setContentType(C.CONTENT_TYPE_MOVIE).build(), true)
                 .build();
         binding.exoPlayerView.setPlayer(exoPlayer);
+        View viewMask = binding.exoPlayerView.findViewById(R.id.v_gradient_mask);
+        binding.exoPlayerView.setControllerVisibilityListener(viewMask::setVisibility);
         binding.setHandler(new Handler());
         retriever = new MediaInfoRetriever(exoPlayer);
         keyHandler = new KeyHandler(exoPlayer, this::notifyTransportStateChanged);
+        osdHelper = new OSDHelper(binding.frOsdSafeZone);
+        keyHandler.attachOsd(osdHelper);
         connectToService();
         onNewIntent(getIntent());
     }

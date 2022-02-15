@@ -24,4 +24,5 @@
     <string name="close">Close</string>
     <string name="track">Track </string>
     <string name="unknown">Unknown</string>
+    <string name="xspeed_skip">x Skipping</string>
 </resources>

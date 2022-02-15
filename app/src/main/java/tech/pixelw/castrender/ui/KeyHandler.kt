@@ -13,8 +13,10 @@ class KeyHandler constructor(private val player: ExoPlayer, private val callback
     private val TAG = "KeyHandler"
     private val handler: Handler = Handler(Looper.getMainLooper())
 
-    private val longPressable = intArrayOf(KeyEvent.KEYCODE_ENTER, KeyEvent.KEYCODE_DPAD_CENTER,
-            KeyEvent.KEYCODE_NUMPAD_ENTER, KeyEvent.KEYCODE_DPAD_LEFT, KeyEvent.KEYCODE_DPAD_RIGHT)
+    private val longPressable = intArrayOf(
+        KeyEvent.KEYCODE_ENTER, KeyEvent.KEYCODE_DPAD_CENTER,
+        KeyEvent.KEYCODE_NUMPAD_ENTER, KeyEvent.KEYCODE_DPAD_LEFT, KeyEvent.KEYCODE_DPAD_RIGHT
+    )
     private val notLongPressable = intArrayOf(KeyEvent.KEYCODE_MEDIA_PLAY_PAUSE)
 
     private var originalSpeed = player.playbackParameters.speed
@@ -24,17 +26,18 @@ class KeyHandler constructor(private val player: ExoPlayer, private val callback
         override fun run() {
             if (isFastRewind) {
                 player.seekBack()
-                handler.postDelayed(this, 300)
             } else {
                 if (isUsingRealFFWD) {
                     player.setPlaybackSpeed(8.0f)
                 } else {
                     player.seekForward()
-                    handler.postDelayed(this, 300)
                 }
             }
+            osdHelper.setSeekOsd(true, player.currentPosition, player.duration)
+            handler.postDelayed(this, 300)
         }
     }
+    private lateinit var osdHelper: OSDHelper
 
     private fun handleClick(keyCode: Int, event: KeyEvent): Boolean {
         LogUtil.d(TAG, "click$keyCode")
@@ -65,6 +68,7 @@ class KeyHandler constructor(private val player: ExoPlayer, private val callback
                 if (player.isPlaying) {
                     originalSpeed = player.playbackParameters.speed
                     player.setPlaybackSpeed(2.0f)
+                    osdHelper.setQuickFastForwardOsd(true, 2.0f)
                 }
             KeyEvent.KEYCODE_DPAD_LEFT -> {
                 isFastRewind = true
@@ -83,15 +87,19 @@ class KeyHandler constructor(private val player: ExoPlayer, private val callback
             KeyEvent.KEYCODE_ENTER, KeyEvent.KEYCODE_DPAD_CENTER,
             KeyEvent.KEYCODE_NUMPAD_ENTER -> {
                 player.setPlaybackSpeed(originalSpeed)
+                osdHelper.setQuickFastForwardOsd(false)
             }
             KeyEvent.KEYCODE_DPAD_LEFT -> handler.removeCallbacks(fastJumpThread)
-            KeyEvent.KEYCODE_DPAD_RIGHT -> if (isUsingRealFFWD) {
+            KeyEvent.KEYCODE_DPAD_RIGHT -> {
                 player.setPlaybackSpeed(originalSpeed)
-            } else {
                 handler.removeCallbacks(fastJumpThread)
             }
         }
         return true
+    }
+
+    fun attachOsd(osdHelper: OSDHelper) {
+        this.osdHelper = osdHelper
     }
 
     fun onKeyDown(keyCode: Int, event: KeyEvent): Boolean {

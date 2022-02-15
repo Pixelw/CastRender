@@ -2,7 +2,7 @@
     <!-- Base application theme. -->
     <style name="Theme.CastRender" parent="Theme.MaterialComponents.NoActionBar">
         <!-- Primary brand color. -->
-        <item name="colorPrimary">@color/primaryColor</item>
+        <item name="colorPrimary">#3949AB</item>
         <item name="colorPrimaryVariant">@color/primaryDarkColor</item>
         <item name="colorOnPrimary">@color/primaryTextColor</item>
         <!-- Secondary brand color. -->
@@ -20,7 +20,10 @@
     </style>
     <style name="OSDStyle">
         <item name="android:background">@drawable/item_onscreen_bg</item>
-        <item name="android:padding">8dp</item>
         <item name="android:textColor">?attr/colorOnPrimary</item>
+    </style>
+
+    <style name="SliderSmallPadding" parent="Widget.MaterialComponents.Slider">
+        <item name="android:padding">0dp</item>
     </style>
 </resources>

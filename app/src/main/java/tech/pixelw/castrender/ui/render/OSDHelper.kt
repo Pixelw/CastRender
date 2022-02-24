@@ -1,4 +1,4 @@
-package tech.pixelw.castrender.ui
+package tech.pixelw.castrender.ui.render
 
 import android.annotation.SuppressLint
 import android.os.Handler

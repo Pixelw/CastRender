@@ -21,6 +21,9 @@
         android:theme="@style/Theme.CastRender"
         tools:targetApi="n">
         <activity
+            android:name=".ui.browser.MediaBrowserActivity"
+            android:exported="false" />
+        <activity
             android:name=".ui.SettingsActivity"
             android:exported="false"
             android:label="@string/title_activity_settings" />
@@ -30,9 +33,9 @@
             android:enabled="true" />
 
         <activity
-            android:name=".ui.PlayerActivity"
-            android:screenOrientation="sensorLandscape"
-            android:exported="true" />
+            android:name=".ui.render.PlayerActivity"
+            android:exported="true"
+            android:screenOrientation="sensorLandscape" />
         <activity
             android:name=".ui.MainActivity"
             android:exported="true">

@@ -11,14 +11,14 @@
 
         <variable
             name="handler"
-            type="tech.pixelw.castrender.ui.PlayerActivity.Handler" />
+            type="tech.pixelw.castrender.ui.render.PlayerActivity.Handler" />
     </data>
 
     <FrameLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:background="@android:color/black"
-        tools:context=".ui.PlayerActivity"
+        tools:context=".ui.render.PlayerActivity"
         android:animateLayoutChanges="true">
 
         <com.google.android.exoplayer2.ui.PlayerView

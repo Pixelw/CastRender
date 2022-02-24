@@ -1,4 +1,4 @@
-package tech.pixelw.castrender.ui
+package tech.pixelw.castrender.ui.render
 
 import android.os.Handler
 import android.os.Looper

@@ -30,6 +30,7 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             android:gravity="center"
+            android:onClick="@{handler::mediaBrowserOpen}"
             android:layout_marginBottom="16dp"
             android:text="@string/make_sure_to_disable_the_mobile_data"/>
 

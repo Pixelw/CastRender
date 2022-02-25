@@ -6,6 +6,6 @@ import org.fourthline.cling.support.model.DIDLContent
 
 interface ContentDirectoryCallback {
     fun setContent(didl: DIDLContent?)
-    fun updateState(status: Browse.Status?)
-    fun failure(operation: UpnpResponse?, defaultMsg: String?)
+    fun updateState(status: Browse.Status?){}
+    fun failure(operation: UpnpResponse?, defaultMsg: String?){}
 }

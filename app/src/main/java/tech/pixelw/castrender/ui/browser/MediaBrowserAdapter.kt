@@ -2,6 +2,7 @@ package tech.pixelw.castrender.ui.browser
 
 import android.content.Context
 import android.view.LayoutInflater
+import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
@@ -10,6 +11,8 @@ import tech.pixelw.castrender.ui.browser.entity.BrowserItem
 
 class MediaBrowserAdapter(val context: Context) :
     ListAdapter<BrowserItem, MediaViewHolder>(diffUtil) {
+
+    var itemClickHandler: MediaBrowserActivity.ItemHandler? = null
 
     override fun getItemViewType(position: Int) = getItem(position).type
 
@@ -21,6 +24,7 @@ class MediaBrowserAdapter(val context: Context) :
     override fun onBindViewHolder(holder: MediaViewHolder, position: Int) {
         val item = getItem(position)
         holder.bind(item)
+        itemClickHandler?.let { holder.binding.clickListener = it }
     }
 
     companion object {

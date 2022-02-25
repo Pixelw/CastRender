@@ -17,6 +17,7 @@ import tech.pixelw.dmp_core.entity.ContentDirectoryCallback
 import tech.pixelw.dmp_core.entity.IUpnpDevice
 import tech.pixelw.dmp_core.service.SimpleRegListener
 import tech.pixelw.dmp_core.service.RegistryListener
+import kotlin.math.log
 
 open class DLNAPlayerService : AndroidUpnpServiceImpl() {
 
@@ -41,6 +42,7 @@ open class DLNAPlayerService : AndroidUpnpServiceImpl() {
 
     inner class BrowserServiceBinder : android.os.Binder() {
         fun search() {
+            Log.w(TAG, "search: ")
             upnpService.controlPoint.search()
         }
 
@@ -53,6 +55,7 @@ open class DLNAPlayerService : AndroidUpnpServiceImpl() {
         }
 
         fun browse(iUpnpDevice: IUpnpDevice, directoryID: String, callback: ContentDirectoryCallback) {
+            Log.w(TAG, "browse: ")
             val service = iUpnpDevice.mDevice().findService(UDAServiceType("ContentDirectory"))
             val browse = object : Browse(service, directoryID, BrowseFlag.DIRECT_CHILDREN) {
                 override fun failure(

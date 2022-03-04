@@ -134,11 +134,11 @@ class MediaBrowserActivity : AppCompatActivity() {
     }
 
     override fun onKeyDown(keyCode: Int, event: KeyEvent?): Boolean {
-        if (keyCode == KeyEvent.KEYCODE_BACK &&  vm.idStack.isNotEmpty()){
+        if (keyCode == KeyEvent.KEYCODE_BACK && vm.idStack.isNotEmpty()) {
             goBack()
             return true
         }
-        return false
+        return super.onKeyDown(keyCode, event)
     }
 
 }

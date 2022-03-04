@@ -1,4 +1,4 @@
-package tech.pixelw.dmp_core.service
+package tech.pixelw.dmc_core
 
 import android.util.Log
 import org.fourthline.cling.model.meta.Device
@@ -6,11 +6,8 @@ import org.fourthline.cling.model.meta.LocalDevice
 import org.fourthline.cling.model.meta.RemoteDevice
 import org.fourthline.cling.registry.DefaultRegistryListener
 import org.fourthline.cling.registry.Registry
-import tech.pixelw.dmp_core.entity.CDevice
 
-class RegistryListener(private val iRegistryListener: DirectoryRegListener) :
-    DefaultRegistryListener() {
-
+class RegistryListener(private val controllerRegListener: ControllerRegListener): DefaultRegistryListener() {
     override fun remoteDeviceAdded(registry: Registry?, device: RemoteDevice?) {
         Log.i(TAG, "remoteDeviceAdded: " + device?.displayString)
         mDeviceAdded(registry, device)
@@ -34,28 +31,27 @@ class RegistryListener(private val iRegistryListener: DirectoryRegListener) :
         mDeviceAdded(registry, device)
         super.localDeviceRemoved(registry, device)
     }
-
     fun mDeviceAdded(registry: Registry?, device: Device<*, *, *>?) {
         filter(device)?.let {
-            iRegistryListener.deviceAdded(it)
+            controllerRegListener.deviceAdded(it)
         }
     }
 
     fun mDeviceRemoved(registry: Registry?, device: Device<*, *, *>?) {
         device?.let {
-            iRegistryListener.deviceRemoved(CDevice(it))
+            controllerRegListener.deviceRemoved(CDevice(it))
         }
     }
 
     fun filter(device: Device<*, *, *>?): CDevice? {
         return device?.let {
             val cDevice = CDevice(it)
-            if (cDevice.asService(CONTENT)) cDevice else null
+            if (cDevice.asService(RENDER)) cDevice else null
         }
     }
 
-    companion object {
-        const val TAG = "RegistryListener"
-        const val CONTENT = "ContentDirectory"
+    companion object{
+        private const val TAG = "RegistryListener"
+        const val RENDER = "ContentDirectory"
     }
 }

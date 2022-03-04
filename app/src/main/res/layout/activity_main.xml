@@ -14,25 +14,36 @@
         android:layout_height="match_parent"
         tools:context=".ui.MainActivity">
 
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Hello World!"
-            android:onClick="@{handler::openOnClick}"
+        <com.google.android.material.card.MaterialCardView
+            android:layout_width="120dp"
+            android:layout_height="80dp"
             app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintLeft_toLeftOf="parent"
-            app:layout_constraintRight_toRightOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
+            android:onClick="@{handler::mediaBrowserOpen}"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" >
+            <TextView
+                android:layout_width="wrap_content"
+                android:drawableTop="@drawable/ic_baseline_perm_media_24"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:text="Media Browser"
+                android:focusable="false"
+                android:clickable="false"
+                android:src="@drawable/ic_baseline_perm_media_24"/>
+        </com.google.android.material.card.MaterialCardView>
+
         <TextView
+            android:id="@+id/textView"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            android:gravity="center"
-            android:onClick="@{handler::mediaBrowserOpen}"
             android:layout_marginBottom="16dp"
-            android:text="@string/make_sure_to_disable_the_mobile_data"/>
+            android:gravity="center"
+            android:onClick="@{handler::openOnClick}"
+            android:text="@string/make_sure_to_disable_the_mobile_data"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>

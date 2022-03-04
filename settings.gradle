@@ -14,3 +14,4 @@ rootProject.name = "CastRender"
 include ':app'
 include ':dmr-core'
 include ':dmp-core'
+include ':dmc-core'

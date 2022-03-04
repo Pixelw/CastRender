@@ -13,8 +13,8 @@ import tech.pixelw.dmr_core.IDLNARenderControl;
  * @date 2022/1/19
  */
 public class RenderControlManager {
-    private AVTransportController avControl;
-    private AudioRenderController audioControl;
+    private final AVTransportController avControl;
+    private final AudioRenderController audioControl;
 
     private final UnsignedIntegerFourBytes[] nullIds = new UnsignedIntegerFourBytes[0];
     private final UnsignedIntegerFourBytes[] hasIds = new UnsignedIntegerFourBytes[]{new UnsignedIntegerFourBytes(0)};
@@ -38,11 +38,7 @@ public class RenderControlManager {
     }
 
     public UnsignedIntegerFourBytes[] getAvTransportCurrentInstanceIds() {
-        if (avControl == null) {
-            return nullIds;
-        } else {
-            return hasIds;
-        }
+        return hasIds;
     }
 
     @Nullable
@@ -51,10 +47,6 @@ public class RenderControlManager {
     }
 
     public UnsignedIntegerFourBytes[] getAudioControlCurrentInstanceIds() {
-        if (audioControl == null) {
-            return nullIds;
-        } else {
-            return hasIds;
-        }
+        return hasIds;
     }
 }

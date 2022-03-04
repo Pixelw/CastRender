@@ -15,9 +15,8 @@ import org.fourthline.cling.support.model.DIDLContent
 import org.seamless.util.logging.LoggingUtil
 import tech.pixelw.dmp_core.entity.ContentDirectoryCallback
 import tech.pixelw.dmp_core.entity.IUpnpDevice
-import tech.pixelw.dmp_core.service.SimpleRegListener
+import tech.pixelw.dmp_core.service.DirectoryRegListener
 import tech.pixelw.dmp_core.service.RegistryListener
-import kotlin.math.log
 
 open class DLNAPlayerService : AndroidUpnpServiceImpl() {
 
@@ -46,11 +45,11 @@ open class DLNAPlayerService : AndroidUpnpServiceImpl() {
             upnpService.controlPoint.search()
         }
 
-        fun addListener(iRegistryListener: SimpleRegListener) {
+        fun addListener(iRegistryListener: DirectoryRegListener) {
             upnpService.registry.addListener(RegistryListener(iRegistryListener))
         }
 
-        fun removeListener(iRegistryListener: SimpleRegListener) {
+        fun removeListener(iRegistryListener: DirectoryRegListener) {
             upnpService.registry.removeListener(RegistryListener(iRegistryListener))
         }
 

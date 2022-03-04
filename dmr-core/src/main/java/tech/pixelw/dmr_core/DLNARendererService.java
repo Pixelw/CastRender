@@ -77,10 +77,9 @@ public class DLNARendererService extends AndroidUpnpServiceImpl {
     public void onCreate() {
         org.seamless.util.logging.LoggingUtil.resetRootHandler(new FixedAndroidLogHandler());
         super.onCreate();
-        String ipAddress = Utils.getWifiIpAddress(getApplicationContext());
         try {
             mRenderControlManager = new RenderControlManager(getApplicationContext());
-            mRendererDevice = createRendererDevice(getApplicationContext(), ipAddress);
+            mRendererDevice = createRendererDevice(getApplicationContext());
             upnpService.getRegistry().addDevice(mRendererDevice);
         } catch (Exception e) {
             e.printStackTrace();
@@ -129,12 +128,14 @@ public class DLNARendererService extends AndroidUpnpServiceImpl {
     public final static String TYPE_MEDIA_PLAYER = "MediaRenderer";
     private final static int VERSION = 1;
 
-    protected LocalDevice createRendererDevice(Context context, String ipAddress) throws ValidationException, IOException {
-        DeviceIdentity deviceIdentity = new DeviceIdentity(createUniqueSystemIdentifier(ID_SALT, ipAddress));
+    protected LocalDevice createRendererDevice(Context context) throws ValidationException, IOException {
+        DeviceIdentity deviceIdentity = new DeviceIdentity(
+                createUniqueSystemIdentifier(ID_SALT, Utils.getWifiIpAddress(context)));
         UDADeviceType deviceType = new UDADeviceType(TYPE_MEDIA_PLAYER, VERSION);
         DeviceDetails details = new DeviceDetails(String.format("DMR  (%s)", android.os.Build.MODEL),
                 new ManufacturerDetails(android.os.Build.MANUFACTURER),
-                new ModelDetails(android.os.Build.MODEL, DMS_DESC, "v1", String.format("http://%s:%s", ipAddress, "8191")));
+                new ModelDetails(android.os.Build.MODEL, DMS_DESC, "v1",
+                        "https://github.com/Pixelw/CastRender"));
         Icon[] icons = null;
         BitmapDrawable drawable = ((BitmapDrawable) ContextCompat.getDrawable(context, R.drawable.tv));
         if (drawable != null) {
@@ -149,10 +150,11 @@ public class DLNARendererService extends AndroidUpnpServiceImpl {
 
     @SuppressWarnings("unchecked")
     protected LocalService<?>[] generateLocalServices(final Context context) {
-
         // connection
-        LocalService<ConnectionManagerServiceImpl> connectionManagerService = new AnnotationLocalServiceBinder().read(ConnectionManagerServiceImpl.class);
-        connectionManagerService.setManager(new DefaultServiceManager<ConnectionManagerServiceImpl>(connectionManagerService, ConnectionManagerServiceImpl.class) {
+        LocalService<ConnectionManagerServiceImpl> connectionManagerService
+                = new AnnotationLocalServiceBinder().read(ConnectionManagerServiceImpl.class);
+        connectionManagerService.setManager(new DefaultServiceManager<ConnectionManagerServiceImpl>(
+                connectionManagerService, ConnectionManagerServiceImpl.class) {
             @Override
             protected ConnectionManagerServiceImpl createServiceInstance() {
                 return new ConnectionManagerServiceImpl(context);
@@ -161,8 +163,10 @@ public class DLNARendererService extends AndroidUpnpServiceImpl {
 
         // av transport service
         mAvTransportLastChange = new LastChange(new AVTransportLastChangeParser());
-        LocalService<AVTransportServiceImpl> avTransportService = new AnnotationLocalServiceBinder().read(AVTransportServiceImpl.class);
-        avTransportService.setManager(new LastChangeAwareServiceManager<AVTransportServiceImpl>(avTransportService, new AVTransportLastChangeParser()) {
+        LocalService<AVTransportServiceImpl> avTransportService =
+                new AnnotationLocalServiceBinder().read(AVTransportServiceImpl.class);
+        avTransportService.setManager(new LastChangeAwareServiceManager<AVTransportServiceImpl>
+                (avTransportService, new AVTransportLastChangeParser()) {
             @Override
             protected AVTransportServiceImpl createServiceInstance() {
                 return new AVTransportServiceImpl(mAvTransportLastChange, mRenderControlManager);
@@ -171,8 +175,10 @@ public class DLNARendererService extends AndroidUpnpServiceImpl {
 
         // render service
         mAudioControlLastChange = new LastChange(new RenderingControlLastChangeParser());
-        LocalService<AudioRenderServiceImpl> renderingControlService = new AnnotationLocalServiceBinder().read(AudioRenderServiceImpl.class);
-        renderingControlService.setManager(new LastChangeAwareServiceManager<AudioRenderServiceImpl>(renderingControlService, new RenderingControlLastChangeParser()) {
+        LocalService<AudioRenderServiceImpl> renderingControlService =
+                new AnnotationLocalServiceBinder().read(AudioRenderServiceImpl.class);
+        renderingControlService.setManager(new LastChangeAwareServiceManager<AudioRenderServiceImpl>(
+                renderingControlService, new RenderingControlLastChangeParser()) {
             @Override
             protected AudioRenderServiceImpl createServiceInstance() {
                 return new AudioRenderServiceImpl(mAudioControlLastChange, mRenderControlManager);
@@ -223,7 +229,7 @@ public class DLNARendererService extends AndroidUpnpServiceImpl {
             return getAudioControlLastChange();
         }
 
-        public UnsignedIntegerFourBytes getInstanceId(){
+        public UnsignedIntegerFourBytes getInstanceId() {
             return new UnsignedIntegerFourBytes(0);
         }
     }

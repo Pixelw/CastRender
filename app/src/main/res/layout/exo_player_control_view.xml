@@ -93,6 +93,7 @@
             android:textAppearance="?attr/textAppearanceHeadline5"
             android:textStyle="bold"
             android:visibility="invisible"
+            tools:visibility="visible"
             app:layout_constraintBottom_toTopOf="@id/v_slider_placeholder"
             app:layout_constraintStart_toStartOf="@id/v_slider_placeholder" />
 

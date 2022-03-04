@@ -10,11 +10,11 @@ import org.fourthline.cling.support.model.item.Item
 import tech.pixelw.castrender.ui.browser.entity.BrowserItem
 import tech.pixelw.dmp_core.entity.ContentDirectoryCallback
 import tech.pixelw.dmp_core.entity.IUpnpDevice
-import tech.pixelw.dmp_core.service.SimpleRegListener
+import tech.pixelw.dmp_core.service.DirectoryRegListener
 import java.util.*
 import kotlin.collections.ArrayList
 
-class BrowserViewModel : ViewModel(), SimpleRegListener, ContentDirectoryCallback {
+class BrowserViewModel : ViewModel(), DirectoryRegListener, ContentDirectoryCallback {
     // 两个元数据
     private val deviceLiveData: MutableLiveData<MutableList<IUpnpDevice>> by lazy {
         MutableLiveData<MutableList<IUpnpDevice>>(ArrayList())

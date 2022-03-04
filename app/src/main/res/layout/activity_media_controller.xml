@@ -1,0 +1,130 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <data>
+
+        <variable
+            name="vm"
+            type="tech.pixelw.castrender.ui.controller.ControllerViewModel" />
+        <variable
+            name="handler"
+            type="tech.pixelw.castrender.ui.controller.ControllerActivity.ControlHandler" />
+    </data>
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        tools:context=".ui.controller.ControllerActivity">
+
+        <com.google.android.material.textfield.TextInputLayout
+            style="@style/Widget.MaterialComponents.TextInputLayout.FilledBox.ExposedDropdownMenu"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_horizontal"
+            android:layout_margin="32dp"
+            app:errorEnabled="true"
+            app:helperText="Select Device"
+            app:helperTextEnabled="true"
+            app:layout_constraintTop_toTopOf="parent">
+
+            <AutoCompleteTextView
+                android:id="@+id/outlined_exposed_dropdown"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:inputType="none" />
+        </com.google.android.material.textfield.TextInputLayout>
+
+
+        <FrameLayout
+            android:id="@+id/fr_dpad"
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            android:layout_marginHorizontal="80dp"
+            android:background="@drawable/bg_dpad_circle"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintDimensionRatio="1:1"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHeight_min="150dp"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintWidth_max="400dp"
+            app:layout_constraintWidth_min="150dp">
+
+            <androidx.appcompat.widget.AppCompatImageButton
+                style="@style/BorderlessImageButtonStyle"
+                android:layout_width="@dimen/controller_button_size"
+                android:layout_height="@dimen/controller_button_size"
+                android:layout_gravity="center"
+                android:onClick="@{handler::playPause}"
+                android:src="@drawable/exo_controls_play" />
+
+            <androidx.appcompat.widget.AppCompatImageButton
+                style="@style/BorderlessImageButtonStyle"
+                android:layout_width="@dimen/controller_button_size"
+                android:layout_height="@dimen/controller_button_size"
+                android:layout_gravity="center_vertical|start"
+                android:onClick="@{handler::prev}"
+                android:src="@drawable/exo_controls_previous" />
+
+            <androidx.appcompat.widget.AppCompatImageButton
+                style="@style/BorderlessImageButtonStyle"
+                android:layout_width="@dimen/controller_button_size"
+                android:layout_height="@dimen/controller_button_size"
+                android:layout_gravity="center_vertical|end"
+                android:onClick="@{handler::next}"
+                android:src="@drawable/exo_controls_next" />
+
+            <androidx.appcompat.widget.AppCompatImageButton
+                style="@style/BorderlessImageButtonStyle"
+                android:layout_width="@dimen/controller_button_size"
+                android:layout_height="@dimen/controller_button_size"
+                android:layout_gravity="center_horizontal"
+                android:onClick="@{handler::volumeUp}"
+                android:src="@drawable/ic_baseline_volume_up_24" />
+
+            <androidx.appcompat.widget.AppCompatImageButton
+                style="@style/BorderlessImageButtonStyle"
+                android:layout_width="@dimen/controller_button_size"
+                android:layout_height="@dimen/controller_button_size"
+                android:layout_gravity="bottom|center_horizontal"
+                android:onClick="@{handler::volumeDown}"
+                android:src="@drawable/ic_baseline_volume_down_24" />
+        </FrameLayout>
+
+        <com.google.android.material.slider.Slider
+            android:id="@+id/slider_controller"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginHorizontal="16dp"
+            android:layout_marginTop="32dp"
+            app:haloRadius="4dp"
+            app:layout_constraintTop_toBottomOf="@id/fr_dpad"
+            app:thumbRadius="0dp"
+            app:tint="?colorSecondary"
+            app:trackColorActive="?colorSecondaryVariant"
+            app:trackColorInactive="?colorSecondary" />
+
+        <TextView
+            android:id="@+id/tv_play_position"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="16dp"
+            android:textAppearance="?attr/textAppearanceCaption"
+            app:layout_constraintBottom_toBottomOf="@id/slider_controller"
+            app:layout_constraintStart_toStartOf="@id/slider_controller"
+            tools:text="01:44" />
+
+        <TextView
+            android:id="@+id/tv_play_duration"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="16dp"
+            android:textAppearance="?attr/textAppearanceCaption"
+            app:layout_constraintBottom_toBottomOf="@id/slider_controller"
+            app:layout_constraintEnd_toEndOf="@id/slider_controller"
+            tools:text="01:44" />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</layout>

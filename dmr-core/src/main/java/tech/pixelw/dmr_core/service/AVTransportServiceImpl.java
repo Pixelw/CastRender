@@ -14,11 +14,8 @@ import org.fourthline.cling.support.model.TransportInfo;
 import org.fourthline.cling.support.model.TransportSettings;
 
 public class AVTransportServiceImpl extends AbstractAVTransportService {
-
-
     private final RenderControlManager mIRenderControlManager;
     private static final String TAG = "AVTransportServiceImpl";
-    // TODO: 2022/1/22 trace calling
 
     public AVTransportServiceImpl(LastChange lastChange, RenderControlManager IRenderControlManager) {
         super(lastChange);
@@ -36,27 +33,27 @@ public class AVTransportServiceImpl extends AbstractAVTransportService {
         Log.d(TAG, "getCurrentTransportActions: ");
         return mIRenderControlManager.getAvTransportControl(instanceId).getCurrentTransportActions();
     }
-
+    @Override
     public DeviceCapabilities getDeviceCapabilities(UnsignedIntegerFourBytes instanceId) {
         Log.d(TAG, "getDeviceCapabilities: ");
         return mIRenderControlManager.getAvTransportControl(instanceId).getDeviceCapabilities();
     }
-
+    @Override
     public MediaInfo getMediaInfo(UnsignedIntegerFourBytes instanceId) {
         Log.d(TAG, "getMediaInfo: ");
         return mIRenderControlManager.getAvTransportControl(instanceId).getMediaInfo();
     }
-
+    @Override
     public PositionInfo getPositionInfo(UnsignedIntegerFourBytes instanceId) {
         Log.d(TAG, "getPositionInfo: ");
         return mIRenderControlManager.getAvTransportControl(instanceId).getPositionInfo();
     }
-
+    @Override
     public TransportInfo getTransportInfo(UnsignedIntegerFourBytes instanceId) {
         Log.d(TAG, "getTransportInfo: ");
         return mIRenderControlManager.getAvTransportControl(instanceId).getTransportInfo();
     }
-
+    @Override
     public TransportSettings getTransportSettings(UnsignedIntegerFourBytes instanceId) {
         Log.d(TAG, "getTransportSettings: ");
         return mIRenderControlManager.getAvTransportControl(instanceId).getTransportSettings();
@@ -67,25 +64,21 @@ public class AVTransportServiceImpl extends AbstractAVTransportService {
         Log.d(TAG, "next: ");
         mIRenderControlManager.getAvTransportControl(instanceId).next();
     }
-
     @Override
     public void pause(UnsignedIntegerFourBytes instanceId) throws AVTransportException {
         Log.d(TAG, "pause: ");
         mIRenderControlManager.getAvTransportControl(instanceId).pause();
     }
-
     @Override
     public void play(UnsignedIntegerFourBytes instanceId, String arg1) throws AVTransportException {
         Log.d(TAG, "play: ");
         mIRenderControlManager.getAvTransportControl(instanceId).play(arg1);
     }
-
     @Override
     public void previous(UnsignedIntegerFourBytes instanceId) {
         Log.d(TAG, "previous: ");
         mIRenderControlManager.getAvTransportControl(instanceId).previous();
     }
-
     @Override
     public void record(UnsignedIntegerFourBytes instanceId) {
         Log.d(TAG, "record: ");

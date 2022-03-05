@@ -45,5 +45,16 @@
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent" />
 
+        <androidx.appcompat.widget.AppCompatImageButton
+            android:layout_width="50dp"
+            style="@style/BorderlessImageButtonStyle"
+            android:src="@drawable/ic_baseline_settings_remote_24"
+            android:layout_height="50dp"
+            android:onClick="@{handler::controllerOpen}"
+            android:layout_marginBottom="32dp"
+            app:layout_constraintBottom_toTopOf="@+id/textView"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent" />
+
     </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>

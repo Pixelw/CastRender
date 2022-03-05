@@ -17,6 +17,7 @@
         tools:targetApi="n">
         <activity
             android:name=".ui.controller.ControllerActivity"
+            android:screenOrientation="portrait"
             android:exported="false" />
         <activity
             android:name=".ui.browser.MediaBrowserActivity"

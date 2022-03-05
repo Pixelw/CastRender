@@ -17,7 +17,7 @@ class MediaBrowserAdapter(val context: Context) :
     override fun getItemViewType(position: Int) = getItem(position).type
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): MediaViewHolder {
-        val binding = ItemMediaBrowserBinding.inflate(LayoutInflater.from(context))
+        val binding = ItemMediaBrowserBinding.inflate(LayoutInflater.from(context), parent, false)
         return MediaViewHolder(binding)
     }
 

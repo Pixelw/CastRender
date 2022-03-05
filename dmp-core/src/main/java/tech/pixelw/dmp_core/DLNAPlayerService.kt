@@ -49,10 +49,6 @@ open class DLNAPlayerService : AndroidUpnpServiceImpl() {
             upnpService.registry.addListener(RegistryListener(iRegistryListener))
         }
 
-        fun removeListener(iRegistryListener: DirectoryRegListener) {
-            upnpService.registry.removeListener(RegistryListener(iRegistryListener))
-        }
-
         fun browse(iUpnpDevice: IUpnpDevice, directoryID: String, callback: ContentDirectoryCallback) {
             Log.w(TAG, "browse: ")
             val service = iUpnpDevice.mDevice().findService(UDAServiceType("ContentDirectory"))

@@ -111,6 +111,7 @@ class MediaBrowserActivity : AppCompatActivity() {
                 it.browse(vm.currentDevice!!, id, vm)
             } else {
                 vm.vmGoBackDevice()
+                vm.idStack.clear()
                 it.search()
             }
         }

@@ -15,6 +15,7 @@ import tech.pixelw.castrender.R;
 import tech.pixelw.castrender.databinding.ActivityMainBinding;
 import tech.pixelw.castrender.receiver.NetworkReceiver;
 import tech.pixelw.castrender.ui.browser.MediaBrowserActivity;
+import tech.pixelw.castrender.ui.controller.ControllerActivity;
 import tech.pixelw.castrender.ui.render.PlayerActivity;
 import tech.pixelw.dmr_core.DLNARendererService;
 import tech.pixelw.dmr_core.service.DefaultRenderControl;
@@ -69,8 +70,13 @@ public class MainActivity extends AppCompatActivity
             MainActivity.this.startActivity(new Intent(
                     MainActivity.this, PlayerActivity.class));
         }
-        public void mediaBrowserOpen(View v){
+
+        public void mediaBrowserOpen(View v) {
             MainActivity.this.startActivity(new Intent(MainActivity.this, MediaBrowserActivity.class));
+        }
+
+        public void controllerOpen(View v) {
+            MainActivity.this.startActivity(new Intent(MainActivity.this, ControllerActivity.class));
         }
     }
 

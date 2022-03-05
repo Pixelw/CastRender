@@ -34,15 +34,9 @@ class DLNAControllerService : AndroidUpnpServiceImpl() {
         fun addListener(iRegistryListener: ControllerRegListener) {
             upnpService.registry.addListener(RegistryListener(iRegistryListener))
         }
-
-        fun removeListener(iRegistryListener: ControllerRegListener) {
-            upnpService.registry.removeListener(RegistryListener(iRegistryListener))
-        }
-
         fun control(action: ActionCallback) {
             upnpService.controlPoint.execute(action)
         }
-
     }
 
     companion object {

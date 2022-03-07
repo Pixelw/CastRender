@@ -35,8 +35,9 @@ public class MainActivity extends AppCompatActivity
         binding = DataBindingUtil.setContentView(this, R.layout.activity_main);
         binding.setHandler(new Handler());
         // setup receivers
-        networkReceiver = new NetworkReceiver(this);
-        registerReceiver(networkReceiver, networkReceiver.intentFilter);
+//        networkReceiver = new NetworkReceiver(this);
+//        registerReceiver(networkReceiver, networkReceiver.intentFilter);
+        startBackgroundService(true);
     }
 
     private void startBackgroundService(boolean visible) {
@@ -58,7 +59,7 @@ public class MainActivity extends AppCompatActivity
 
     @Override
     public void onNetworkChanged(NetworkInfo networkInfo) {
-        if (networkInfo.getType() == ConnectivityManager.TYPE_WIFI) {
+        if (networkInfo.getType() == ConnectivityManager.TYPE_WIFI || networkInfo.getType() == ConnectivityManager.TYPE_ETHERNET) {
             startBackgroundService(true);
         } else {
             stopBackgroundService();

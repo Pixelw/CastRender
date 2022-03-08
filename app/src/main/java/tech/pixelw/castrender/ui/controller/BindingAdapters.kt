@@ -4,9 +4,10 @@ import android.annotation.SuppressLint
 import androidx.databinding.BindingAdapter
 import com.google.android.material.slider.Slider
 
-class BindingAdapters {
+object BindingAdapters {
     @BindingAdapter("sliderCustomListener")
     @SuppressLint("RestrictedApi")
+    @JvmStatic
     fun setOnValueChangedListener(
         slider: Slider,
         onSlideChangedListener: OnSlideChangedListener
@@ -32,10 +33,9 @@ class BindingAdapters {
         slider.addOnSliderTouchListener(slideCusListener)
     }
 
+    const val USER_START_DRAGGING = -1.11f
+
     interface OnSlideChangedListener {
         fun onChanged(v: Float)
-    }
-    companion object{
-        const val USER_START_DRAGGING = -1.11f
     }
 }

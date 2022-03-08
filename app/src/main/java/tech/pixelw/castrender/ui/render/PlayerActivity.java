@@ -28,6 +28,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.google.android.exoplayer2.C;
 import com.google.android.exoplayer2.MediaItem;
+import com.google.android.exoplayer2.Player;
 import com.google.android.exoplayer2.SimpleExoPlayer;
 import com.google.android.exoplayer2.audio.AudioAttributes;
 import com.google.android.material.dialog.MaterialAlertDialogBuilder;
@@ -107,6 +108,12 @@ public class PlayerActivity extends AppCompatActivity implements ExoRenderContro
                         .setContentType(C.CONTENT_TYPE_MOVIE).build(), true)
                 .build();
         binding.exoPlayerView.setPlayer(exoPlayer);
+        exoPlayer.addListener(new Player.Listener() {
+            @Override
+            public void onIsPlayingChanged(boolean isPlaying) {
+                binding.exoPlayerView.setKeepScreenOn(isPlaying);
+            }
+        });
         View viewMask = binding.exoPlayerView.findViewById(R.id.v_gradient_mask);
         binding.exoPlayerView.setControllerVisibilityListener(viewMask::setVisibility);
         binding.setHandler(new Handler());

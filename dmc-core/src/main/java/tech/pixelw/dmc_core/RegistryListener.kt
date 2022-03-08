@@ -52,6 +52,8 @@ class RegistryListener(private val controllerRegListener: ControllerRegListener)
 
     companion object{
         private const val TAG = "RegistryListener"
-        const val RENDER = "ContentDirectory"
+        const val RENDER = "RenderingControl"
+        const val CONN_MAN = "ConnectionManager"
+        const val AV_TRANS = "AVTransport"
     }
 }

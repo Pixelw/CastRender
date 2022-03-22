@@ -16,7 +16,7 @@
  * You should have received a copy of the GNU General Public License
  * along with DroidUPNP.  If not, see <http:></http:>//www.gnu.org/licenses/>.
  */
-package tech.pixelw.dmc_core
+package tech.pixelw.cling_common.entity
 
 import org.fourthline.cling.model.meta.Device
 

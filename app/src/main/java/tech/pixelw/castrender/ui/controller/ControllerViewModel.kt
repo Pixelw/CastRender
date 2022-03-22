@@ -24,8 +24,8 @@ import org.fourthline.cling.support.model.PositionInfo
 import org.fourthline.cling.support.model.TransportInfo
 import org.fourthline.cling.support.renderingcontrol.callback.GetVolume
 import tech.pixelw.castrender.utils.LogUtil
+import tech.pixelw.cling_common.entity.IUpnpDevice
 import tech.pixelw.dmc_core.ControllerRegListener
-import tech.pixelw.dmc_core.IUpnpDevice
 import tech.pixelw.dmc_core.RegistryListener
 import kotlin.math.max
 import kotlin.math.min

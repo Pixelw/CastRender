@@ -13,8 +13,7 @@ import org.fourthline.cling.support.contentdirectory.callback.Browse
 import org.fourthline.cling.support.model.BrowseFlag
 import org.fourthline.cling.support.model.DIDLContent
 import org.seamless.util.logging.LoggingUtil
-import tech.pixelw.dmp_core.entity.ContentDirectoryCallback
-import tech.pixelw.dmp_core.entity.IUpnpDevice
+import tech.pixelw.cling_common.entity.IUpnpDevice
 import tech.pixelw.dmp_core.service.DirectoryRegListener
 import tech.pixelw.dmp_core.service.RegistryListener
 

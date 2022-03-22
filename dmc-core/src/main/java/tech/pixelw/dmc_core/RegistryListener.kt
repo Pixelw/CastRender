@@ -6,6 +6,7 @@ import org.fourthline.cling.model.meta.LocalDevice
 import org.fourthline.cling.model.meta.RemoteDevice
 import org.fourthline.cling.registry.DefaultRegistryListener
 import org.fourthline.cling.registry.Registry
+import tech.pixelw.cling_common.entity.CDevice
 
 class RegistryListener(private val controllerRegListener: ControllerRegListener): DefaultRegistryListener() {
     override fun remoteDeviceAdded(registry: Registry?, device: RemoteDevice?) {

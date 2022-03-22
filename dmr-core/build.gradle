@@ -8,15 +8,10 @@ android {
     defaultConfig {
         minSdk 14
         targetSdk 30
-        versionCode 1
-        versionName "1.0"
+
+        consumerProguardFiles 'dmr-core-proguard-rules.pro'
     }
 
-    buildTypes {
-        release {
-            consumerProguardFiles 'dmr-core-proguard-rules.pro'
-        }
-    }
     compileOptions {
         sourceCompatibility JavaVersion.VERSION_1_6
         targetCompatibility JavaVersion.VERSION_1_6
@@ -26,15 +21,6 @@ android {
 dependencies {
     //noinspection GradleDependency
     implementation 'androidx.core:core:1.5.0'
-    //noinspection GradleDependency
-    api 'org.fourthline.cling:cling-core:2.1.2-SNAPSHOT'
-    //noinspection GradleDependency
-    api 'org.fourthline.cling:cling-support:2.1.2-SNAPSHOT'
-//    api 'com.github.devin1014.DLNA-Cast:dlna-dmc:V1.0.0'
-    //noinspection GradleDependency
-    api 'org.eclipse.jetty:jetty-server:8.1.21.v20160908'
-    //noinspection GradleDependency
-    api 'org.eclipse.jetty:jetty-servlet:8.1.21.v20160908'
-    //noinspection GradleDependency
-    api 'org.eclipse.jetty:jetty-client:8.1.21.v20160908'
+
+    api project(":cling-common")
 }

@@ -16,12 +16,11 @@
  * You should have received a copy of the GNU General Public License
  * along with DroidUPNP.  If not, see <http:></http:>//www.gnu.org/licenses/>.
  */
-package tech.pixelw.dmc_core
+package tech.pixelw.cling_common.entity
 
 import android.util.Log
 import org.fourthline.cling.model.meta.Device
 import org.fourthline.cling.model.types.UDAServiceType
-import java.lang.Exception
 
 data class CDevice(var device: Device<*, *, *>) : IUpnpDevice {
     override fun mDevice(): Device<*, *, *> {

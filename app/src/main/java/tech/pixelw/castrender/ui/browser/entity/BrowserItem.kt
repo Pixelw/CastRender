@@ -6,7 +6,7 @@ import android.graphics.drawable.Drawable
 import org.fourthline.cling.support.model.container.Container
 import org.fourthline.cling.support.model.item.Item
 import tech.pixelw.castrender.CastRenderApp
-import tech.pixelw.dmp_core.entity.IUpnpDevice
+import tech.pixelw.cling_common.entity.IUpnpDevice
 
 data class BrowserItem(
     val type: Int,

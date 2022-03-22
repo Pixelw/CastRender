@@ -1,17 +1,10 @@
 package tech.pixelw.dmr_core;
 
-import android.app.Notification;
-import android.app.NotificationChannel;
-import android.app.NotificationManager;
 import android.content.Context;
 import android.net.wifi.WifiInfo;
 import android.net.wifi.WifiManager;
-import android.os.Build;
 import android.text.TextUtils;
 import android.text.format.Formatter;
-
-import androidx.core.app.NotificationCompat;
-import androidx.core.app.NotificationManagerCompat;
 
 /**
  * @author Carl Su "Pixelw"
@@ -19,7 +12,7 @@ import androidx.core.app.NotificationManagerCompat;
  */
 public class Utils {
 
-    public static String getWifiIpAddress(Context context){
+    public static String getWifiIpAddress(Context context) {
         WifiManager wifiMgr = (WifiManager) context.getApplicationContext().getSystemService(Context.WIFI_SERVICE);
         WifiInfo wifiInfo = wifiMgr.getConnectionInfo();
         int ip = wifiInfo.getIpAddress();
@@ -46,19 +39,5 @@ public class Utils {
         }
 
         return 0;
-    }
-
-    public static Notification createNotification(Context context, String text){
-        NotificationManagerCompat managerCompat = NotificationManagerCompat.from(context);
-        NotificationCompat.Builder builder = new NotificationCompat.Builder(context, DLNARendererService.NOTIFICHANNEL_ID)
-                .setSmallIcon(R.drawable.tv)
-                .setContentTitle(text)
-                .setTicker(text);
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O){
-            NotificationChannel channel = new NotificationChannel(DLNARendererService.NOTIFICHANNEL_ID, text, NotificationManager.IMPORTANCE_MIN);
-            managerCompat.createNotificationChannel(channel);
-            builder.setChannelId(DLNARendererService.NOTIFICHANNEL_ID);
-        }
-        return builder.build();
     }
 }

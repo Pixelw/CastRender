@@ -6,7 +6,7 @@ import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.drawable.BitmapDrawable;
 import android.os.IBinder;
-import android.text.TextUtils;
+import android.os.Parcelable;
 
 import androidx.core.content.ContextCompat;
 
@@ -45,16 +45,15 @@ import tech.pixelw.dmr_core.service.ConnectionManagerServiceImpl;
 import tech.pixelw.dmr_core.service.RenderControlManager;
 
 /**
- *
+ * DMR
  */
 public class DLNARendererService extends AndroidUpnpServiceImpl {
 
-    public static final String NOTIFICHANNEL_ID = "DMR_DLNA";
-    public static final int NOTIFIID = 211206;
+    public static final String KEY_DEVICE_SETTINGS = "dmr.service.device.settings";
+    public static final String KEY_NOTIFICATION = "dmr.service.notification";
+    public static final int NOTIFIID = 220322;
 
-    public static void startService(Context context) {
-        context.getApplicationContext().startService(new Intent(context, DLNARendererService.class));
-    }
+    private boolean serviceRunning = false;
 
     private RenderControlManager mRenderControlManager;
 
@@ -62,6 +61,13 @@ public class DLNARendererService extends AndroidUpnpServiceImpl {
     private LastChange mAudioControlLastChange;
     private final RendererServiceBinder mBinder = new RendererServiceBinder();
     private LocalDevice mRendererDevice;
+
+    public static void startService(Context context, DeviceSettings deviceSettings, Notification notification) {
+        Intent intent = new Intent(context, DLNARendererService.class);
+        intent.putExtra(KEY_DEVICE_SETTINGS, deviceSettings);
+        intent.putExtra(KEY_NOTIFICATION, notification);
+        context.startService(intent);
+    }
 
     @Override
     protected UpnpServiceConfiguration createConfiguration() {
@@ -77,21 +83,27 @@ public class DLNARendererService extends AndroidUpnpServiceImpl {
     public void onCreate() {
         org.seamless.util.logging.LoggingUtil.resetRootHandler(new FixedAndroidLogHandler());
         super.onCreate();
-        try {
-            mRenderControlManager = new RenderControlManager(getApplicationContext());
-            mRendererDevice = createRendererDevice(getApplicationContext());
-            upnpService.getRegistry().addDevice(mRendererDevice);
-        } catch (Exception e) {
-            e.printStackTrace();
-            stopSelf();
-        }
     }
 
     @Override
     public int onStartCommand(Intent intent, int flags, int startId) {
-        if (intent != null && !TextUtils.isEmpty(intent.getStringExtra(NOTIFICHANNEL_ID))) {
-            Notification notification = Utils.createNotification(getApplicationContext(), intent.getStringExtra(NOTIFICHANNEL_ID));
-            startForeground(NOTIFIID, notification);
+        if (intent != null && !serviceRunning) {
+            DeviceSettings deviceSettings = intent.getExtras().getParcelable(KEY_DEVICE_SETTINGS);
+            if (deviceSettings != null) {
+                try {
+                    mRenderControlManager = new RenderControlManager(getApplicationContext());
+                    mRendererDevice = createRendererDevice(deviceSettings);
+                    upnpService.getRegistry().addDevice(mRendererDevice);
+                    serviceRunning = true;
+                } catch (Exception e) {
+                    e.printStackTrace();
+                    stopSelf();
+                }
+            }
+            Parcelable parcelable = intent.getExtras().getParcelable(KEY_NOTIFICATION);
+            if (parcelable instanceof Notification) {
+                startForeground(NOTIFIID, (Notification) parcelable);
+            }
         }
         return super.onStartCommand(intent, flags, startId);
     }
@@ -119,25 +131,19 @@ public class DLNARendererService extends AndroidUpnpServiceImpl {
     }
 
 
-    // -------------------------------------------------------------------------------------------
-    // - MediaPlayer Device
-    // -------------------------------------------------------------------------------------------
     // TODO: 2022/1/25 custom model desc outside
-    private static final String DMS_DESC = "MPI MediaPlayer";
-    private static final String ID_SALT = "MediaPlayer";
-    public final static String TYPE_MEDIA_PLAYER = "MediaRenderer";
-    private final static int VERSION = 1;
+    private static final String ID_SALT = "CastRender by Pixelw";
 
-    protected LocalDevice createRendererDevice(Context context) throws ValidationException, IOException {
+    protected LocalDevice createRendererDevice(DeviceSettings deviceSettings) throws ValidationException, IOException {
         DeviceIdentity deviceIdentity = new DeviceIdentity(
-                createUniqueSystemIdentifier(ID_SALT, Utils.getWifiIpAddress(context)));
-        UDADeviceType deviceType = new UDADeviceType(TYPE_MEDIA_PLAYER, VERSION);
-        DeviceDetails details = new DeviceDetails(String.format("DMR  (%s)", android.os.Build.MODEL),
+                createUniqueSystemIdentifier(ID_SALT, Utils.getWifiIpAddress(this)));
+        UDADeviceType deviceType = new UDADeviceType("MediaRenderer", deviceSettings.versionCode);
+        DeviceDetails details = new DeviceDetails(deviceSettings.name,
                 new ManufacturerDetails(android.os.Build.MANUFACTURER),
-                new ModelDetails(android.os.Build.MODEL, DMS_DESC, "v1",
-                        "https://github.com/Pixelw/CastRender"));
+                new ModelDetails(android.os.Build.MODEL, deviceSettings.description,
+                        "v" + deviceSettings.versionCode, deviceSettings.modelUrl));
         Icon[] icons = null;
-        BitmapDrawable drawable = ((BitmapDrawable) ContextCompat.getDrawable(context, R.drawable.tv));
+        BitmapDrawable drawable = ((BitmapDrawable) ContextCompat.getDrawable(this, R.drawable.tv));
         if (drawable != null) {
             Bitmap bitmap = drawable.getBitmap();
             ByteArrayOutputStream stream = new ByteArrayOutputStream();
@@ -145,7 +151,7 @@ public class DLNARendererService extends AndroidUpnpServiceImpl {
             ByteArrayInputStream byteArrayInputStream = new ByteArrayInputStream(stream.toByteArray());
             icons = new Icon[]{new Icon("image/png", 48, 48, 8, "icon.png", byteArrayInputStream)};
         }
-        return new LocalDevice(deviceIdentity, deviceType, details, icons, generateLocalServices(context));
+        return new LocalDevice(deviceIdentity, deviceType, details, icons, generateLocalServices(this));
     }
 
     @SuppressWarnings("unchecked")

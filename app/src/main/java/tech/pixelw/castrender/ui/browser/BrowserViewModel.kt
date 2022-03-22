@@ -8,11 +8,10 @@ import org.fourthline.cling.support.model.DIDLObject
 import org.fourthline.cling.support.model.container.Container
 import org.fourthline.cling.support.model.item.Item
 import tech.pixelw.castrender.ui.browser.entity.BrowserItem
-import tech.pixelw.dmp_core.entity.ContentDirectoryCallback
-import tech.pixelw.dmp_core.entity.IUpnpDevice
+import tech.pixelw.cling_common.entity.IUpnpDevice
+import tech.pixelw.dmp_core.ContentDirectoryCallback
 import tech.pixelw.dmp_core.service.DirectoryRegListener
 import java.util.*
-import kotlin.collections.ArrayList
 
 class BrowserViewModel : ViewModel(), DirectoryRegListener, ContentDirectoryCallback {
     // 两个元数据

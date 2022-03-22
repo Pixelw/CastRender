@@ -4,13 +4,13 @@ import android.content.ComponentName
 import android.content.Context
 import android.content.Intent
 import android.content.ServiceConnection
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.os.IBinder
 import android.view.KeyEvent
 import android.view.Menu
 import android.view.MenuInflater
 import android.view.MenuItem
+import androidx.appcompat.app.AppCompatActivity
 import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -20,8 +20,8 @@ import tech.pixelw.castrender.R
 import tech.pixelw.castrender.databinding.ActivityMediaBrowserBinding
 import tech.pixelw.castrender.ui.browser.entity.BrowserItem
 import tech.pixelw.castrender.ui.render.PlayerActivity
+import tech.pixelw.cling_common.entity.IUpnpDevice
 import tech.pixelw.dmp_core.DLNAPlayerService
-import tech.pixelw.dmp_core.entity.IUpnpDevice
 
 class MediaBrowserActivity : AppCompatActivity() {
 

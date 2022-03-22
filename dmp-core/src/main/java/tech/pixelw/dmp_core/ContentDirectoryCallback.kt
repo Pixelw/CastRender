@@ -1,4 +1,4 @@
-package tech.pixelw.dmp_core.entity
+package tech.pixelw.dmp_core
 
 import org.fourthline.cling.model.message.UpnpResponse
 import org.fourthline.cling.support.contentdirectory.callback.Browse

@@ -1,7 +1,5 @@
 package tech.pixelw.castrender.utils
 
-import android.text.format.Formatter
-import java.lang.StringBuilder
 import java.util.*
 
 class TimeUtil {

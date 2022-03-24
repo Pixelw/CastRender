@@ -1,11 +1,6 @@
 package tech.pixelw.castrender.ui.controller
 
-import android.content.ComponentName
-import android.content.Context
-import android.content.Intent
-import android.content.ServiceConnection
 import android.os.Bundle
-import android.os.IBinder
 import android.view.HapticFeedbackConstants
 import android.view.View
 import android.widget.AdapterView
@@ -23,6 +18,7 @@ import org.fourthline.cling.support.avtransport.callback.Play
 import org.fourthline.cling.support.avtransport.callback.Previous
 import org.fourthline.cling.support.model.TransportState
 import org.fourthline.cling.support.renderingcontrol.callback.SetVolume
+import tech.pixelw.castrender.CastRenderApp
 import tech.pixelw.castrender.R
 import tech.pixelw.castrender.databinding.ActivityMediaControllerBinding
 import tech.pixelw.castrender.utils.LogUtil
@@ -32,21 +28,8 @@ class ControllerActivity : AppCompatActivity() {
 
     private lateinit var binding: ActivityMediaControllerBinding
     private lateinit var vm: ControllerViewModel
-    private var service: DLNAControllerService.ControllerServiceBinder? = null
+    private var service: DLNAControllerService = DLNAControllerService()
     private lateinit var arrayAdapter: ArrayAdapter<CharSequence>
-
-
-    private val connection = object : ServiceConnection {
-        override fun onServiceConnected(name: ComponentName?, iBinder: IBinder?) {
-            service = iBinder as DLNAControllerService.ControllerServiceBinder
-            service!!.addListener(vm)
-            service!!.search()
-        }
-
-        override fun onServiceDisconnected(name: ComponentName?) {
-            service = null
-        }
-    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -62,7 +45,8 @@ class ControllerActivity : AppCompatActivity() {
             }
         binding.vm = vm
         binding.handler = ControlHandler()
-        startControllerService()
+        service.pendingListener = vm
+        service.start(CastRenderApp.getAppContext())
     }
 
     private fun observeVm() {
@@ -75,21 +59,14 @@ class ControllerActivity : AppCompatActivity() {
             binding.outlinedExposedDropdown.setAdapter(arrayAdapter)
         }
         vm.getVmCalled().observe(this) {
-            service?.control(it)
+            service.control(it)
         }
     }
 
-    private fun startControllerService() {
-        bindService(
-            Intent(this, DLNAControllerService::class.java),
-            connection,
-            Context.BIND_AUTO_CREATE
-        )
-    }
 
     override fun onDestroy() {
         super.onDestroy()
-        unbindService(connection)
+        service
     }
     
     inner class ControlHandler {
@@ -115,7 +92,7 @@ class ControllerActivity : AppCompatActivity() {
                     }
 
                 }
-                service?.control(action)
+                service.control(action)
             }
         }
 
@@ -129,7 +106,7 @@ class ControllerActivity : AppCompatActivity() {
                         defaultMsg: String?
                     ) = LogUtil.e(TAG, defaultMsg)
                 }
-                service?.control(act)
+                service.control(act)
             }
         }
 
@@ -143,7 +120,7 @@ class ControllerActivity : AppCompatActivity() {
                         defaultMsg: String?
                     ) = LogUtil.e(TAG, defaultMsg)
                 }
-                service?.control(act)
+                service.control(act)
             }
         }
 
@@ -158,7 +135,7 @@ class ControllerActivity : AppCompatActivity() {
                         defaultMsg: String?
                     ) = LogUtil.e(TAG, defaultMsg)
                 }
-                service?.control(act)
+                service.control(act)
             }
         }
 
@@ -173,7 +150,7 @@ class ControllerActivity : AppCompatActivity() {
                         defaultMsg: String?
                     ) = LogUtil.e(TAG, defaultMsg)
                 }
-                service?.control(act)
+                service.control(act)
             }
         }
 

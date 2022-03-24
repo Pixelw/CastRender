@@ -8,6 +8,7 @@ import android.os.Build
 import androidx.core.app.NotificationCompat
 import androidx.core.app.NotificationManagerCompat
 import tech.pixelw.castrender.BuildConfig
+import tech.pixelw.castrender.CastRenderApp
 import tech.pixelw.dmr_core.DLNARendererService
 import tech.pixelw.dmr_core.DeviceSettings
 import tech.pixelw.dmr_core.R
@@ -17,8 +18,7 @@ import tech.pixelw.dmr_core.service.IDLNANewSession
 object RenderManager {
     const val CHANNEL_ID = "cast_render_channel"
 
-    @JvmStatic
-    fun startService(context: Context) {
+    val renderService: DLNARendererService by lazy {
         val deviceSettings = DeviceSettings(
             "CastRender (${Build.MODEL})",
             "CastRender by Pixelw",
@@ -30,16 +30,17 @@ object RenderManager {
         DefaultRenderControl.idlnaNewSession = IDLNANewSession { context1: Context?, url: String? ->
             PlayerActivity.newPlayerInstance(context1, url)
         }
-        DLNARendererService.startService(
-            context,
+        val dlnaRendererService = DLNARendererService(
             deviceSettings,
             createNotification(
-                context,
+                CastRenderApp.getAppContext(),
                 "CastRender is Running Background.",
                 CHANNEL_ID,
                 "CastRender Background Service",
             )
         )
+        dlnaRendererService.start(CastRenderApp.getAppContext())
+        dlnaRendererService
     }
 
     @JvmStatic

@@ -1,12 +1,8 @@
 package tech.pixelw.castrender.ui.render;
 
-import android.app.Service;
-import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
-import android.content.ServiceConnection;
 import android.os.Bundle;
-import android.os.IBinder;
 import android.text.TextUtils;
 import android.view.KeyEvent;
 import android.view.Menu;
@@ -52,24 +48,12 @@ public class PlayerActivity extends AppCompatActivity implements ExoRenderContro
     public static final String EXTRA_KEY_URL = "EXTRA_KEY_MEDIA_URL";
     private ActivityPlayer2Binding binding;
     private SimpleExoPlayer exoPlayer;
-    private DLNARendererService.RendererServiceBinder binder;
+    private DLNARendererService binder;
     private static final String TAG = "PlayerActivity";
 
     private KeyHandler keyHandler;
     private OSDHelper osdHelper;
 
-    private final ServiceConnection connection = new ServiceConnection() {
-        @Override
-        public void onServiceConnected(ComponentName name, IBinder service) {
-            binder = (DLNARendererService.RendererServiceBinder) service;
-            binder.registerController(new ExoRenderControlImpl(exoPlayer, PlayerActivity.this));
-        }
-
-        @Override
-        public void onServiceDisconnected(ComponentName name) {
-            binder = null;
-        }
-    };
     private WindowInsetsControllerCompat controllerCompat;
     private ViewGroup safeZone;
     private MediaInfoRetriever retriever;
@@ -121,15 +105,11 @@ public class PlayerActivity extends AppCompatActivity implements ExoRenderContro
         keyHandler = new KeyHandler(exoPlayer, this::notifyTransportStateChanged);
         osdHelper = new OSDHelper(binding.frOsdSafeZone);
         keyHandler.attachOsd(osdHelper);
-        connectToService();
+        binder = RenderManager.INSTANCE.getRenderService();
+        binder.registerController(new ExoRenderControlImpl(exoPlayer, this));
         onNewIntent(getIntent());
     }
 
-    private void connectToService() {
-        Intent intent = new Intent(this, DLNARendererService.class);
-        intent.putExtra("foreground", true);
-        bindService(intent, connection, Service.BIND_AUTO_CREATE);
-    }
 
     @Override
     protected void onNewIntent(Intent intent) {
@@ -244,7 +224,6 @@ public class PlayerActivity extends AppCompatActivity implements ExoRenderContro
         notifyTransportStateChanged(TransportState.STOPPED);
         exoPlayer.release();
         binder.unregisterController();
-        unbindService(connection);
     }
 
     @Override

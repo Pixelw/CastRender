@@ -1,12 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="tech.pixelw.dmp_core">
+<manifest package="tech.pixelw.dmp_core">
 
-    <application>
-        <service
-            android:name=".DLNAPlayerService"
-            android:enabled="true"
-            android:exported="true" />
-    </application>
 
 </manifest>

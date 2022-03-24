@@ -6,7 +6,6 @@ import android.os.Looper
 import android.view.View
 import android.widget.LinearLayout
 import android.widget.TextView
-import com.google.android.exoplayer2.ui.PlayerView
 import com.google.android.material.progressindicator.LinearProgressIndicator
 import tech.pixelw.castrender.R
 import tech.pixelw.castrender.utils.TimeUtil

@@ -22,7 +22,7 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         tech.pixelw.castrender.databinding.ActivityMainBinding binding = DataBindingUtil.setContentView(this, R.layout.activity_main);
         binding.setHandler(new Handler());
-        RenderManager.startService(this);
+        RenderManager.INSTANCE.getRenderService().hello();
     }
 
     public final class Handler {

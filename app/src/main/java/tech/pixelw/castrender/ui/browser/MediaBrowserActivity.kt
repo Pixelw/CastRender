@@ -1,11 +1,6 @@
 package tech.pixelw.castrender.ui.browser
 
-import android.content.ComponentName
-import android.content.Context
-import android.content.Intent
-import android.content.ServiceConnection
 import android.os.Bundle
-import android.os.IBinder
 import android.view.KeyEvent
 import android.view.Menu
 import android.view.MenuInflater
@@ -16,6 +11,7 @@ import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
 import org.fourthline.cling.support.model.DIDLObject
 import org.fourthline.cling.support.model.item.Item
+import tech.pixelw.castrender.CastRenderApp
 import tech.pixelw.castrender.R
 import tech.pixelw.castrender.databinding.ActivityMediaBrowserBinding
 import tech.pixelw.castrender.ui.browser.entity.BrowserItem
@@ -27,21 +23,9 @@ class MediaBrowserActivity : AppCompatActivity() {
 
     private lateinit var binding: ActivityMediaBrowserBinding
     private lateinit var vm: BrowserViewModel
-    private var service: DLNAPlayerService.BrowserServiceBinder? = null
+    private val service: DLNAPlayerService = DLNAPlayerService()
 
     private lateinit var adapter: MediaBrowserAdapter
-
-    private val connection = object : ServiceConnection {
-        override fun onServiceConnected(name: ComponentName?, iBinder: IBinder?) {
-            service = iBinder as DLNAPlayerService.BrowserServiceBinder
-            service!!.addListener(vm)
-            service!!.search()
-        }
-
-        override fun onServiceDisconnected(name: ComponentName?) {
-            service = null
-        }
-    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -54,16 +38,10 @@ class MediaBrowserActivity : AppCompatActivity() {
         adapter.itemClickHandler = ItemHandler()
         binding.rvBrowser.adapter = adapter
         observeVm()
-        startBrowseService()
+        service.pendingListener = vm
+        service.start(CastRenderApp.getAppContext())
     }
 
-    private fun startBrowseService() {
-        bindService(
-            Intent(this, DLNAPlayerService::class.java),
-            connection,
-            Context.BIND_AUTO_CREATE
-        )
-    }
 
     override fun onCreateOptionsMenu(menu: Menu?): Boolean {
         MenuInflater(this).inflate(R.menu.menu_browser, menu)
@@ -72,7 +50,7 @@ class MediaBrowserActivity : AppCompatActivity() {
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         when (item.itemId) {
-            R.id.menu_refresh -> service?.search()
+            R.id.menu_refresh -> service.search()
         }
         return true
     }
@@ -89,7 +67,7 @@ class MediaBrowserActivity : AppCompatActivity() {
 
     override fun onDestroy() {
         super.onDestroy()
-        unbindService(connection)
+        service.stop(CastRenderApp.getAppContext())
     }
 
     inner class ItemHandler {
@@ -104,7 +82,7 @@ class MediaBrowserActivity : AppCompatActivity() {
     }
 
     fun goBack() {
-        service?.let {
+        service.let {
             if (!vm.idStack.isEmpty() && vm.idStack[0] != "0") {
                 vm.idStack.pop()
                 val id = vm.idStack[0]
@@ -119,12 +97,12 @@ class MediaBrowserActivity : AppCompatActivity() {
 
     fun goIntoDevice(item: BrowserItem) {
         vm.vmGoIntoDevice(item)
-        service?.browse(item.obj as IUpnpDevice, "0", vm)
+        service.browse(item.obj as IUpnpDevice, "0", vm)
     }
 
     fun goIntoFolder(item: BrowserItem) {
         if (vm.currentDevice != null && item.obj is DIDLObject) {
-            service?.browse(vm.currentDevice!!, (item.obj as DIDLObject).id, vm)
+            service.browse(vm.currentDevice!!, (item.obj as DIDLObject).id, vm)
         }
     }
 

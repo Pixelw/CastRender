@@ -8,7 +8,8 @@ import tech.pixelw.castrender.ui.render.RenderManager
 class BootReceiver : BroadcastReceiver() {
     override fun onReceive(context: Context?, intent: Intent?) {
         if (context != null && intent?.action?.equals(Intent.ACTION_BOOT_COMPLETED) == true) {
-            RenderManager.startService(context)
+            val renderService = RenderManager.renderService
+            renderService.hello()
         }
     }
 }

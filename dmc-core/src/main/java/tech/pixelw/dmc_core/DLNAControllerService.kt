@@ -1,46 +1,53 @@
 package tech.pixelw.dmc_core
 
-import android.content.Intent
-import android.os.IBinder
+import android.content.Context
 import android.util.Log
-import org.fourthline.cling.android.AndroidUpnpServiceImpl
-import org.fourthline.cling.android.FixedAndroidLogHandler
 import org.fourthline.cling.controlpoint.ActionCallback
-import org.seamless.util.logging.LoggingUtil
+import org.fourthline.cling.controlpoint.ControlPoint
+import org.fourthline.cling.registry.Registry
+import tech.pixelw.cling_common.SharedUpnpService
+import tech.pixelw.cling_common.UpnpAttach
 
-class DLNAControllerService : AndroidUpnpServiceImpl() {
+class DLNAControllerService : UpnpAttach() {
 
-    private val mBinder = ControllerServiceBinder()
+    private var controlPoint: ControlPoint? = null
+    private var registry: Registry? = null
 
-    override fun onCreate() {
-        Log.i(TAG, "onCreate: ")
-        LoggingUtil.resetRootHandler(FixedAndroidLogHandler())
-        super.onCreate()
+    var pendingListener: ControllerRegListener? = null
+    private var registryListener: RegistryListener? = null
+
+    fun search() {
+        Log.w(TAG, "search: ")
+        controlPoint?.search()
     }
 
-    override fun onBind(intent: Intent?): IBinder = mBinder
-
-    override fun onDestroy() {
-        Log.w(TAG, "onDestroy: ")
-        super.onDestroy()
+    fun control(action: ActionCallback) {
+        controlPoint?.execute(action)
     }
 
-    inner class ControllerServiceBinder : android.os.Binder() {
-        fun search() {
-            Log.w(TAG, "search: ")
-            upnpService.controlPoint.search()
-        }
+    override fun stop(context: Context) {
+        registry?.removeListener(registryListener)
+        registry = null
+        controlPoint = null
+        super.stop(context)
+    }
 
-        fun addListener(iRegistryListener: ControllerRegListener) {
-            upnpService.registry.addListener(RegistryListener(iRegistryListener))
-        }
-        fun control(action: ActionCallback) {
-            upnpService.controlPoint.execute(action)
+    override fun onBinderAttached(binder: SharedUpnpService.SharedBinder) {
+        registry = binder.getRegistry()
+        controlPoint = binder.getControlPoint()
+        pendingListener?.let { listener ->
+            registryListener = RegistryListener(listener)
+            registry?.addListener(registryListener)
+            search()
+            registry?.let {
+                it.remoteDevices.forEach { device ->
+                    registryListener!!.remoteDeviceAdded(it, device)
+                }
+            }
         }
     }
 
     companion object {
         private const val TAG = "DLNAControllerService"
     }
-
 }

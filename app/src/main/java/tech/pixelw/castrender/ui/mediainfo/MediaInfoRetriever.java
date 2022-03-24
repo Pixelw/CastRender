@@ -2,7 +2,6 @@ package tech.pixelw.castrender.ui.mediainfo;
 
 import android.text.TextUtils;
 
-import com.google.android.exoplayer2.C;
 import com.google.android.exoplayer2.ExoPlayer;
 import com.google.android.exoplayer2.Format;
 import com.google.android.exoplayer2.Player;

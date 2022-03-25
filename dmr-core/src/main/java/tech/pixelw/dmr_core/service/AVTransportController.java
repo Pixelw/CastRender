@@ -22,6 +22,7 @@ import java.net.URI;
 
 import tech.pixelw.dmr_core.IDLNARenderControl;
 import tech.pixelw.dmr_core.Utils;
+
 /**
  * 实现传输到这里控制的各种行为
  */
@@ -110,10 +111,8 @@ public class AVTransportController implements IRendererInterface.IAVTransportCon
     public TransportInfo getTransportInfo() {
         if (mMediaControl.type() > 0) {
             mTransportInfo = new TransportInfo(mMediaControl.getTransportState(), "1");
-            return mTransportInfo;
-        } else {
-            return mTransportInfo;
         }
+        return mTransportInfo;
 
     }
 
@@ -129,9 +128,11 @@ public class AVTransportController implements IRendererInterface.IAVTransportCon
         } catch (Exception ex) {
             throw new AVTransportException(ErrorCode.INVALID_ARGS, "CurrentURI can not be null or malformed");
         }
-        Log.i(TAG, "got uri:" + currentURI);
+        Log.i(TAG, "got uri: " + currentURI);
+        Log.i(TAG, "got meta: " + currentURIMetaData);
         mMediaInfo = new MediaInfo(currentURI, currentURIMetaData, new UnsignedIntegerFourBytes(1), "00:00:00", StorageMedium.NETWORK);
         mOriginPositionInfo = new PositionInfo(1, currentURIMetaData, currentURI);
+        mMediaControl.setMediaInfo(currentURIMetaData);
         mMediaControl.prepare(currentURI);
     }
 

@@ -37,6 +37,7 @@ import org.fourthline.cling.support.renderingcontrol.lastchange.RenderingControl
 
 import tech.pixelw.castrender.R;
 import tech.pixelw.castrender.databinding.ActivityPlayer2Binding;
+import tech.pixelw.castrender.entity.MediaEntity;
 import tech.pixelw.castrender.ui.mediainfo.MediaInfoListAdapter;
 import tech.pixelw.castrender.ui.mediainfo.MediaInfoRetriever;
 import tech.pixelw.castrender.utils.LogUtil;
@@ -229,6 +230,11 @@ public class PlayerActivity extends AppCompatActivity implements ExoRenderContro
     @Override
     public void finishPlayer() {
         finish();
+    }
+
+    @Override
+    public void setMediaEntity(@NonNull MediaEntity mediaEntity) {
+        // TODO: 2022/3/25 setTitle
     }
 
     public final class Handler {

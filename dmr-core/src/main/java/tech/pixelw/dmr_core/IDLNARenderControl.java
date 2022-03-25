@@ -25,6 +25,8 @@ public interface IDLNARenderControl {
 
     TransportState getTransportState();
 
+    void setMediaInfo(String metadata);
+
     float getSpeed();
 }
 

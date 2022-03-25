@@ -17,6 +17,9 @@
         android:theme="@style/Theme.CastRender"
         tools:targetApi="n">
         <activity
+            android:name=".ui.render.MusicPlayerActivity"
+            android:exported="false" />
+        <activity
             android:name=".ui.controller.ControllerActivity"
             android:exported="false"
             android:screenOrientation="portrait" />
@@ -51,6 +54,7 @@
             android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.BOOT_COMPLETED" />
+
                 <category android:name="android.intent.category.DEFAULT" />
             </intent-filter>
         </receiver>

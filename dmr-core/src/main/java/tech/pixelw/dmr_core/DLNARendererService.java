@@ -94,7 +94,6 @@ public class DLNARendererService extends UpnpAttach {
     }
 
 
-    // TODO: 2022/1/25 custom model desc outside
     private static final String ID_SALT = "CastRender by Pixelw";
 
     protected LocalDevice createRendererDevice(DeviceSettings deviceSettings, Context context) throws ValidationException, IOException {

@@ -60,6 +60,10 @@ public class DefaultRenderControl implements IDLNARenderControl {
     }
 
     @Override
+    public void setMediaInfo(String metadata) {
+    }
+
+    @Override
     public float getSpeed() {
         return 1.0f;
     }

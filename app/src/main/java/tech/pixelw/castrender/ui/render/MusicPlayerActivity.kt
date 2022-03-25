@@ -1,13 +1,11 @@
 package tech.pixelw.castrender.ui.render
 
 import android.os.Bundle
-import android.util.JsonReader
 import androidx.appcompat.app.AppCompatActivity
 import androidx.databinding.DataBindingUtil
 import okhttp3.ResponseBody
 import org.json.JSONException
 import org.json.JSONObject
-import org.json.JSONStringer
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response

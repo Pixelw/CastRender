@@ -14,6 +14,7 @@ import tech.pixelw.castrender.R
 import tech.pixelw.castrender.api.NeteaseMusicService
 import tech.pixelw.castrender.databinding.ActivityMusicPlayerBinding
 import tech.pixelw.castrender.utils.LogUtil
+import tech.pixelw.castrender.utils.lrc.LrcParser
 
 class MusicPlayerActivity : AppCompatActivity() {
 
@@ -26,13 +27,21 @@ class MusicPlayerActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = DataBindingUtil.setContentView(this, R.layout.activity_music_player)
-        neteaseService.getLyrics("1501477656").enqueue(object : Callback<ResponseBody> {
+        neteaseService.getLyrics("1803908863").enqueue(object : Callback<ResponseBody> {
             override fun onResponse(call: Call<ResponseBody>, response: Response<ResponseBody>) {
                 if (response.isSuccessful && response.body() != null) {
                     try {
                         val jsonObject = JSONObject(response.body()!!.string())
-                        val string = jsonObject.getString("lyric")
-                        LogUtil.i(TAG, string)
+                        if (jsonObject.has("lrc")) {
+                            val string = jsonObject.getJSONObject("lrc").getString("lyric")
+                            if (jsonObject.has("tlyric")) {
+                                val trans = jsonObject.getJSONObject("tlyric").getString("lyric")
+                                LrcParser.parse(string, trans)
+                            } else {
+                                LrcParser.parse(string)
+                            }
+                        }
+
                     } catch (ex: JSONException) {
                         onFailure(call, ex)
                     }
@@ -40,6 +49,7 @@ class MusicPlayerActivity : AppCompatActivity() {
                     onFailure(call, RuntimeException("response invalid"))
                 }
             }
+
             override fun onFailure(call: Call<ResponseBody>, t: Throwable) {
                 LogUtil.e(TAG, t.localizedMessage)
             }

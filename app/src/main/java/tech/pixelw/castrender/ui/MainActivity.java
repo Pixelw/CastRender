@@ -10,9 +10,8 @@ import androidx.databinding.DataBindingUtil;
 import tech.pixelw.castrender.R;
 import tech.pixelw.castrender.ui.browser.MediaBrowserActivity;
 import tech.pixelw.castrender.ui.controller.ControllerActivity;
-import tech.pixelw.castrender.ui.render.MusicPlayerActivity;
-import tech.pixelw.castrender.ui.render.PlayerActivity;
 import tech.pixelw.castrender.ui.render.RenderManager;
+import tech.pixelw.castrender.ui.render.music.MusicPlayerActivity;
 
 public class MainActivity extends AppCompatActivity {
 

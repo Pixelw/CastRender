@@ -15,9 +15,9 @@ object LrcParser {
     private var lastTranIndex = 0
 
     @JvmStatic
-    fun parse(lrcString: String, transLrc: String? = null) {
+    fun parse(lrcString: String, transLrc: String? = null): List<LrcLine> {
         val lrcList = mutableListOf<LrcLine>()
-// TODO: remove idf
+        // TODO: remove 作词曲
         lrcString.lines().forEach { line ->
             val matcher = pattern.matcher(line)
             if (matcher.find()) {
@@ -33,6 +33,7 @@ object LrcParser {
             }
         }
         lastTranIndex = 0
+        return lrcList
     }
 
     private fun findTranslate(translate: String?, millis: Long): String? {

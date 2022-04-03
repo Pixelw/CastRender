@@ -63,12 +63,6 @@ class ControllerActivity : AppCompatActivity() {
         }
     }
 
-
-    override fun onDestroy() {
-        super.onDestroy()
-        service
-    }
-    
     inner class ControlHandler {
         fun playPause(view: View) {
             view.performHapticFeedback(HapticFeedbackConstants.VIRTUAL_KEY)

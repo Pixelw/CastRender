@@ -5,6 +5,9 @@
 
     <data>
 
+        <variable
+            name="vm"
+            type="tech.pixelw.castrender.ui.render.music.MusicViewModel" />
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout
@@ -23,6 +26,8 @@
             android:id="@+id/iv_album_art"
             android:layout_width="200dp"
             android:layout_height="200dp"
+            android:elevation="5dp"
+            app:imageSrc="@{vm.mediaEntity.mediaArtUrl}"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="@id/guideline2"
             app:layout_constraintStart_toStartOf="parent"
@@ -30,12 +35,13 @@
             tools:srcCompat="@tools:sample/avatars[11]" />
 
         <TextView
+            android:id="@+id/tv_track_name"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_marginTop="16dp"
+            android:layout_marginTop="8dp"
+            android:text="@{vm.mediaEntity.title.trim()}"
             android:textAppearance="@style/TextAppearance.AppCompat.Light.SearchResult.Subtitle"
             android:textStyle="bold"
-            android:id="@+id/tv_track_name"
             app:layout_constraintEnd_toEndOf="@+id/iv_album_art"
             app:layout_constraintStart_toStartOf="@id/iv_album_art"
             app:layout_constraintTop_toBottomOf="@id/iv_album_art"
@@ -44,6 +50,7 @@
         <TextView
             android:layout_width="0dp"
             android:layout_height="wrap_content"
+            android:text="@{vm.mediaEntity.artist.trim() + ` ` +vm.mediaEntity.album.trim()}"
             android:textAppearance="@style/TextAppearance.MaterialComponents.Body2"
             app:layout_constraintEnd_toEndOf="@id/iv_album_art"
             app:layout_constraintStart_toStartOf="@id/iv_album_art"
@@ -51,9 +58,9 @@
             tools:text="@tools:sample/first_names" />
 
         <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/rv_lyrics"
             android:layout_width="0dp"
             android:layout_height="0dp"
-            android:id="@+id/rv_lyrics"
             android:layout_marginHorizontal="32dp"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"

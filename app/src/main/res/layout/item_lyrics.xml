@@ -6,8 +6,8 @@
     <data>
 
         <variable
-            name="lrc"
-            type="tech.pixelw.castrender.utils.lrc.LrcParser.LrcLine" />
+            name="model"
+            type="tech.pixelw.castrender.ui.render.music.lrc.LyricsListModel" />
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout
@@ -19,6 +19,7 @@
             android:id="@+id/tv_top"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
+            android:text="@{model.upperLine()}"
             android:textAppearance="@style/TextAppearance.MaterialComponents.Subtitle2"
             app:layout_constraintEnd_toEndOf="@id/tv_lyrics"
             app:layout_constraintStart_toStartOf="@id/tv_lyrics"
@@ -29,7 +30,7 @@
             android:id="@+id/tv_lyrics"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:text="@{lrc.content}"
+            android:text="@{model.middleLine()}"
             android:textAppearance="@style/TextAppearance.MaterialComponents.Headline5"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
@@ -40,7 +41,7 @@
             android:id="@+id/tv_lyrics_trans"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:text="@{lrc.translate}"
+            android:text="@{model.bottomLine()}"
             android:textAppearance="@style/TextAppearance.MaterialComponents.Subtitle2"
             app:layout_constraintEnd_toEndOf="@id/tv_lyrics"
             app:layout_constraintStart_toStartOf="@id/tv_lyrics"

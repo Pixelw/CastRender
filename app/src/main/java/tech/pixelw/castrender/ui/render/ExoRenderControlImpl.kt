@@ -7,8 +7,8 @@ import com.google.android.exoplayer2.MediaItem
 import com.google.android.exoplayer2.PlaybackParameters
 import com.google.android.exoplayer2.Player
 import org.fourthline.cling.support.model.TransportState
-import tech.pixelw.castrender.entity.MediaEntity
 import tech.pixelw.castrender.utils.LogUtil
+import tech.pixelw.cling_common.entity.MediaEntity
 import tech.pixelw.dmr_core.IDLNARenderControl
 
 /**
@@ -22,7 +22,6 @@ class ExoRenderControlImpl(
     private val activityCallback: ActivityCallback
 ) : IDLNARenderControl {
 
-    private var upnpMediaInfo: String? = null
     private val handler = Handler(Looper.getMainLooper())
 
     @Volatile
@@ -43,18 +42,21 @@ class ExoRenderControlImpl(
         }
     }
 
-    override fun type(): Int {
-        return TYPE
-    }
+    override fun type() = TYPE
 
-    override fun prepare(uri: String) {
+    override fun prepare(uri: String, entity: MediaEntity) {
         handler.post {
+            activityCallback.setMediaEntity(entity)
             val mediaItem = MediaItem.fromUri(uri)
             player!!.setMediaItem(mediaItem)
             duration = 0
             position = duration
             player.prepare()
         }
+    }
+
+    override fun setRawMetadata(rawMetadata: String?) {
+        // ignored
     }
 
     override fun play() {
@@ -105,11 +107,6 @@ class ExoRenderControlImpl(
         return transportState
     }
 
-    override fun setMediaInfo(metadata: String) {
-        upnpMediaInfo = metadata
-        MediaEntity.parseFromDIDL(metadata)?.let { activityCallback.setMediaEntity(it) }
-    }
-
     override fun getSpeed(): Float {
         return speed
     }
@@ -126,8 +123,8 @@ class ExoRenderControlImpl(
     }
 
     init {
-        // call this first
         player!!.addListener(object : Player.Listener {
+            // call this first
             override fun onPlaybackStateChanged(playbackState: Int) {
                 when (playbackState) {
                     Player.STATE_IDLE -> transportState = TransportState.NO_MEDIA_PRESENT

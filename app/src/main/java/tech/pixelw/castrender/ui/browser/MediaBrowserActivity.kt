@@ -109,7 +109,7 @@ class MediaBrowserActivity : AppCompatActivity() {
     fun goIntoFile(item: BrowserItem) {
         val mediaItem = item.obj as Item
         val url = mediaItem.firstResource?.value
-        PlayerActivity.newPlayerInstance(this, url)
+        PlayerActivity.newPlayerInstance(this, url, null)
     }
 
     override fun onKeyDown(keyCode: Int, event: KeyEvent?): Boolean {

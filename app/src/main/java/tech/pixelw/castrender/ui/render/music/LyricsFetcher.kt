@@ -2,7 +2,7 @@ package tech.pixelw.castrender.ui.render.music
 
 import org.json.JSONObject
 import tech.pixelw.castrender.api.NeteaseMusicService
-import tech.pixelw.castrender.utils.lrc.LrcParser
+import tech.pixelw.castrender.ui.render.music.lrc.LrcParser
 
 
 object LyricsFetcher {
@@ -17,9 +17,9 @@ object LyricsFetcher {
             val lrc = jsonObject.getJSONObject("lrc").getString("lyric")
             if (jsonObject.has("tlyric")) {
                 val trans = jsonObject.getJSONObject("tlyric").getString("lyric")
-                LrcParser.parse(lrc, trans)
+                LrcParser.parse(lrc, trans, true)
             } else {
-                LrcParser.parse(lrc)
+                LrcParser.parse(lrc, dropAnnotation = true)
             }
         } else {
             null

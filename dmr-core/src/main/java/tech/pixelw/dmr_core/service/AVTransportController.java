@@ -20,6 +20,7 @@ import org.fourthline.cling.support.model.TransportSettings;
 
 import java.net.URI;
 
+import tech.pixelw.cling_common.entity.MediaEntity;
 import tech.pixelw.dmr_core.IDLNARenderControl;
 import tech.pixelw.dmr_core.Utils;
 
@@ -132,8 +133,8 @@ public class AVTransportController implements IRendererInterface.IAVTransportCon
         Log.i(TAG, "got meta: " + currentURIMetaData);
         mMediaInfo = new MediaInfo(currentURI, currentURIMetaData, new UnsignedIntegerFourBytes(1), "00:00:00", StorageMedium.NETWORK);
         mOriginPositionInfo = new PositionInfo(1, currentURIMetaData, currentURI);
-        mMediaControl.setMediaInfo(currentURIMetaData);
-        mMediaControl.prepare(currentURI);
+        MediaEntity mediaEntity = MediaEntity.CREATOR.parseFromDIDL(currentURIMetaData);
+        mMediaControl.prepare(currentURI, mediaEntity);
     }
 
     @Override

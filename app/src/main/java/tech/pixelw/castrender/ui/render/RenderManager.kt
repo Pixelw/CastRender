@@ -9,6 +9,8 @@ import androidx.core.app.NotificationCompat
 import androidx.core.app.NotificationManagerCompat
 import tech.pixelw.castrender.BuildConfig
 import tech.pixelw.castrender.CastRenderApp
+import tech.pixelw.castrender.ui.render.music.MusicPlayerActivity
+import tech.pixelw.cling_common.entity.MediaEntity
 import tech.pixelw.dmr_core.DLNARendererService
 import tech.pixelw.dmr_core.DeviceSettings
 import tech.pixelw.dmr_core.R
@@ -27,9 +29,14 @@ object RenderManager {
             Build.MODEL,
             Build.MANUFACTURER
         )
-        DefaultRenderControl.idlnaNewSession = IDLNANewSession { context1: Context?, url: String? ->
-            PlayerActivity.newPlayerInstance(context1, url)
-        }
+        DefaultRenderControl.idlnaNewSession =
+            IDLNANewSession { context1: Context?, url: String?, entity: MediaEntity ->
+                if (entity.mediaType == MediaEntity.TYPE_AUDIO) {
+                    MusicPlayerActivity.newPlayerInstance(context1, url, entity)
+                } else {
+                    PlayerActivity.newPlayerInstance(context1, url, entity)
+                }
+            }
         val dlnaRendererService = DLNARendererService(
             deviceSettings,
             createNotification(

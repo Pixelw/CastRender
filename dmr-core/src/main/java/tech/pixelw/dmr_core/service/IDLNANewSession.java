@@ -2,10 +2,12 @@ package tech.pixelw.dmr_core.service;
 
 import android.content.Context;
 
+import tech.pixelw.cling_common.entity.MediaEntity;
+
 /**
  * @author Carl Su "Pixelw"
  * @date 2021/12/6
  */
 public interface IDLNANewSession {
-    void newPlayer(Context context, String uri);
+    void newPlayer(Context context, String uri, MediaEntity entity);
 }

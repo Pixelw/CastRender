@@ -1,5 +1,12 @@
 package tech.pixelw.castrender.utils
 
+import android.view.View
+import androidx.lifecycle.coroutineScope
+import androidx.lifecycle.findViewTreeLifecycleOwner
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.Job
+import kotlinx.coroutines.delay
+import kotlinx.coroutines.launch
 import java.util.*
 import kotlin.math.pow
 
@@ -62,6 +69,18 @@ object TimeUtil {
         }
         return millis
     }
+
+    /**
+     * 利用协程和lifecycle实现的延迟执行，在视图被销毁后自动失效
+     */
+
+    fun View.delayOnLifecycle(delayMillis: Long, runnable: Runnable): Job? =
+        findViewTreeLifecycleOwner()?.let {
+            it.lifecycle.coroutineScope.launch(Dispatchers.Main) {
+                delay(delayMillis)
+                runnable.run()
+            }
+        }
 
 
 }

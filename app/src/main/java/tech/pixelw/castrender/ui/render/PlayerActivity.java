@@ -35,18 +35,19 @@ import org.fourthline.cling.support.model.TransportState;
 import org.fourthline.cling.support.renderingcontrol.lastchange.ChannelVolume;
 import org.fourthline.cling.support.renderingcontrol.lastchange.RenderingControlVariable;
 
+import tech.pixelw.castrender.K;
 import tech.pixelw.castrender.R;
 import tech.pixelw.castrender.databinding.ActivityPlayer2Binding;
-import tech.pixelw.castrender.entity.MediaEntity;
 import tech.pixelw.castrender.ui.mediainfo.MediaInfoListAdapter;
 import tech.pixelw.castrender.ui.mediainfo.MediaInfoRetriever;
 import tech.pixelw.castrender.utils.LogUtil;
 import tech.pixelw.castrender.utils.SafeZoneHelper;
+import tech.pixelw.cling_common.entity.MediaEntity;
 import tech.pixelw.dmr_core.DLNARendererService;
 
 public class PlayerActivity extends AppCompatActivity implements ExoRenderControlImpl.ActivityCallback {
 
-    public static final String EXTRA_KEY_URL = "EXTRA_KEY_MEDIA_URL";
+
     private ActivityPlayer2Binding binding;
     private SimpleExoPlayer exoPlayer;
     private DLNARendererService binder;
@@ -59,9 +60,10 @@ public class PlayerActivity extends AppCompatActivity implements ExoRenderContro
     private ViewGroup safeZone;
     private MediaInfoRetriever retriever;
 
-    public static void newPlayerInstance(Context context, String url) {
+    public static void newPlayerInstance(Context context, String url, MediaEntity entity) {
         Intent intent = new Intent(context, PlayerActivity.class);
-        intent.putExtra(EXTRA_KEY_URL, url);
+        intent.putExtra(K.EXTRA_KEY_URL, url);
+        intent.putExtra(K.EXTRA_KEY_META, entity);
         intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
         context.startActivity(intent);
     }
@@ -116,7 +118,7 @@ public class PlayerActivity extends AppCompatActivity implements ExoRenderContro
     protected void onNewIntent(Intent intent) {
         if (intent == null) return;
         super.onNewIntent(intent);
-        String url = intent.getStringExtra(EXTRA_KEY_URL);
+        String url = intent.getStringExtra(K.EXTRA_KEY_URL);
         if (!TextUtils.isEmpty(url)) {
             prepareAndPlayMedia(url);
         }

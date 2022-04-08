@@ -4,6 +4,8 @@ import android.widget.ImageView;
 
 import androidx.databinding.BindingAdapter;
 
+import com.bumptech.glide.Glide;
+
 import tech.pixelw.castrender.R;
 import tech.pixelw.castrender.ui.mediainfo.MediaInfo;
 
@@ -19,5 +21,10 @@ public class BindingAdapters {
         } else if (track instanceof MediaInfo.Audio) {
             view.setImageResource(R.drawable.ic_baseline_audiotrack_24);
         }
+    }
+
+    @BindingAdapter("imageSrc")
+    public static void imageSrc(ImageView view, String url) {
+        Glide.with(view).load(url).into(view);
     }
 }

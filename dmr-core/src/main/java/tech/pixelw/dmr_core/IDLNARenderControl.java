@@ -2,6 +2,8 @@ package tech.pixelw.dmr_core;
 
 import org.fourthline.cling.support.model.TransportState;
 
+import tech.pixelw.cling_common.entity.MediaEntity;
+
 
 /**
  *
@@ -9,7 +11,9 @@ import org.fourthline.cling.support.model.TransportState;
 public interface IDLNARenderControl {
     int type();
 
-    void prepare(String uri);
+    void prepare(String uri, MediaEntity entity);
+
+    void setRawMetadata(String rawMetadata);
 
     void play();
 
@@ -24,8 +28,6 @@ public interface IDLNARenderControl {
     long getDuration();
 
     TransportState getTransportState();
-
-    void setMediaInfo(String metadata);
 
     float getSpeed();
 }

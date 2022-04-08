@@ -4,6 +4,7 @@ import android.content.Context;
 
 import org.fourthline.cling.support.model.TransportState;
 
+import tech.pixelw.cling_common.entity.MediaEntity;
 import tech.pixelw.dmr_core.IDLNARenderControl;
 
 /**
@@ -24,8 +25,12 @@ public class DefaultRenderControl implements IDLNARenderControl {
     }
 
     @Override
-    public void prepare(String uri) {
-        idlnaNewSession.newPlayer(context, uri);
+    public void prepare(String uri, MediaEntity entity) {
+        idlnaNewSession.newPlayer(context, uri, entity);
+    }
+
+    @Override
+    public void setRawMetadata(String rawMetadata) {
     }
 
     @Override
@@ -57,10 +62,6 @@ public class DefaultRenderControl implements IDLNARenderControl {
     @Override
     public TransportState getTransportState() {
         return TransportState.NO_MEDIA_PRESENT;
-    }
-
-    @Override
-    public void setMediaInfo(String metadata) {
     }
 
     @Override

@@ -42,8 +42,8 @@ class MusicViewModel : ViewModel() {
             } else {
                 if (lrcLine.millis - lastMillis > 10000L) {
                     outList.add(
-                        index,
-                        LyricsTitleInsert(lrcLine.millis + 6000L, title, artist, album)
+                        outList.size - 1,
+                        LyricsTitleInsert(lastMillis + 6000L, title, artist, album)
                     )
                 }
             }

@@ -19,7 +19,8 @@ import tech.pixelw.dmr_core.IDLNARenderControl
  */
 class ExoRenderControlImpl(
     private val player: ExoPlayer?,
-    private val activityCallback: ActivityCallback
+    private val activityCallback: ActivityCallback,
+    private val notifyTransportState: TransportStateCallback
 ) : IDLNARenderControl {
 
     private val handler = Handler(Looper.getMainLooper())
@@ -116,6 +117,10 @@ class ExoRenderControlImpl(
         fun setMediaEntity(mediaEntity: MediaEntity)
     }
 
+    interface TransportStateCallback {
+        fun notify(state: TransportState)
+    }
+
     companion object {
         private const val TAG = "ExoplayerRenderControl"
         const val TYPE = 101
@@ -134,6 +139,7 @@ class ExoRenderControlImpl(
                         position = duration // fix inconsistency
                     }
                 }
+                notifyTransportState.notify(transportState)
             }
 
             // then call this
@@ -144,6 +150,7 @@ class ExoRenderControlImpl(
                     } else {
                         TransportState.PAUSED_PLAYBACK
                     }
+                    notifyTransportState.notify(transportState)
                 }
                 handler.removeCallbacks(refreshThread)
                 handler.postDelayed(refreshThread, 100)

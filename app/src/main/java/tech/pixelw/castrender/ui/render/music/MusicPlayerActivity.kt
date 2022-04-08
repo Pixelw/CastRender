@@ -4,6 +4,7 @@ import android.content.Context
 import android.content.Intent
 import android.os.Bundle
 import android.text.TextUtils
+import android.view.WindowManager
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowCompat
@@ -11,11 +12,7 @@ import androidx.core.view.WindowInsetsCompat
 import androidx.core.view.WindowInsetsControllerCompat
 import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.ViewModelProvider
-import androidx.recyclerview.widget.LinearLayoutManager
-import com.google.android.exoplayer2.C
-import com.google.android.exoplayer2.ExoPlayer
-import com.google.android.exoplayer2.MediaItem
-import com.google.android.exoplayer2.SimpleExoPlayer
+import com.google.android.exoplayer2.*
 import com.google.android.exoplayer2.audio.AudioAttributes
 import org.fourthline.cling.support.avtransport.lastchange.AVTransportVariable
 import org.fourthline.cling.support.model.TransportState
@@ -24,6 +21,9 @@ import tech.pixelw.castrender.R
 import tech.pixelw.castrender.databinding.ActivityMusicPlayerBinding
 import tech.pixelw.castrender.ui.render.ExoRenderControlImpl
 import tech.pixelw.castrender.ui.render.RenderManager
+import tech.pixelw.castrender.utils.CenterScrollLLM
+import tech.pixelw.castrender.utils.LogUtil
+import tech.pixelw.castrender.utils.TopBottomMarginDecoration
 import tech.pixelw.cling_common.entity.MediaEntity
 import tech.pixelw.dmr_core.DLNARendererService
 
@@ -47,9 +47,9 @@ class MusicPlayerActivity : AppCompatActivity(), ExoRenderControlImpl.ActivityCa
             R.layout.activity_music_player
         ).apply {
             lifecycleOwner = this@MusicPlayerActivity
-            rvLyrics.layoutManager = LinearLayoutManager(this@MusicPlayerActivity)
+            rvLyrics.layoutManager = CenterScrollLLM(this@MusicPlayerActivity)
             rvLyrics.adapter = lyricAdapter
-//            rvLyrics.addItemDecoration(TopBottomMarginDecoration())
+            rvLyrics.addItemDecoration(TopBottomMarginDecoration())
             controllerCompat = ViewCompat.getWindowInsetsController(root)!!
         }
         vm = ViewModelProvider(this).get(MusicViewModel::class.java).apply {
@@ -62,20 +62,31 @@ class MusicPlayerActivity : AppCompatActivity(), ExoRenderControlImpl.ActivityCa
             .setAudioAttributes(
                 AudioAttributes.Builder().setUsage(C.USAGE_MEDIA)
                     .setContentType(C.CONTENT_TYPE_MUSIC).build(), true
-            )
-            .build()
+            ).build().apply {
+                addListener(object : Player.Listener {
+                    override fun onIsPlayingChanged(isPlaying: Boolean) {
+                        if (isPlaying) {
+                            window.addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON)
+                        } else {
+                            window.clearFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON)
+                        }
+                    }
+                })
+            }
         lyricAdapter.player = exoplayer
         service = RenderManager.renderService
         service?.registerController(ExoRenderControlImpl(exoplayer, this))
         onNewIntent(intent)
     }
 
-    override fun onStart() {
-        super.onStart()
-        WindowCompat.setDecorFitsSystemWindows(window, false)
-        controllerCompat.hide(WindowInsetsCompat.Type.systemBars())
-        controllerCompat.systemBarsBehavior =
-            WindowInsetsControllerCompat.BEHAVIOR_SHOW_TRANSIENT_BARS_BY_SWIPE
+    override fun onWindowFocusChanged(hasFocus: Boolean) {
+        LogUtil.d(TAG, "windowFocus->$hasFocus")
+        if (hasFocus) {
+            WindowCompat.setDecorFitsSystemWindows(window, false)
+            controllerCompat.hide(WindowInsetsCompat.Type.systemBars())
+            controllerCompat.systemBarsBehavior =
+                WindowInsetsControllerCompat.BEHAVIOR_SHOW_TRANSIENT_BARS_BY_SWIPE
+        }
     }
 
     override fun onNewIntent(intent: Intent?) {

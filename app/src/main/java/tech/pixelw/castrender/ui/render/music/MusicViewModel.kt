@@ -39,6 +39,13 @@ class MusicViewModel : ViewModel() {
                 if (lrcLine.millis > 3000L) {
                     outList.add(index, LyricsTitleInsert(0L, title, artist, album))
                 }
+            } else if (index == lrc.size - 1) {
+                outList.add(
+                    LyricsTitleInsert(
+                        lastMillis + (lrcLine.millis() - lastMillis) / 2,
+                        title, artist, album
+                    )
+                )
             } else {
                 if (lrcLine.millis - lastMillis > 10000L) {
                     outList.add(

@@ -5,10 +5,9 @@ import android.os.Looper
 import android.view.KeyEvent
 import com.google.android.exoplayer2.ExoPlayer
 import com.google.android.exoplayer2.Player
-import org.fourthline.cling.support.model.TransportState
 import tech.pixelw.castrender.utils.LogUtil
 
-class KeyHandler constructor(private val player: ExoPlayer, private val callback: Callback) {
+class KeyHandler constructor(private val player: ExoPlayer) {
 
     private val TAG = "KeyHandler"
     private val handler: Handler = Handler(Looper.getMainLooper())
@@ -47,10 +46,8 @@ class KeyHandler constructor(private val player: ExoPlayer, private val callback
             KeyEvent.KEYCODE_NUMPAD_ENTER, KeyEvent.KEYCODE_MEDIA_PLAY_PAUSE ->
                 if (player.isPlaying) {
                     player.pause()
-                    callback.onTransportStateChanged(TransportState.PAUSED_PLAYBACK)
                 } else {
                     player.play()
-                    callback.onTransportStateChanged(TransportState.PLAYING)
                 }
             KeyEvent.KEYCODE_DPAD_LEFT -> player.seekBack()
 
@@ -127,9 +124,5 @@ class KeyHandler constructor(private val player: ExoPlayer, private val callback
             }
         }
         return false
-    }
-
-    interface Callback {
-        fun onTransportStateChanged(state: TransportState)
     }
 }

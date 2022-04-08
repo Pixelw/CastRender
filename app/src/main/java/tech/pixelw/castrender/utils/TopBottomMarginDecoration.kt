@@ -1,4 +1,4 @@
-package tech.pixelw.castrender.ui.render.music
+package tech.pixelw.castrender.utils
 
 import android.graphics.Rect
 import android.view.View
@@ -13,10 +13,13 @@ class TopBottomMarginDecoration() : RecyclerView.ItemDecoration() {
     ) {
         super.getItemOffsets(outRect, view, parent, state)
         parent.adapter?.itemCount?.let {
+            val marginVert = (parent.height - view.height) / 2
             when (parent.getChildAdapterPosition(view)) {
-                it - 1, 0 -> { // last or first one
-                    val marginVert = (parent.height - view.height) / 2
-                    outRect.set(0, marginVert, 0, marginVert)
+                0 -> { // last or first one
+                    outRect.set(0, marginVert, 0, 0)
+                }
+                it - 1 -> {
+                    outRect.set(0, 0, 0, marginVert)
                 }
             }
         }

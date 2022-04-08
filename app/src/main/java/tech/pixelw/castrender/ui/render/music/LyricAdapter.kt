@@ -34,7 +34,6 @@ class LyricAdapter : RecyclerView.Adapter<LyricAdapter.LyricVH>(), Player.Listen
             player?.currentPosition?.let {
                 val untilNext = scrollTo(it)
                 LogUtil.d(TAG, "next lrc until $untilNext")
-                // TODO: add title display
                 if (untilNext < Long.MAX_VALUE && untilNext >= 0) {
                     handler.postDelayed(this, untilNext)
                 }
@@ -78,6 +77,7 @@ class LyricAdapter : RecyclerView.Adapter<LyricAdapter.LyricVH>(), Player.Listen
         if (itemCount < 2) return Long.MAX_VALUE
         if (noCachePos) {
             lastIndex = 1
+            LogUtil.w(TAG, "noCachePos, Davey!!!")
         }
         lyricsModels?.let {
             for (i in lastIndex until it.size) {

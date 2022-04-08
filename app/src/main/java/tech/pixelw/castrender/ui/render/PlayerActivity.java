@@ -59,6 +59,7 @@ public class PlayerActivity extends AppCompatActivity implements ExoRenderContro
     private WindowInsetsControllerCompat controllerCompat;
     private ViewGroup safeZone;
     private MediaInfoRetriever retriever;
+    private TransportState lastTransState = TransportState.CUSTOM;
 
     public static void newPlayerInstance(Context context, String url, MediaEntity entity) {
         Intent intent = new Intent(context, PlayerActivity.class);
@@ -105,11 +106,16 @@ public class PlayerActivity extends AppCompatActivity implements ExoRenderContro
         binding.exoPlayerView.setControllerVisibilityListener(viewMask::setVisibility);
         binding.setHandler(new Handler());
         retriever = new MediaInfoRetriever(exoPlayer);
-        keyHandler = new KeyHandler(exoPlayer, this::notifyTransportStateChanged);
+        keyHandler = new KeyHandler(exoPlayer);
         osdHelper = new OSDHelper(binding.frOsdSafeZone);
         keyHandler.attachOsd(osdHelper);
         binder = RenderManager.INSTANCE.getRenderService();
-        binder.registerController(new ExoRenderControlImpl(exoPlayer, this));
+        binder.registerController(new ExoRenderControlImpl(exoPlayer, this, state -> {
+            if (state != lastTransState) {
+                notifyTransportStateChanged(state);
+                lastTransState = state;
+            }
+        }));
         onNewIntent(getIntent());
     }
 
@@ -161,11 +167,6 @@ public class PlayerActivity extends AppCompatActivity implements ExoRenderContro
 
         }
         return true;
-    }
-
-    @Override
-    protected void onStart() {
-        super.onStart();
     }
 
     @Override

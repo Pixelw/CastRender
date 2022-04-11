@@ -81,12 +81,13 @@ data class MediaEntity(val mediaUrl: String?) : Parcelable {
                     }
                 }
             } catch (ex: Exception) {
-                Log.e("ParseMetadataFromDIDL", "ex", ex)
+                Log.e("MediaEntity", "exception during ParseMetadataFromDIDL", ex)
             }
             return null
         }
 
-        private fun checkUnknown(string: String): String? {
+        private fun checkUnknown(string: String?): String? {
+            if (string == null) return null
             NULL_VALUES.forEach {
                 if (it.equals(string, true)) {
                     return null

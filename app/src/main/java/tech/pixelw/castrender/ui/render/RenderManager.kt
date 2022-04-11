@@ -30,8 +30,8 @@ object RenderManager {
             Build.MANUFACTURER
         )
         DefaultRenderControl.idlnaNewSession =
-            IDLNANewSession { context1: Context?, url: String?, entity: MediaEntity ->
-                if (entity.mediaType == MediaEntity.TYPE_AUDIO) {
+            IDLNANewSession { context1: Context?, url: String?, entity: MediaEntity? ->
+                if (entity != null && entity.mediaType == MediaEntity.TYPE_AUDIO) {
                     MusicPlayerActivity.newPlayerInstance(context1, url, entity)
                 } else {
                     PlayerActivity.newPlayerInstance(context1, url, entity)

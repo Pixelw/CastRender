@@ -3,8 +3,6 @@ package tech.pixelw.dmr_core.service;
 import android.content.Context;
 
 import org.fourthline.cling.support.connectionmanager.ConnectionManagerService;
-import org.fourthline.cling.support.model.Protocol;
-import org.fourthline.cling.support.model.ProtocolInfo;
 import org.fourthline.cling.support.model.ProtocolInfos;
 
 import java.io.BufferedReader;

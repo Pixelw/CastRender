@@ -2,6 +2,8 @@ package tech.pixelw.dmr_core.service;
 
 import android.content.Context;
 
+import androidx.annotation.Nullable;
+
 import org.fourthline.cling.support.model.TransportState;
 
 import tech.pixelw.cling_common.entity.MediaEntity;
@@ -25,12 +27,12 @@ public class DefaultRenderControl implements IDLNARenderControl {
     }
 
     @Override
-    public void prepare(String uri, MediaEntity entity) {
+    public void prepare(@Nullable String uri, @Nullable MediaEntity entity) {
         idlnaNewSession.newPlayer(context, uri, entity);
     }
 
     @Override
-    public void setRawMetadata(String rawMetadata) {
+    public void setRawMetadata(@Nullable String rawMetadata) {
     }
 
     @Override

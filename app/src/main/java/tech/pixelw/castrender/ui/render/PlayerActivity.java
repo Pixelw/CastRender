@@ -11,6 +11,7 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
@@ -29,11 +30,7 @@ import com.google.android.exoplayer2.SimpleExoPlayer;
 import com.google.android.exoplayer2.audio.AudioAttributes;
 import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 
-import org.fourthline.cling.support.avtransport.lastchange.AVTransportVariable;
-import org.fourthline.cling.support.model.Channel;
 import org.fourthline.cling.support.model.TransportState;
-import org.fourthline.cling.support.renderingcontrol.lastchange.ChannelVolume;
-import org.fourthline.cling.support.renderingcontrol.lastchange.RenderingControlVariable;
 
 import tech.pixelw.castrender.K;
 import tech.pixelw.castrender.R;
@@ -61,7 +58,7 @@ public class PlayerActivity extends AppCompatActivity implements ExoRenderContro
     private MediaInfoRetriever retriever;
     private TransportState lastTransState = TransportState.CUSTOM;
 
-    public static void newPlayerInstance(Context context, String url, MediaEntity entity) {
+    public static void newPlayerInstance(Context context, String url, @Nullable MediaEntity entity) {
         Intent intent = new Intent(context, PlayerActivity.class);
         intent.putExtra(K.EXTRA_KEY_URL, url);
         intent.putExtra(K.EXTRA_KEY_META, entity);
@@ -112,7 +109,7 @@ public class PlayerActivity extends AppCompatActivity implements ExoRenderContro
         binder = RenderManager.INSTANCE.getRenderService();
         binder.registerController(new ExoRenderControlImpl(exoPlayer, this, state -> {
             if (state != lastTransState) {
-                notifyTransportStateChanged(state);
+                binder.notifyTransportStateChanged(state);
                 lastTransState = state;
             }
         }));
@@ -203,29 +200,11 @@ public class PlayerActivity extends AppCompatActivity implements ExoRenderContro
         return super.onKeyLongPress(keyCode, event);
     }
 
-    // TODO: 2022/2/14 add listener to listen osd
-    private void notifyTransportStateChanged(TransportState state) {
-        if (binder != null) {
-            binder.avTransportLastChange()
-                    .setEventedValue(binder.getInstanceId(),
-                            new AVTransportVariable.TransportState(state));
-        }
-    }
-
-    private void notifyRenderVolumeChanged(int volume) {
-        if (binder != null) {
-            binder.audioControlLastChange().
-                    setEventedValue(binder.getInstanceId(),
-                            new RenderingControlVariable.Volume(
-                                    new ChannelVolume(Channel.Master, volume)));
-        }
-    }
-
     @Override
     protected void onDestroy() {
         super.onDestroy();
         exoPlayer.stop();
-        notifyTransportStateChanged(TransportState.STOPPED);
+        binder.notifyTransportStateChanged(TransportState.STOPPED);
         exoPlayer.release();
         binder.unregisterController();
     }

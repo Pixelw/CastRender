@@ -1,5 +1,7 @@
 package tech.pixelw.dmr_core;
 
+import androidx.annotation.Nullable;
+
 import org.fourthline.cling.support.model.TransportState;
 
 import tech.pixelw.cling_common.entity.MediaEntity;
@@ -11,9 +13,9 @@ import tech.pixelw.cling_common.entity.MediaEntity;
 public interface IDLNARenderControl {
     int type();
 
-    void prepare(String uri, MediaEntity entity);
+    void prepare(@Nullable String uri, @Nullable MediaEntity entity);
 
-    void setRawMetadata(String rawMetadata);
+    void setRawMetadata(@Nullable String rawMetadata);
 
     void play();
 

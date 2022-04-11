@@ -24,9 +24,14 @@ import org.fourthline.cling.model.types.UDADeviceType;
 import org.fourthline.cling.model.types.UDN;
 import org.fourthline.cling.model.types.UnsignedIntegerFourBytes;
 import org.fourthline.cling.support.avtransport.lastchange.AVTransportLastChangeParser;
+import org.fourthline.cling.support.avtransport.lastchange.AVTransportVariable;
 import org.fourthline.cling.support.lastchange.LastChange;
 import org.fourthline.cling.support.lastchange.LastChangeAwareServiceManager;
+import org.fourthline.cling.support.model.Channel;
+import org.fourthline.cling.support.model.TransportState;
+import org.fourthline.cling.support.renderingcontrol.lastchange.ChannelVolume;
 import org.fourthline.cling.support.renderingcontrol.lastchange.RenderingControlLastChangeParser;
+import org.fourthline.cling.support.renderingcontrol.lastchange.RenderingControlVariable;
 
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
@@ -83,10 +88,6 @@ public class DLNARendererService extends UpnpAttach {
             upnpService.getRegistry().removeDevice(mRendererDevice);
         }
         super.stop(context);
-    }
-
-    public LastChange getAvTransportLastChange() {
-        return mAvTransportLastChange;
     }
 
     public LastChange getAudioControlLastChange() {
@@ -174,7 +175,23 @@ public class DLNARendererService extends UpnpAttach {
      */
 
     public LastChange avTransportLastChange() {
-        return getAvTransportLastChange();
+        return mAvTransportLastChange;
+    }
+
+    public void notifyTransportStateChanged(TransportState state) {
+        Log.d(TAG, "notifyTransportStateChanged() called with: state = [" + state + "]");
+        mAvTransportLastChange.setEventedValue(
+                getInstanceId(),
+                new AVTransportVariable.TransportState(state)
+        );
+    }
+
+    private void notifyRenderVolumeChanged(int volume) {
+        Log.d(TAG, "notifyRenderVolumeChanged() called with: volume = [" + volume + "]");
+        audioControlLastChange().
+                setEventedValue(getInstanceId(),
+                        new RenderingControlVariable.Volume(
+                                new ChannelVolume(Channel.Master, volume)));
     }
 
     public void registerController(IDLNARenderControl control) {

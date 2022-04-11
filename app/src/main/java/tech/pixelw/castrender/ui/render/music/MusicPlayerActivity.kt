@@ -14,7 +14,6 @@ import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.ViewModelProvider
 import com.google.android.exoplayer2.*
 import com.google.android.exoplayer2.audio.AudioAttributes
-import org.fourthline.cling.support.avtransport.lastchange.AVTransportVariable
 import org.fourthline.cling.support.model.TransportState
 import tech.pixelw.castrender.K
 import tech.pixelw.castrender.R
@@ -27,7 +26,8 @@ import tech.pixelw.castrender.utils.TopBottomMarginDecoration
 import tech.pixelw.cling_common.entity.MediaEntity
 import tech.pixelw.dmr_core.DLNARendererService
 
-class MusicPlayerActivity : AppCompatActivity(), ExoRenderControlImpl.ActivityCallback {
+class MusicPlayerActivity : AppCompatActivity(), ExoRenderControlImpl.ActivityCallback,
+    ExoRenderControlImpl.TransportStateCallback {
 
 
     private var service: DLNARendererService? = null
@@ -75,7 +75,7 @@ class MusicPlayerActivity : AppCompatActivity(), ExoRenderControlImpl.ActivityCa
             }
         lyricAdapter.player = exoplayer
         service = RenderManager.renderService
-        service?.registerController(ExoRenderControlImpl(exoplayer, this))
+        service?.registerController(ExoRenderControlImpl(exoplayer, this, this))
         onNewIntent(intent)
     }
 
@@ -114,7 +114,7 @@ class MusicPlayerActivity : AppCompatActivity(), ExoRenderControlImpl.ActivityCa
         private const val TAG = "MusicPlayerActivity"
 
         @JvmStatic
-        fun newPlayerInstance(context: Context?, uri: String?, entity: MediaEntity) {
+        fun newPlayerInstance(context: Context?, uri: String?, entity: MediaEntity?) {
             context?.startActivity(Intent(context, MusicPlayerActivity::class.java).apply {
                 putExtra(K.EXTRA_KEY_URL, uri)
                 putExtra(K.EXTRA_KEY_META, entity)
@@ -128,23 +128,22 @@ class MusicPlayerActivity : AppCompatActivity(), ExoRenderControlImpl.ActivityCa
 //        finish()
     }
 
+    override fun notify(state: TransportState) {
+        service?.notifyTransportStateChanged(state)
+    }
+
     override fun onDestroy() {
         super.onDestroy()
         exoplayer.stop()
-        notifyTransportStateChanged(TransportState.STOPPED)
+        service?.notifyTransportStateChanged(TransportState.STOPPED)
         exoplayer.release()
         service?.unregisterController()
-    }
-
-    private fun notifyTransportStateChanged(state: TransportState) {
-        service?.avTransportLastChange()?.setEventedValue(
-            service?.instanceId,
-            AVTransportVariable.TransportState(state)
-        )
     }
 
     override fun setMediaEntity(mediaEntity: MediaEntity) {
         vm.mediaEntity.value = mediaEntity
         mediaEntity.id?.let { vm.fetchLyrics(it) }
     }
+
+
 }

@@ -45,14 +45,15 @@ class ExoRenderControlImpl(
 
     override fun type() = TYPE
 
-    override fun prepare(uri: String, entity: MediaEntity) {
+    override fun prepare(uri: String?, entity: MediaEntity?) {
         handler.post {
-            activityCallback.setMediaEntity(entity)
-            val mediaItem = MediaItem.fromUri(uri)
-            player!!.setMediaItem(mediaItem)
-            duration = 0
-            position = duration
-            player.prepare()
+            entity?.let { activityCallback.setMediaEntity(it) }
+            uri?.let {
+                player!!.setMediaItem(MediaItem.fromUri(it))
+                duration = 0
+                position = duration
+                player.prepare()
+            }
         }
     }
 

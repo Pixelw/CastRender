@@ -7,6 +7,7 @@ import android.os.IBinder
 import android.util.Log
 import org.fourthline.cling.UpnpService
 import org.fourthline.cling.UpnpServiceConfiguration
+import org.fourthline.cling.android.AndroidUpnpServiceConfiguration
 import org.fourthline.cling.android.AndroidUpnpServiceImpl
 import org.fourthline.cling.android.FixedAndroidLogHandler
 import org.fourthline.cling.controlpoint.ControlPoint
@@ -23,11 +24,12 @@ class SharedUpnpService : AndroidUpnpServiceImpl() {
         private const val TAG = "SharedUpnpService"
     }
 
-//    override fun createConfiguration(): UpnpServiceConfiguration {
-//        return object : AndroidUpnpServiceConfiguration() {
-//            override fun getAliveIntervalMillis() = 5000
-//        }
-//    }
+    override fun createConfiguration(): UpnpServiceConfiguration {
+        return object : AndroidUpnpServiceConfiguration() {
+            override fun getAliveIntervalMillis() = 5000
+            override fun getRegistryMaintenanceIntervalMillis() = 7000
+        }
+    }
 
     override fun onCreate() {
         Log.i(TAG, "onCreate: ")

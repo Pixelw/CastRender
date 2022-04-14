@@ -4,10 +4,10 @@ import android.os.Parcel
 import android.os.Parcelable
 import android.util.Log
 import org.fourthline.cling.model.ModelUtil
-import org.fourthline.cling.support.contentdirectory.DIDLParser
 import org.fourthline.cling.support.model.DIDLObject
 import org.fourthline.cling.support.model.item.AudioItem
 import org.fourthline.cling.support.model.item.MusicTrack
+import tech.pixelw.cling_common.CustomDIDLParser
 
 /**
  * Object representing media info, for MediaRenderer
@@ -60,7 +60,7 @@ data class MediaEntity(val mediaUrl: String?) : Parcelable {
 
         fun parseFromDIDL(didlMeta: String): MediaEntity? {
             try {
-                val item = DIDLParser().parse(didlMeta).items[0]
+                val item = CustomDIDLParser().parse(didlMeta).items[0]
                 return MediaEntity(item.resources[0].value).apply {
                     title = checkUnknown(item.title)
                     checkUnknown(item.resources[0].duration)?.let {

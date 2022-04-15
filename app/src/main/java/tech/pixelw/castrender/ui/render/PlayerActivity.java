@@ -9,6 +9,7 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -55,6 +56,7 @@ public class PlayerActivity extends AppCompatActivity implements ExoRenderContro
 
     private WindowInsetsControllerCompat controllerCompat;
     private ViewGroup safeZone;
+    private TextView tvTitle;
     private MediaInfoRetriever retriever;
     private TransportState lastTransState = TransportState.CUSTOM;
 
@@ -101,6 +103,7 @@ public class PlayerActivity extends AppCompatActivity implements ExoRenderContro
         });
         View viewMask = binding.exoPlayerView.findViewById(R.id.v_gradient_mask);
         binding.exoPlayerView.setControllerVisibilityListener(viewMask::setVisibility);
+        tvTitle = binding.exoPlayerView.findViewById(R.id.ctrl_title);
         binding.setHandler(new Handler());
         retriever = new MediaInfoRetriever(exoPlayer);
         keyHandler = new KeyHandler(exoPlayer);
@@ -124,6 +127,10 @@ public class PlayerActivity extends AppCompatActivity implements ExoRenderContro
         String url = intent.getStringExtra(K.EXTRA_KEY_URL);
         if (!TextUtils.isEmpty(url)) {
             prepareAndPlayMedia(url);
+        }
+        MediaEntity meta = intent.getParcelableExtra(K.EXTRA_KEY_META);
+        if (meta != null) {
+            setMediaEntity(meta);
         }
     }
 
@@ -216,7 +223,7 @@ public class PlayerActivity extends AppCompatActivity implements ExoRenderContro
 
     @Override
     public void setMediaEntity(@NonNull MediaEntity mediaEntity) {
-        // TODO: 2022/3/25 setTitle
+        tvTitle.setText(mediaEntity.getTitle());
     }
 
     public final class Handler {

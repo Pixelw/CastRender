@@ -34,7 +34,7 @@ object LrcParser {
                 matcher.group(1)?.let {
                     val content = line.substring(contentStartIndex, line.length)
                     if (content.isEmpty()) return@let
-                    val lrcLine = LrcLine(TimeUtil.timeStringToMillis(it), content)
+                    val lrcLine = LrcLine(TimeUtil.timeStringToMillis(it), content.trim())
                     lrcLine.findAnnotation(index)
                     if (lrcLine.isAnnotation) {
                         lastAnnotationIndex = index
@@ -65,7 +65,7 @@ object LrcParser {
                     val tTime = TimeUtil.timeStringToMillis(it)
                     if (abs(millis - tTime) < 100) {
                         lastTranIndex = i
-                        return line.substring(matcher.end(), line.length)
+                        return line.substring(matcher.end(), line.length).trim()
                     }
 
                 }
@@ -95,8 +95,8 @@ object LrcParser {
 
         override fun type() = TYPE
         override fun millis() = millis
-        override fun middleLine() = content.trim()
-        override fun bottomLine() = translate?.trim()
+        override fun middleLine() = content
+        override fun bottomLine() = translate
         override fun upperLine() = ""
         override fun toString(): String {
             return "LrcLine(millis=$millis, content='$content', translate=$translate, isAnnotation=$isAnnotation)"

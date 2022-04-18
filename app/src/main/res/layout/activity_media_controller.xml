@@ -66,7 +66,7 @@
                 android:layout_height="@dimen/controller_button_size"
                 android:layout_gravity="center_vertical|start"
                 android:onClick="@{handler::prev}"
-                android:src="@drawable/exo_controls_previous" />
+                app:srcCompat="@drawable/exo_controls_previous" />
 
             <androidx.appcompat.widget.AppCompatImageButton
                 style="@style/BorderlessImageButtonStyle"
@@ -74,7 +74,7 @@
                 android:layout_height="@dimen/controller_button_size"
                 android:layout_gravity="center_vertical|end"
                 android:onClick="@{handler::next}"
-                android:src="@drawable/exo_controls_next" />
+                app:srcCompat="@drawable/exo_controls_next" />
 
             <androidx.appcompat.widget.AppCompatImageButton
                 style="@style/BorderlessImageButtonStyle"
@@ -82,7 +82,7 @@
                 android:layout_height="@dimen/controller_button_size"
                 android:layout_gravity="center_horizontal"
                 android:onClick="@{handler::volumeUp}"
-                android:src="@drawable/ic_baseline_volume_up_24" />
+                app:srcCompat="@drawable/ic_baseline_volume_up_24" />
 
             <androidx.appcompat.widget.AppCompatImageButton
                 style="@style/BorderlessImageButtonStyle"
@@ -90,7 +90,7 @@
                 android:layout_height="@dimen/controller_button_size"
                 android:layout_gravity="bottom|center_horizontal"
                 android:onClick="@{handler::volumeDown}"
-                android:src="@drawable/ic_baseline_volume_down_24" />
+                app:srcCompat="@drawable/ic_baseline_volume_down_24" />
         </FrameLayout>
 
         <com.google.android.material.slider.Slider

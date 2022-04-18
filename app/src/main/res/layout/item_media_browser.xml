@@ -24,7 +24,7 @@
         android:onClick="@{()->clickListener.onItemClick(item)}"
         android:padding="16dp">
 
-        <ImageView
+        <androidx.appcompat.widget.AppCompatImageView
             android:id="@+id/icon_media"
             android:layout_width="48dp"
             android:layout_height="48dp"

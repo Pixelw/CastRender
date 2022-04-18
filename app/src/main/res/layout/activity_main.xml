@@ -22,15 +22,14 @@
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" >
-            <TextView
+            <androidx.appcompat.widget.AppCompatTextView
                 android:layout_width="wrap_content"
-                android:drawableTop="@drawable/ic_baseline_perm_media_24"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
+                app:drawableTopCompat="@drawable/ic_baseline_perm_media_24"
                 android:text="Media Browser"
                 android:focusable="false"
-                android:clickable="false"
-                android:src="@drawable/ic_baseline_perm_media_24"/>
+                android:clickable="false" />
         </com.google.android.material.card.MaterialCardView>
 
         <TextView
@@ -48,7 +47,7 @@
         <androidx.appcompat.widget.AppCompatImageButton
             android:layout_width="50dp"
             style="@style/BorderlessImageButtonStyle"
-            android:src="@drawable/ic_baseline_settings_remote_24"
+            app:srcCompat="@drawable/ic_baseline_settings_remote_24"
             android:layout_height="50dp"
             android:onClick="@{handler::controllerOpen}"
             android:layout_marginBottom="32dp"

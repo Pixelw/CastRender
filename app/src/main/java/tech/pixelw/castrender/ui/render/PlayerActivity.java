@@ -89,6 +89,7 @@ public class PlayerActivity extends AppCompatActivity implements ExoRenderContro
                 lpOsd.setMargins(horizontal, top, horizontal, bottom);
             });
         }
+        // TODO: 2022/4/18 default track selector override to get real resolution
         exoPlayer = new SimpleExoPlayer.Builder(this)
                 .setSeekForwardIncrementMs(5000)
                 .setSeekBackIncrementMs(5000)

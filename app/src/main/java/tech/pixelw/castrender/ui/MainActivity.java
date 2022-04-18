@@ -10,8 +10,8 @@ import androidx.databinding.DataBindingUtil;
 import tech.pixelw.castrender.R;
 import tech.pixelw.castrender.ui.browser.MediaBrowserActivity;
 import tech.pixelw.castrender.ui.controller.ControllerActivity;
+import tech.pixelw.castrender.ui.render.PlayerActivity;
 import tech.pixelw.castrender.ui.render.RenderManager;
-import tech.pixelw.castrender.ui.render.music.MusicPlayerActivity;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -28,7 +28,7 @@ public class MainActivity extends AppCompatActivity {
     public final class Handler {
         public void openOnClick(View v) {
             MainActivity.this.startActivity(new Intent(
-                    MainActivity.this, MusicPlayerActivity.class));
+                    MainActivity.this, PlayerActivity.class));
         }
 
         public void mediaBrowserOpen(View v) {

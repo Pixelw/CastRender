@@ -3,6 +3,7 @@
   <component name="DesignSurface">
     <option name="filePathToZoomLevelMap">
       <map>
+        <entry key="..\:/AndroidProject/CastRender/app/src/main/res/drawable/ic_baseline_perm_media_24.xml" value="0.1675" />
         <entry key="..\:/AndroidProject/CastRender/app/src/main/res/drawable/item_onscreen_bg.xml" value="0.19270833333333334" />
         <entry key="..\:/AndroidProject/CastRender/app/src/main/res/layout/activity_main.xml" value="0.13020833333333334" />
         <entry key="..\:/AndroidProject/CastRender/app/src/main/res/layout/activity_music_player.xml" value="0.20854700854700856" />

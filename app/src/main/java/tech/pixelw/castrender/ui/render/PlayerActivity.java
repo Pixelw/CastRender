@@ -4,6 +4,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.text.TextUtils;
+import android.util.DisplayMetrics;
 import android.view.KeyEvent;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -117,6 +118,10 @@ public class PlayerActivity extends AppCompatActivity implements ExoRenderContro
             }
         }));
         onNewIntent(getIntent());
+        // test hisi
+        DisplayMetrics displayMetrics = new DisplayMetrics();
+        getWindowManager().getDefaultDisplay().getRealMetrics(displayMetrics);
+        LogUtil.w(TAG, "w" + displayMetrics.widthPixels + " h" + displayMetrics.heightPixels);
     }
 
 

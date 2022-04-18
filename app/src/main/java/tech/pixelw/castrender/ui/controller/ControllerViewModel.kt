@@ -231,6 +231,7 @@ class ControllerViewModel : ViewModel(), ControllerRegListener {
         const val TAG = "ControllerVm"
         const val VOLUME_STEP = 7
         const val UPDATE_INTERVAL = 500L
+        // TODO: 降低刷新率
     }
 
 }

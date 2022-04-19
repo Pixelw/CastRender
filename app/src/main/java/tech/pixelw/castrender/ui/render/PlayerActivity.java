@@ -2,12 +2,14 @@ package tech.pixelw.castrender.ui.render;
 
 import android.content.Context;
 import android.content.Intent;
+import android.os.Build;
 import android.os.Bundle;
 import android.text.TextUtils;
 import android.util.DisplayMetrics;
 import android.view.KeyEvent;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.SurfaceView;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
@@ -91,6 +93,14 @@ public class PlayerActivity extends AppCompatActivity implements ExoRenderContro
             });
         }
         // TODO: 2022/4/18 default track selector override to get real resolution
+        if (Build.MODEL.contains("CM101")) {
+            int type = 100;
+            LogUtil.w(TAG, "CM101s-2 surfaceView tweaks " + type);
+            View surface = binding.exoPlayerView.getVideoSurfaceView();
+            if (surface instanceof SurfaceView) {
+                ((SurfaceView) surface).getHolder().setType(type);
+            }
+        }
         DefaultRenderersFactory renderersFactory = new DefaultRenderersFactory(this).setExtensionRendererMode(DefaultRenderersFactory.EXTENSION_RENDERER_MODE_ON);
         exoPlayer = new SimpleExoPlayer.Builder(this, renderersFactory)
                 .setSeekForwardIncrementMs(5000)

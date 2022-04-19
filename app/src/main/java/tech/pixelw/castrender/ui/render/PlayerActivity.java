@@ -2,6 +2,7 @@ package tech.pixelw.castrender.ui.render;
 
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.PixelFormat;
 import android.os.Build;
 import android.os.Bundle;
 import android.text.TextUtils;
@@ -9,6 +10,7 @@ import android.util.DisplayMetrics;
 import android.view.KeyEvent;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.SurfaceHolder;
 import android.view.SurfaceView;
 import android.view.View;
 import android.view.ViewGroup;
@@ -94,14 +96,15 @@ public class PlayerActivity extends AppCompatActivity implements ExoRenderContro
         }
         // TODO: 2022/4/18 default track selector override to get real resolution
         if (Build.MODEL.contains("CM101")) {
-            int type = 100;
-            LogUtil.w(TAG, "CM101s-2 surfaceView tweaks " + type);
             View surface = binding.exoPlayerView.getVideoSurfaceView();
             if (surface instanceof SurfaceView) {
+                int type = SurfaceHolder.SURFACE_TYPE_NORMAL;
+                LogUtil.w(TAG, "CM101s-2 surfaceView tweaks " + type);
                 ((SurfaceView) surface).getHolder().setType(type);
+                ((SurfaceView) surface).getHolder().setFormat(PixelFormat.RGBA_8888);
             }
         }
-        DefaultRenderersFactory renderersFactory = new DefaultRenderersFactory(this).setExtensionRendererMode(DefaultRenderersFactory.EXTENSION_RENDERER_MODE_ON);
+        DefaultRenderersFactory renderersFactory = new DefaultRenderersFactory(this).setExtensionRendererMode(DefaultRenderersFactory.EXTENSION_RENDERER_MODE_PREFER);
         exoPlayer = new SimpleExoPlayer.Builder(this, renderersFactory)
                 .setSeekForwardIncrementMs(5000)
                 .setSeekBackIncrementMs(5000)

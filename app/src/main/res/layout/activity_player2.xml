@@ -54,6 +54,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:fontFamily="sans-serif-black"
+                    android:textSize="@dimen/text_size_s4"
                     android:textAppearance="?attr/textAppearanceSubtitle1"
                     tools:text="00:12:11/01:12:22" />
 
@@ -87,6 +88,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginStart="6dp"
+                    android:textSize="@dimen/text_size_s5"
                     tools:text="2.0x Skipping" />
             </LinearLayout>
         </FrameLayout>

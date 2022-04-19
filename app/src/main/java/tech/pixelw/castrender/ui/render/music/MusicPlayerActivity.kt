@@ -58,7 +58,9 @@ class MusicPlayerActivity : AppCompatActivity(), ExoRenderControlImpl.ActivityCa
             }
             binding.vm = this
         }
-        exoplayer = SimpleExoPlayer.Builder(this)
+        val defaultRenderersFactory =
+            DefaultRenderersFactory(this).setExtensionRendererMode(DefaultRenderersFactory.EXTENSION_RENDERER_MODE_ON)
+        exoplayer = SimpleExoPlayer.Builder(this, defaultRenderersFactory)
             .setAudioAttributes(
                 AudioAttributes.Builder().setUsage(C.USAGE_MEDIA)
                     .setContentType(C.CONTENT_TYPE_MUSIC).build(), true

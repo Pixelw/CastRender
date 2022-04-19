@@ -26,8 +26,8 @@
 
         <androidx.appcompat.widget.AppCompatImageView
             android:id="@+id/icon_media"
-            android:layout_width="48dp"
-            android:layout_height="48dp"
+            android:layout_width="@dimen/dip48"
+            android:layout_height="@dimen/dip48"
             android:src="@{item.icon}"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintStart_toStartOf="parent"
@@ -38,8 +38,9 @@
             android:id="@+id/title_media"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_marginStart="16dp"
+            android:layout_marginStart="@dimen/margin_b4"
             android:text="@{item.title}"
+            android:textSize="@dimen/text_size_s4"
             android:textAppearance="?attr/textAppearanceSubtitle1"
             app:layout_constraintBottom_toTopOf="@+id/textView2"
             app:layout_constraintEnd_toEndOf="parent"
@@ -50,8 +51,9 @@
         <TextView
             android:id="@+id/textView2"
             android:layout_width="0dp"
+            android:textSize="@dimen/text_size_s5"
             android:layout_height="wrap_content"
-            android:layout_marginTop="4dp"
+            android:layout_marginTop="@dimen/margin_b1"
             android:text="@{item.subtitle}"
             android:textAppearance="?attr/textAppearanceSubtitle2"
             android:visibility="@{item.subtitle == null ? View.GONE: View.VISIBLE}"

@@ -12,21 +12,23 @@
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:paddingHorizontal="16dp"
-        android:paddingBottom="16dp">
+        android:paddingHorizontal="@dimen/margin_b4"
+        android:paddingBottom="@dimen/margin_b4">
 
         <ImageView
             android:id="@+id/iv_info"
-            android:layout_width="24dp"
-            android:layout_height="24dp"
+            android:layout_width="@dimen/dip24"
+            android:layout_height="@dimen/dip24"
             app:mediaInfoIcon="@{track}"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toTopOf="parent"
             tools:srcCompat="@tools:sample/avatars" />
+
         <TextView
             android:id="@+id/tv_info_track_id"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:textSize="@dimen/text_size_s5"
             android:text="@{@string/track + track.trackId}"
             android:textAppearance="?attr/textAppearanceSubtitle2"
             app:layout_constraintStart_toStartOf="parent"
@@ -34,11 +36,11 @@
             app:layout_constraintBottom_toBottomOf="@id/iv_info"
             tools:text="@tools:sample/lorem" />
 
-
         <TextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="@{track.description}"
+            android:textSize="@dimen/text_size_s5"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintTop_toBottomOf="@id/iv_info"
             tools:text="@tools:sample/lorem/random" />

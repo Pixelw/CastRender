@@ -24,8 +24,8 @@
 
         <androidx.appcompat.widget.AppCompatImageView
             android:id="@+id/iv_album_art"
-            android:layout_width="200dp"
-            android:layout_height="200dp"
+            android:layout_width="@dimen/dip200"
+            android:layout_height="@dimen/dip200"
             android:elevation="5dp"
             app:imageSrc="@{vm.mediaEntity.mediaArtUrl}"
             app:layout_constraintBottom_toBottomOf="parent"
@@ -38,10 +38,12 @@
             android:id="@+id/tv_track_name"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_marginTop="8dp"
+            android:layout_marginTop="@dimen/margin_b2"
             android:text="@{vm.mediaEntity.title.trim()}"
             android:textAppearance="@style/TextAppearance.AppCompat.Light.SearchResult.Subtitle"
             android:textStyle="bold"
+            android:textColor="?editTextColor"
+            android:textSize="@dimen/text_size_s4"
             app:layout_constraintEnd_toEndOf="@+id/iv_album_art"
             app:layout_constraintStart_toStartOf="@id/iv_album_art"
             app:layout_constraintTop_toBottomOf="@id/iv_album_art"
@@ -54,6 +56,8 @@
             android:textAppearance="@style/TextAppearance.MaterialComponents.Body2"
             app:layout_constraintEnd_toEndOf="@id/iv_album_art"
             app:layout_constraintStart_toStartOf="@id/iv_album_art"
+            android:textSize="@dimen/text_size_s4"
+            android:textColor="?colorControlNormal"
             app:layout_constraintTop_toBottomOf="@id/tv_track_name"
             tools:text="@tools:sample/first_names" />
 
@@ -61,7 +65,7 @@
             android:id="@+id/rv_lyrics"
             android:layout_width="0dp"
             android:layout_height="0dp"
-            android:layout_marginHorizontal="32dp"
+            android:layout_marginHorizontal="@dimen/margin_b8"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="@id/guideline2"

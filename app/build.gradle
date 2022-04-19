@@ -51,6 +51,7 @@ dependencies {
     implementation 'com.google.android.exoplayer:exoplayer-ui:2.15.1'
     implementation 'com.google.android.exoplayer:exoplayer-hls:2.15.1'
 
+    implementation fileTree(dir: 'libs', include: ['*.jar', '*.aar'])
     implementation(project(':dmr-core'))
     implementation(project(':dmp-core'))
     implementation(project(':dmc-core'))

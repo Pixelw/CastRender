@@ -17,7 +17,7 @@
         android:id="@+id/cl_controller_safe_zone"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_margin="16dp">
+        android:layout_margin="@dimen/margin_b4">
 
         <com.google.android.material.appbar.MaterialToolbar
             android:id="@+id/player_toolbar"
@@ -60,6 +60,7 @@
             <TextView
                 android:id="@id/exo_position"
                 tools:text="00:01"
+                android:textSize="@dimen/text_size_s4"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content" />
 
@@ -76,6 +77,7 @@
             app:layout_constraintTop_toTopOf="@id/v_slider_placeholder"
             android:layout_marginTop="18dp"
             tools:text="17:41"
+            android:textSize="@dimen/text_size_s4"
             android:layout_marginEnd="6dp"
             android:id="@id/exo_duration"
             android:layout_width="wrap_content"
@@ -87,9 +89,10 @@
             android:id="@+id/ctrl_title"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginHorizontal="6dp"
-            android:layout_marginBottom="16dp"
+            android:layout_marginHorizontal="@dimen/margin_b1_5"
+            android:layout_marginBottom="@dimen/margin_b1"
             tools:text="Media Title"
+            android:textSize="@dimen/text_size_s2"
             android:textAppearance="?attr/textAppearanceHeadline5"
             android:textStyle="bold"
             app:layout_constraintBottom_toTopOf="@id/v_slider_placeholder"

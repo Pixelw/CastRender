@@ -1,4 +1,18 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <dimen name="controller_button_size">50dp</dimen>
+    <dimen name="text_size_s1">34sp</dimen>
+    <dimen name="text_size_s2">24sp</dimen>
+    <dimen name="text_size_s3">20sp</dimen>
+    <dimen name="text_size_s4">16sp</dimen>
+    <dimen name="text_size_s5">14sp</dimen>
+    <dimen name="margin_b1">4dp</dimen>
+    <dimen name="margin_b1_5">6dp</dimen>
+    <dimen name="margin_b2">8dp</dimen>
+    <dimen name="margin_b3">12dp</dimen>
+    <dimen name="margin_b4">16dp</dimen>
+    <dimen name="margin_b8">32dp</dimen>
+    <dimen name="dip24">24dp</dimen>
+    <dimen name="dip48">48dp</dimen>
+    <dimen name="dip200">200dp</dimen>
 </resources>

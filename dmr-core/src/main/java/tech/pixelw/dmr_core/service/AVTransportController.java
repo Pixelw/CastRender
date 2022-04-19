@@ -4,6 +4,8 @@ package tech.pixelw.dmr_core.service;
 import android.content.Context;
 import android.util.Log;
 
+import androidx.annotation.Nullable;
+
 import org.fourthline.cling.model.ModelUtil;
 import org.fourthline.cling.model.types.ErrorCode;
 import org.fourthline.cling.model.types.UnsignedIntegerFourBytes;
@@ -123,7 +125,7 @@ public class AVTransportController implements IRendererInterface.IAVTransportCon
     }
 
     @Override
-    public void setAVTransportURI(String currentURI, String currentURIMetaData) throws AVTransportException {
+    public void setAVTransportURI(@Nullable String currentURI, @Nullable String currentURIMetaData) throws AVTransportException {
         try {
             new URI(currentURI);
         } catch (Exception ex) {

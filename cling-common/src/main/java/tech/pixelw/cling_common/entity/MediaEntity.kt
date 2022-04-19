@@ -2,6 +2,7 @@ package tech.pixelw.cling_common.entity
 
 import android.os.Parcel
 import android.os.Parcelable
+import android.text.TextUtils
 import android.util.Log
 import org.fourthline.cling.model.ModelUtil
 import org.fourthline.cling.support.model.DIDLObject
@@ -58,7 +59,8 @@ data class MediaEntity(val mediaUrl: String?) : Parcelable {
         const val TYPE_AUDIO = 1
         private val NULL_VALUES = listOf("unknown", "null")
 
-        fun parseFromDIDL(didlMeta: String): MediaEntity? {
+        fun parseFromDIDL(didlMeta: String?): MediaEntity? {
+            if (TextUtils.isEmpty(didlMeta)) return null
             try {
                 val item = CustomDIDLParser().parse(didlMeta).items[0]
                 return MediaEntity(item.resources[0].value).apply {

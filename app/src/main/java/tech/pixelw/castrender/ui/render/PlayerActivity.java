@@ -91,7 +91,7 @@ public class PlayerActivity extends AppCompatActivity implements ExoRenderContro
             });
         }
         // TODO: 2022/4/18 default track selector override to get real resolution
-        DefaultRenderersFactory renderersFactory = new DefaultRenderersFactory(this).setExtensionRendererMode(DefaultRenderersFactory.EXTENSION_RENDERER_MODE_ON);
+        DefaultRenderersFactory renderersFactory = new DefaultRenderersFactory(this).setExtensionRendererMode(DefaultRenderersFactory.EXTENSION_RENDERER_MODE_PREFER);
         exoPlayer = new SimpleExoPlayer.Builder(this, renderersFactory)
                 .setSeekForwardIncrementMs(5000)
                 .setSeekBackIncrementMs(5000)

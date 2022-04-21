@@ -12,4 +12,6 @@
     <color name="gradient_center_color">#1A000000</color>
     <color name="gradient_start_color">#1A000000</color>
     <color name="black">#000000</color>
+    <color name="gray">#858585</color>
+    <color name="trans_white">#50ffffff</color>
 </resources>

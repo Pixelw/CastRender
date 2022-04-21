@@ -94,7 +94,6 @@ public class PlayerActivity extends AppCompatActivity implements ExoRenderContro
                 lpOsd.setMargins(horizontal, top, horizontal, bottom);
             });
         }
-        // TODO: 2022/4/18 default track selector override to get real resolution
         if (Build.MODEL.contains("CM101")) {
             View surface = binding.exoPlayerView.getVideoSurfaceView();
             if (surface instanceof SurfaceView) {

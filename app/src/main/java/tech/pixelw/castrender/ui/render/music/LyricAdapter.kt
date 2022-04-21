@@ -1,5 +1,6 @@
 package tech.pixelw.castrender.ui.render.music
 
+import android.animation.ValueAnimator
 import android.os.Looper
 import android.view.LayoutInflater
 import android.view.ViewGroup
@@ -14,6 +15,8 @@ class LyricAdapter : RecyclerView.Adapter<LyricAdapter.LyricVH>(), Player.Listen
 
     companion object {
         private const val TAG = "LyricAdapter"
+        const val unselectedAlpha = 0.4f
+        const val selectedAlpha = 1.0f
     }
 
     var recyclerView: RecyclerView? = null
@@ -27,6 +30,10 @@ class LyricAdapter : RecyclerView.Adapter<LyricAdapter.LyricVH>(), Player.Listen
             field = value
             field?.addListener(this)
         }
+    private val fadeInAnimator = ValueAnimator.ofFloat(unselectedAlpha, selectedAlpha).apply {
+        duration = 550L
+    }
+//    val fadeOutAnimator = ValueAnimator.ofFloat(selectedAlpha, unselectedAlpha)
 
     private val handler = android.os.Handler(Looper.getMainLooper())
     private val refreshJob = object : Runnable {
@@ -66,6 +73,7 @@ class LyricAdapter : RecyclerView.Adapter<LyricAdapter.LyricVH>(), Player.Listen
     private fun stopSync() {
         handler.removeCallbacks(refreshJob)
         lastIndex = 1
+        fadeInAnimator.reverse()
     }
 
     /**
@@ -102,7 +110,17 @@ class LyricAdapter : RecyclerView.Adapter<LyricAdapter.LyricVH>(), Player.Listen
     }
 
     private fun scrollToPos(pos: Int) {
-        recyclerView?.smoothScrollToPosition(pos)
+        val viewAtPos = recyclerView?.run {
+            smoothScrollToPosition(pos)
+            findViewHolderForAdapterPosition(pos)
+        }
+        if (viewAtPos is LyricVH) {
+            fadeInAnimator.reverse()
+            fadeInAnimator.removeAllUpdateListeners()
+            fadeInAnimator.addUpdateListener(viewAtPos)
+            fadeInAnimator.start()
+        }
+
     }
 
     override fun onIsPlayingChanged(isPlaying: Boolean) {
@@ -124,9 +142,15 @@ class LyricAdapter : RecyclerView.Adapter<LyricAdapter.LyricVH>(), Player.Listen
     }
 
 
-    class LyricVH(val binding: ItemLyricsBinding) : RecyclerView.ViewHolder(binding.root) {
+    class LyricVH(val binding: ItemLyricsBinding) : RecyclerView.ViewHolder(binding.root),
+        ValueAnimator.AnimatorUpdateListener {
         fun bind(model: LyricsListModel) {
             binding.model = model
+            binding.clLyrics.alpha = unselectedAlpha
+        }
+
+        override fun onAnimationUpdate(animation: ValueAnimator?) {
+            binding.clLyrics.alpha = animation?.animatedValue as Float
         }
     }
 }

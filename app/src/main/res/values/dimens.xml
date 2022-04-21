@@ -15,4 +15,6 @@
     <dimen name="dip24">24dp</dimen>
     <dimen name="dip48">48dp</dimen>
     <dimen name="dip200">200dp</dimen>
+    <dimen name="line_1">1dp</dimen>
+    <dimen name="line_2">2dp</dimen>
 </resources>

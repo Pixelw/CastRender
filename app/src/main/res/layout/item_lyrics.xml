@@ -5,6 +5,10 @@
 
     <data>
 
+        <import type="android.text.TextUtils" />
+
+        <import type="android.view.View" />
+
         <variable
             name="model"
             type="tech.pixelw.castrender.ui.render.music.lrc.LyricsListModel" />
@@ -14,9 +18,10 @@
         android:id="@+id/cl_lyrics"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:focusable="true"
-        android:clickable="true"
+        android:alpha="0.4"
         android:background="@drawable/selector_lyrics_ripple"
+        android:clickable="true"
+        android:focusable="true"
         android:paddingVertical="@dimen/margin_b4">
 
         <TextView
@@ -26,6 +31,7 @@
             android:text="@{model.upperLine()}"
             android:textAppearance="@style/TextAppearance.MaterialComponents.Subtitle2"
             android:textSize="@dimen/text_size_s5"
+            android:visibility="@{TextUtils.isEmpty(model.upperLine())?View.GONE: View.VISIBLE}"
             app:layout_constraintEnd_toEndOf="@id/tv_lyrics"
             app:layout_constraintStart_toStartOf="@id/tv_lyrics"
             app:layout_constraintTop_toTopOf="parent"
@@ -38,6 +44,7 @@
             android:text="@{model.middleLine()}"
             android:textAppearance="@style/TextAppearance.MaterialComponents.Headline5"
             android:textSize="@dimen/text_size_s2"
+            android:visibility="@{TextUtils.isEmpty(model.middleLine())?View.GONE: View.VISIBLE}"
             app:layout_constraintEnd_toEndOf="@id/guideline_lyrics"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@id/tv_top"
@@ -50,6 +57,7 @@
             android:text="@{model.bottomLine()}"
             android:textAppearance="@style/TextAppearance.MaterialComponents.Subtitle2"
             android:textSize="@dimen/text_size_s5"
+            android:visibility="@{TextUtils.isEmpty(model.bottomLine())?View.GONE: View.VISIBLE}"
             app:layout_constraintEnd_toEndOf="@id/tv_lyrics"
             app:layout_constraintStart_toStartOf="@id/tv_lyrics"
             app:layout_constraintTop_toBottomOf="@id/tv_lyrics"
@@ -60,7 +68,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:orientation="vertical"
-            app:layout_constraintGuide_end="32dp" />
+            app:layout_constraintGuide_percent="0.9" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>

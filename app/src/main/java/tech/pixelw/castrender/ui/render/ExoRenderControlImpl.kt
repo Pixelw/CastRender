@@ -10,6 +10,7 @@ import org.fourthline.cling.support.model.TransportState
 import tech.pixelw.castrender.utils.LogUtil
 import tech.pixelw.cling_common.entity.MediaEntity
 import tech.pixelw.dmr_core.IDLNARenderControl
+import kotlin.math.abs
 
 /**
  * All called in workers thread
@@ -78,7 +79,7 @@ class ExoRenderControlImpl(
     override fun seek(position: Long) {
         handler.post {
             LogUtil.i(TAG, "seekTo: $position")
-            if (position < 3000 && Math.abs(player!!.currentPosition - position) < 1000) {
+            if (position < 3000 && abs(player!!.currentPosition - position) < 1000) {
                 LogUtil.w(TAG, "ignored just start seek")
                 return@post
             }

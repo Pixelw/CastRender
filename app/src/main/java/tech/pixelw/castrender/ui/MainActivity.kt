@@ -12,7 +12,7 @@ import tech.pixelw.castrender.R
 import tech.pixelw.castrender.databinding.ActivityMainBinding
 import tech.pixelw.castrender.ui.browser.MediaBrowserActivity
 import tech.pixelw.castrender.ui.controller.ControllerActivity
-import tech.pixelw.castrender.ui.render.PlayerActivity
+import tech.pixelw.castrender.ui.render.MediaPlayerTestActivity
 import tech.pixelw.castrender.ui.render.RenderManager.renderService
 import tech.pixelw.castrender.utils.ImageLoader
 
@@ -30,7 +30,7 @@ class MainActivity : AppCompatActivity() {
         fun openOnClick(v: View?) {
             this@MainActivity.startActivity(
                 Intent(
-                    this@MainActivity, PlayerActivity::class.java
+                    this@MainActivity, MediaPlayerTestActivity::class.java
                 )
             )
         }

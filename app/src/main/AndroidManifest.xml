@@ -17,9 +17,12 @@
         android:theme="@style/Theme.CastRender"
         tools:targetApi="n">
         <activity
-            android:name=".ui.render.music.MusicPlayerActivity"
-            android:screenOrientation="sensorLandscape"
+            android:name=".ui.render.MediaPlayerTestActivity"
             android:exported="false" />
+        <activity
+            android:name=".ui.render.music.MusicPlayerActivity"
+            android:exported="false"
+            android:screenOrientation="sensorLandscape" />
         <activity
             android:name=".ui.controller.ControllerActivity"
             android:exported="false"

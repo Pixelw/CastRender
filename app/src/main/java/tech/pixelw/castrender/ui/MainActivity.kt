@@ -5,8 +5,8 @@ import android.os.Bundle
 import android.view.View
 import androidx.appcompat.app.AppCompatActivity
 import androidx.databinding.DataBindingUtil
+import androidx.lifecycle.lifecycleScope
 import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
 import tech.pixelw.castrender.R
 import tech.pixelw.castrender.databinding.ActivityMainBinding
@@ -23,7 +23,7 @@ class MainActivity : AppCompatActivity() {
         binding = DataBindingUtil.setContentView(this, R.layout.activity_main)
         binding.handler = Handler()
         renderService.hello()
-        loadBlur()
+//        loadBlur()
     }
 
     inner class Handler {
@@ -62,7 +62,7 @@ class MainActivity : AppCompatActivity() {
      * 设置UI背景
      */
     fun loadBlur() {
-        GlobalScope.launch(Dispatchers.Main) {
+        lifecycleScope.launch(Dispatchers.Main) {
             val bitmap = ImageLoader.loadBlurImage(
                 "http://p4.music.126.net/RA7-38iWarhO2xmiZ6TAwg165334668007.jpg",
                 this@MainActivity

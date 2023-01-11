@@ -37,7 +37,9 @@ android {
         dataBinding = true
     }
     packagingOptions {
-        exclude 'META-INF/beans.xml'
+        resources {
+            excludes += ['META-INF/beans.xml']
+        }
     }
     kotlinOptions {
         jvmTarget = '1.8'

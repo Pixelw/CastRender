@@ -14,24 +14,18 @@ android {
     }
 
     compileOptions {
-        sourceCompatibility JavaVersion.VERSION_1_6
-        targetCompatibility JavaVersion.VERSION_1_6
-    }
-    kotlinOptions {
-        jvmTarget = '1.6'
+        sourceCompatibility JavaVersion.VERSION_1_8
+        targetCompatibility JavaVersion.VERSION_1_8
     }
 }
 
 dependencies {
-    //noinspection GradleDependency
-    api 'org.fourthline.cling:cling-core:2.1.2-SNAPSHOT'
-    //noinspection GradleDependency
-    api 'org.fourthline.cling:cling-support:2.1.2-SNAPSHOT'
+    api 'org.fourthline.cling:cling-core:2.1.1'
+    api 'org.fourthline.cling:cling-support:2.1.1'
 //    api 'com.github.devin1014.DLNA-Cast:dlna-dmc:V1.0.0'
-    //noinspection GradleDependency
+    implementation 'org.slf4j:slf4j-api:1.7.36' // slf4j 2.x not yet supported
+//    implementation 'com.github.tony19:logback-android:2.0.1'
     api 'org.eclipse.jetty:jetty-server:8.1.21.v20160908'
-    //noinspection GradleDependency
     api 'org.eclipse.jetty:jetty-servlet:8.1.21.v20160908'
-    //noinspection GradleDependency
     api 'org.eclipse.jetty:jetty-client:8.1.21.v20160908'
 }

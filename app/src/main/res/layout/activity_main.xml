@@ -5,14 +5,14 @@
 
     <data>
         <variable
-            name="handler"
-            type="tech.pixelw.castrender.ui.MainActivity.Handler" />
+            name="handle"
+            type="tech.pixelw.castrender.ui.main.MainActivity.Handler" />
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        tools:context=".ui.MainActivity">
+        tools:context=".ui.main.MainActivity">
 
         <ImageView
             android:id="@+id/iv_blur"
@@ -30,7 +30,7 @@
             android:layout_width="120dp"
             android:layout_height="80dp"
             app:layout_constraintBottom_toBottomOf="parent"
-            android:onClick="@{handler::mediaBrowserOpen}"
+            android:onClick="@{handle::mediaBrowserOpen}"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent">
@@ -51,7 +51,7 @@
             android:layout_height="wrap_content"
             android:layout_marginBottom="16dp"
             android:gravity="center"
-            android:onClick="@{handler::openOnClick}"
+            android:onClick="@{handle::openOnClick}"
             android:text="@string/make_sure_to_disable_the_mobile_data"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
@@ -62,7 +62,7 @@
             style="@style/BorderlessImageButtonStyle"
             app:srcCompat="@drawable/ic_baseline_settings_remote_24"
             android:layout_height="50dp"
-            android:onClick="@{handler::controllerOpen}"
+            android:onClick="@{handle::controllerOpen}"
             android:layout_marginBottom="32dp"
             app:layout_constraintBottom_toTopOf="@+id/textView"
             app:layout_constraintEnd_toEndOf="parent"

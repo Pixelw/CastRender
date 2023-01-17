@@ -1,35 +1,29 @@
-<PreferenceScreen xmlns:app="http://schemas.android.com/apk/res-auto">
+<PreferenceScreen xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:android="http://schemas.android.com/apk/res/android">
 
-    <PreferenceCategory app:title="@string/messages_header">
+    <PreferenceCategory app:title="@string/app_settings">
+        <SwitchPreferenceCompat
+            app:key="@string/k_autostart"
+            android:title="@string/start_on_device"
+            android:defaultValue="true" />
+    </PreferenceCategory>
 
-        <EditTextPreference
-            app:key="signature"
-            app:title="@string/signature_title"
-            app:useSimpleSummaryProvider="true" />
+    <PreferenceCategory app:title="@string/player_settings">
 
         <ListPreference
-            app:defaultValue="reply"
-            app:entries="@array/reply_entries"
-            app:entryValues="@array/reply_values"
-            app:key="reply"
-            app:title="@string/reply_title"
+            app:title="@string/player_surface_type"
+            app:defaultValue="@string/v_surface_surface_view"
+            app:entries="@array/surface_type"
+            app:entryValues="@array/surface_type_values"
+            app:key="@string/k_player_surface_type"
             app:useSimpleSummaryProvider="true" />
 
     </PreferenceCategory>
 
-    <PreferenceCategory app:title="@string/sync_header">
-
-        <SwitchPreferenceCompat
-            app:key="sync"
-            app:title="@string/sync_title" />
-
-        <SwitchPreferenceCompat
-            app:dependency="sync"
-            app:key="attachment"
-            app:summaryOff="@string/attachment_summary_off"
-            app:summaryOn="@string/attachment_summary_on"
-            app:title="@string/attachment_title" />
-
+    <PreferenceCategory app:title="@string/about">
+        <Preference
+            app:title="Version 1.0.1"
+            app:summary="@string/check_update" />
     </PreferenceCategory>
 
 </PreferenceScreen>

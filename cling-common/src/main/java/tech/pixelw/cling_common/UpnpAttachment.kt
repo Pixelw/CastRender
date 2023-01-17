@@ -2,7 +2,7 @@ package tech.pixelw.cling_common
 
 import android.content.Context
 
-abstract class UpnpAttach : UpnpServiceManager.BinderCallback {
+abstract class UpnpAttachment : BinderCallback {
 
     protected var context: Context? = null
     open fun start(context: Context) {

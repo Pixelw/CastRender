@@ -18,7 +18,7 @@ import org.fourthline.cling.support.model.TransportState
 import tech.pixelw.castrender.K
 import tech.pixelw.castrender.R
 import tech.pixelw.castrender.databinding.ActivityMusicPlayerBinding
-import tech.pixelw.castrender.ui.render.ExoRenderControlImpl
+import tech.pixelw.castrender.ui.render.RenderControlImpl
 import tech.pixelw.castrender.ui.render.RenderManager
 import tech.pixelw.castrender.utils.CenterScrollLLM
 import tech.pixelw.castrender.utils.LogUtil
@@ -26,8 +26,8 @@ import tech.pixelw.castrender.utils.TopBottomMarginDecoration
 import tech.pixelw.cling_common.entity.MediaEntity
 import tech.pixelw.dmr_core.DLNARendererService
 
-class MusicPlayerActivity : AppCompatActivity(), ExoRenderControlImpl.ActivityCallback,
-    ExoRenderControlImpl.TransportStateCallback {
+class MusicPlayerActivity : AppCompatActivity(), RenderControlImpl.ActivityCallback,
+    RenderControlImpl.TransportStateCallback {
 
 
     private var service: DLNARendererService? = null
@@ -46,6 +46,7 @@ class MusicPlayerActivity : AppCompatActivity(), ExoRenderControlImpl.ActivityCa
             this,
             R.layout.activity_music_player
         ).apply {
+            exoplayer.addListener()
             lifecycleOwner = this@MusicPlayerActivity
             rvLyrics.layoutManager = CenterScrollLLM(this@MusicPlayerActivity)
             rvLyrics.adapter = lyricAdapter
@@ -77,7 +78,7 @@ class MusicPlayerActivity : AppCompatActivity(), ExoRenderControlImpl.ActivityCa
             }
         lyricAdapter.player = exoplayer
         service = RenderManager.renderService
-        service?.registerController(ExoRenderControlImpl(exoplayer, this, this))
+        service?.registerController(RenderControlImpl(exoplayer, this, this))
         onNewIntent(intent)
     }
 

@@ -1,4 +1,4 @@
-package tech.pixelw.castrender.ui;
+package tech.pixelw.castrender.utils;
 
 import android.widget.ImageView;
 

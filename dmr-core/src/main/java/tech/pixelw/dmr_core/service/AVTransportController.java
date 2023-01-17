@@ -136,6 +136,7 @@ public class AVTransportController implements IRendererInterface.IAVTransportCon
         mMediaInfo = new MediaInfo(currentURI, currentURIMetaData, new UnsignedIntegerFourBytes(1), "00:00:00", StorageMedium.NETWORK);
         mOriginPositionInfo = new PositionInfo(1, currentURIMetaData, currentURI);
         MediaEntity mediaEntity = MediaEntity.CREATOR.parseFromDIDL(currentURIMetaData);
+        Log.d(TAG, mediaEntity != null ? mediaEntity.toString() : "MediaEntity Null");
         mMediaControl.prepare(currentURI, mediaEntity);
     }
 

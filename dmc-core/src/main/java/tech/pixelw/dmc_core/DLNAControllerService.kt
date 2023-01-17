@@ -6,9 +6,9 @@ import org.fourthline.cling.controlpoint.ActionCallback
 import org.fourthline.cling.controlpoint.ControlPoint
 import org.fourthline.cling.registry.Registry
 import tech.pixelw.cling_common.SharedUpnpService
-import tech.pixelw.cling_common.UpnpAttach
+import tech.pixelw.cling_common.UpnpAttachment
 
-class DLNAControllerService : UpnpAttach() {
+class DLNAControllerService : UpnpAttachment() {
 
     private var controlPoint: ControlPoint? = null
     private var registry: Registry? = null

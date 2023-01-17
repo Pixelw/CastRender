@@ -41,7 +41,7 @@ import java.security.MessageDigest;
 import java.util.UUID;
 
 import tech.pixelw.cling_common.SharedUpnpService;
-import tech.pixelw.cling_common.UpnpAttach;
+import tech.pixelw.cling_common.UpnpAttachment;
 import tech.pixelw.dmr_core.service.AVTransportServiceImpl;
 import tech.pixelw.dmr_core.service.AudioRenderServiceImpl;
 import tech.pixelw.dmr_core.service.ConnectionManagerServiceImpl;
@@ -50,7 +50,7 @@ import tech.pixelw.dmr_core.service.RenderControlManager;
 /**
  * DMR
  */
-public class DLNARendererService extends UpnpAttach {
+public class DLNARendererService extends UpnpAttachment {
 
     private static final String TAG = "DLNARendererService";
 

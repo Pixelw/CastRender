@@ -8,6 +8,7 @@ import kotlinx.coroutines.Job
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 import java.util.*
+import kotlin.math.abs
 import kotlin.math.pow
 
 object TimeUtil {
@@ -16,7 +17,7 @@ object TimeUtil {
         sb.setLength(0)
         var timeMs = millis
         val prefix = if (timeMs < 0) "-" else ""
-        timeMs = Math.abs(timeMs)
+        timeMs = abs(timeMs)
         val totalSeconds = (timeMs + 500) / 1000
         val seconds = totalSeconds % 60
         val minutes = totalSeconds / 60 % 60
@@ -27,9 +28,7 @@ object TimeUtil {
             hours,
             minutes,
             seconds
-        )
-            .toString() else formatter.format("%s%02d:%02d", prefix, minutes, seconds)
-            .toString()
+        ).toString() else formatter.format("%s%02d:%02d", prefix, minutes, seconds).toString()
     }
 
     var sb = StringBuilder()

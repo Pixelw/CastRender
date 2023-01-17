@@ -1,4 +1,4 @@
-package tech.pixelw.castrender.ui
+package tech.pixelw.castrender.ui.main
 
 import android.content.Intent
 import android.os.Bundle
@@ -21,7 +21,7 @@ class MainActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = DataBindingUtil.setContentView(this, R.layout.activity_main)
-        binding.handler = Handler()
+        binding.handle = Handler()
         renderService.hello()
 //        loadBlur()
     }

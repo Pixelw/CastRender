@@ -1,0 +1,5 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="v_surface_surface_view">surface_surface_view</string>
+    <string name="v_surface_texture_view">surface_texture_view</string>
+</resources>

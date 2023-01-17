@@ -12,12 +12,12 @@ import org.fourthline.cling.support.contentdirectory.callback.Browse
 import org.fourthline.cling.support.model.BrowseFlag
 import org.fourthline.cling.support.model.DIDLContent
 import tech.pixelw.cling_common.SharedUpnpService
-import tech.pixelw.cling_common.UpnpAttach
+import tech.pixelw.cling_common.UpnpAttachment
 import tech.pixelw.cling_common.entity.IUpnpDevice
 import tech.pixelw.dmp_core.service.DirectoryRegListener
 import tech.pixelw.dmp_core.service.RegistryListener
 
-open class DLNAPlayerService : UpnpAttach() {
+open class DLNAPlayerService : UpnpAttachment() {
     private var registry: Registry? = null
     private var controlPoint: ControlPoint? = null
     var pendingListener: DirectoryRegListener? = null

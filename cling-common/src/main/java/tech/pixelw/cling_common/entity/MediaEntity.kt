@@ -7,7 +7,6 @@ import android.util.Log
 import org.fourthline.cling.model.ModelUtil
 import org.fourthline.cling.support.model.DIDLObject
 import org.fourthline.cling.support.model.item.AudioItem
-import org.fourthline.cling.support.model.item.MusicTrack
 import tech.pixelw.cling_common.CustomDIDLParser
 
 /**
@@ -15,8 +14,9 @@ import tech.pixelw.cling_common.CustomDIDLParser
  * @author Carl Su "Pixelw"
  * @date 2021/10/11
  */
-data class MediaEntity(val mediaUrl: String?) : Parcelable {
-    var title: String? = null
+class MediaEntity() : Parcelable {
+    var mediaUrl: String? = null
+    var title: String? = ""
     var casterName: String? = null
     var duration: Long = 1000
     var mediaType: Int = 0
@@ -27,7 +27,10 @@ data class MediaEntity(val mediaUrl: String?) : Parcelable {
     var album: String? = null
     var id: String? = null
 
-    constructor(parcel: Parcel) : this(parcel.readString()) {
+    fun durationInt() = duration.toInt()
+
+    constructor(parcel: Parcel) : this() {
+        mediaUrl = parcel.readString()
         title = parcel.readString()
         casterName = parcel.readString()
         duration = parcel.readLong()
@@ -54,6 +57,10 @@ data class MediaEntity(val mediaUrl: String?) : Parcelable {
         return 0
     }
 
+    override fun toString(): String {
+        return "MediaEntity(mediaUrl=$mediaUrl, title=$title, casterName=$casterName, duration=$duration, mediaType=$mediaType, mediaArtUrl=$mediaArtUrl, artist=$artist, album=$album, id=$id)"
+    }
+
     companion object CREATOR : Parcelable.Creator<MediaEntity> {
         const val TYPE_VIDEO = 0
         const val TYPE_AUDIO = 1
@@ -62,21 +69,19 @@ data class MediaEntity(val mediaUrl: String?) : Parcelable {
         fun parseFromDIDL(didlMeta: String?): MediaEntity? {
             if (TextUtils.isEmpty(didlMeta)) return null
             try {
-                val item = CustomDIDLParser().parse(didlMeta).items[0]
-                return MediaEntity(item.resources[0].value).apply {
-                    title = checkUnknown(item.title)
-                    checkUnknown(item.resources[0].duration)?.let {
+                val item = CustomDIDLParser().parse(didlMeta).items?.singleOrNull() ?: return null
+                return MediaEntity().apply {
+                    mediaUrl = item.resources?.singleOrNull()?.value
+                    title = item.title.checkUnknown()
+                    item.resources?.singleOrNull()?.duration?.checkUnknown()?.let {
                         duration = ModelUtil.fromTimeString(it)
                     }
-                    id = checkUnknown(item.id)
-                    mediaType = if (item is AudioItem || item is MusicTrack) {
-                        mediaArtUrl = checkUnknown(
-                            item.getFirstPropertyValue(DIDLObject.Property.UPNP.ALBUM_ART_URI::class.java)
-                                .toString()
-                        )
-                        artist = checkUnknown(item.creator)
-                        album =
-                            checkUnknown(item.getFirstPropertyValue(DIDLObject.Property.UPNP.ALBUM::class.java))
+                    id = item.id?.checkUnknown()
+                    mediaType = if (item is AudioItem) {
+                        mediaArtUrl = item.getFirstPropertyValue(DIDLObject.Property.UPNP.ALBUM_ART_URI::class.java)?.toString()
+                            .checkUnknown()
+                        artist = item.creator?.checkUnknown()
+                        album = item.getFirstPropertyValue(DIDLObject.Property.UPNP.ALBUM::class.java).checkUnknown()
                         TYPE_AUDIO
                     } else {
                         TYPE_VIDEO
@@ -88,14 +93,14 @@ data class MediaEntity(val mediaUrl: String?) : Parcelable {
             return null
         }
 
-        private fun checkUnknown(string: String?): String? {
-            if (string == null) return null
+        private fun String?.checkUnknown(): String? {
+            if (this == null) return null
             NULL_VALUES.forEach {
-                if (it.equals(string, true)) {
+                if (it.equals(this, true)) {
                     return null
                 }
             }
-            return string
+            return this
         }
 
         override fun createFromParcel(parcel: Parcel): MediaEntity {
@@ -106,4 +111,6 @@ data class MediaEntity(val mediaUrl: String?) : Parcelable {
             return arrayOfNulls(size)
         }
     }
+
+
 }

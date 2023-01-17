@@ -160,8 +160,8 @@ class LyricAdapter : RecyclerView.Adapter<LyricAdapter.LyricVH>(), Player.Listen
             }
         }
 
-        override fun onAnimationUpdate(animation: ValueAnimator?) {
-            val value = animation?.animatedValue as? Float
+        override fun onAnimationUpdate(animation: ValueAnimator) {
+            val value = animation.animatedValue as? Float
             value?.let {
                 binding.clLyrics.alpha = getAlphaValue(it)
                 binding.clLyrics.scaleX = getScaleValue(it)
@@ -178,10 +178,10 @@ class LyricAdapter : RecyclerView.Adapter<LyricAdapter.LyricVH>(), Player.Listen
         }
     }
 
-    override fun onAnimationStart(animation: Animator?) {
+    override fun onAnimationStart(animation: Animator) {
     }
 
-    override fun onAnimationEnd(animation: Animator?) {
+    override fun onAnimationEnd(animation: Animator) {
         if (animation is ValueAnimator) {
             when (animation) {
                 fadeInAnimator -> {
@@ -197,9 +197,9 @@ class LyricAdapter : RecyclerView.Adapter<LyricAdapter.LyricVH>(), Player.Listen
 
     }
 
-    override fun onAnimationCancel(animation: Animator?) {
+    override fun onAnimationCancel(animation: Animator) {
     }
 
-    override fun onAnimationRepeat(animation: Animator?) {
+    override fun onAnimationRepeat(animation: Animator) {
     }
 }

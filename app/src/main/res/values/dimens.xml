@@ -17,4 +17,8 @@
     <dimen name="dip200">200dp</dimen>
     <dimen name="line_1">1dp</dimen>
     <dimen name="line_2">2dp</dimen>
+
+
+    <dimen name="margin_min_b3">-12dp</dimen>
+    <dimen name="mtrl_slider_track_side_padding">8dp</dimen>
 </resources>

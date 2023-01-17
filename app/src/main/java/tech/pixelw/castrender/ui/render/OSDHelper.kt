@@ -4,26 +4,46 @@ import android.annotation.SuppressLint
 import android.os.Handler
 import android.os.Looper
 import android.view.View
+import android.view.ViewGroup
 import android.widget.LinearLayout
 import android.widget.TextView
+import androidx.core.graphics.Insets
 import com.google.android.material.progressindicator.LinearProgressIndicator
 import tech.pixelw.castrender.R
+import tech.pixelw.castrender.utils.LogUtil
+import tech.pixelw.castrender.utils.SafeZoneHelper
 import tech.pixelw.castrender.utils.TimeUtil
+import kotlin.math.max
 
 /**
  * 管理播放器上的OSD
  */
-class OSDHelper constructor(private val osdSafeZone: View) {
+class OSDHelper(private val safeZone: View) {
 
-    private var llSeekOsd: LinearLayout = osdSafeZone.findViewById(R.id.ll_osd_seek)
-    private var tvSeekTime: TextView = osdSafeZone.findViewById(R.id.tv_seek_time)
-    private var progressBar: LinearProgressIndicator = osdSafeZone.findViewById(R.id.progress_seek)
-    private var llFFWD: LinearLayout = osdSafeZone.findViewById(R.id.ll_osd_ffwd)
-    private var tvFFWD: TextView = osdSafeZone.findViewById(R.id.tv_fast_forward)
+    private var llSeekOsd: LinearLayout = safeZone.findViewById(R.id.ll_osd_seek)
+    private var tvSeekTime: TextView = safeZone.findViewById(R.id.tv_seek_time)
+    private var progressBar: LinearProgressIndicator = safeZone.findViewById(R.id.progress_seek)
+    private var llFFWD: LinearLayout = safeZone.findViewById(R.id.ll_osd_ffwd)
+    private var tvFFWD: TextView = safeZone.findViewById(R.id.tv_fast_forward)
 
     private val handler = Handler(Looper.getMainLooper())
     private val runnable = Runnable {
         llSeekOsd.visibility = View.INVISIBLE
+    }
+
+    init {
+        SafeZoneHelper.observe(safeZone, true, true) { insets: Insets ->
+            LogUtil.i("SafeZone", "SafeZone in pixels $insets")
+            val lp = safeZone.layoutParams as ViewGroup.MarginLayoutParams
+            val horizontal = max(
+                max(insets.left, insets.right),
+                max(lp.leftMargin, lp.rightMargin)
+            )
+            val top = max(lp.topMargin, insets.top)
+            val bottom = max(lp.bottomMargin, insets.bottom)
+            lp.setMargins(horizontal, top, horizontal, bottom)
+        }
+
     }
 
     @SuppressLint("SetTextI18n")
@@ -47,7 +67,7 @@ class OSDHelper constructor(private val osdSafeZone: View) {
         } else {
             View.INVISIBLE
         }
-        tvFFWD.text = speed.toString() + osdSafeZone.context.getString(R.string.xspeed_skip)
+        tvFFWD.text = speed.toString() + safeZone.context.getString(R.string.xspeed_skip)
     }
 
 

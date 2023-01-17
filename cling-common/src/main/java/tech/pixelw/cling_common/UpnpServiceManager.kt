@@ -57,7 +57,5 @@ object UpnpServiceManager {
         context.unbindService(connection)
     }
 
-    interface BinderCallback {
-        fun onBinderAttached(binder: SharedUpnpService.SharedBinder)
-    }
+
 }

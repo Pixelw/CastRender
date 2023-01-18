@@ -2,4 +2,5 @@
 <resources>
     <string name="k_player_surface_type">player_surface_type</string>
     <string name="k_autostart">app_autostart</string>
+    <string name="k_player_type">player_type</string>
 </resources>

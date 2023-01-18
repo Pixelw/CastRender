@@ -7,11 +7,11 @@
 
         <variable
             name="item"
-            type="tech.pixelw.castrender.ui.browser.entity.BrowserItem" />
+            type="tech.pixelw.castrender.feature.browser.entity.BrowserItem" />
 
         <variable
             name="clickListener"
-            type="tech.pixelw.castrender.ui.browser.MediaBrowserActivity.ItemHandler" />
+            type="tech.pixelw.castrender.feature.browser.MediaBrowserActivity.ItemHandler" />
 
         <import type="android.view.View" />
     </data>

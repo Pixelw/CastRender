@@ -7,7 +7,7 @@
 
         <variable
             name="vm"
-            type="tech.pixelw.castrender.ui.render.PlayerViewModel" />
+            type="tech.pixelw.castrender.feature.render.PlayerViewModel" />
 
         <import type="tech.pixelw.castrender.utils.TimeUtil" />
     </data>
@@ -17,7 +17,7 @@
         android:layout_height="match_parent"
         android:animateLayoutChanges="true"
         android:background="@android:color/black"
-        tools:context=".ui.render.PlayerActivity">
+        tools:context=".feature.render.PlayerActivity">
 
         <FrameLayout
             android:id="@+id/fr_play_container"
@@ -159,9 +159,7 @@
                 tools:text="Media Title" />
 
             <com.google.android.material.slider.Slider
-                android:valueFrom="0"
-                android:valueTo="@{vm.media.durationInt()}"
-                android:progress="@={vm.progressBarByMillis}"
+                app:sliderCustomListener="@{(value)->vm.onUserDragSlider(value)}"
                 android:id="@+id/slider"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"

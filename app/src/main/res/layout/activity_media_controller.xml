@@ -7,16 +7,17 @@
 
         <variable
             name="vm"
-            type="tech.pixelw.castrender.ui.controller.ControllerViewModel" />
+            type="tech.pixelw.castrender.feature.controller.ControllerViewModel" />
+
         <variable
             name="handler"
-            type="tech.pixelw.castrender.ui.controller.ControllerActivity.ControlHandler" />
+            type="tech.pixelw.castrender.feature.controller.ControllerActivity.ControlHandler" />
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        tools:context=".ui.controller.ControllerActivity">
+        tools:context=".feature.controller.ControllerActivity">
 
         <com.google.android.material.textfield.TextInputLayout
             style="@style/Widget.MaterialComponents.TextInputLayout.FilledBox.ExposedDropdownMenu"

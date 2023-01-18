@@ -18,29 +18,30 @@
         android:theme="@style/Theme.CastRender"
         tools:targetApi="n">
         <activity
-            android:name=".ui.render.MediaPlayerTestActivity"
+            android:name=".feature.render.MediaPlayerTestActivity"
             android:exported="false" />
         <activity
-            android:name=".ui.render.music.MusicPlayerActivity"
+            android:name=".feature.render.music.MusicPlayerActivity"
             android:exported="false"
             android:screenOrientation="sensorLandscape" />
         <activity
-            android:name=".ui.controller.ControllerActivity"
+            android:name=".feature.controller.ControllerActivity"
             android:exported="false"
             android:screenOrientation="portrait" />
         <activity
-            android:name=".ui.browser.MediaBrowserActivity"
+            android:name=".feature.browser.MediaBrowserActivity"
             android:exported="false" />
         <activity
-            android:name=".ui.settings.SettingsActivity"
+            android:name=".feature.settings.SettingsActivity"
             android:exported="false"
             android:label="@string/title_activity_settings" />
         <activity
-            android:name=".ui.render.PlayerActivity"
+            android:configChanges="keyboard|keyboardHidden|orientation|screenSize|screenLayout|smallestScreenSize|uiMode"
+            android:name=".feature.render.PlayerActivity"
             android:exported="true"
             android:screenOrientation="sensorLandscape" />
         <activity
-            android:name=".ui.main.MainActivity"
+            android:name=".feature.main.MainActivity"
             android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />

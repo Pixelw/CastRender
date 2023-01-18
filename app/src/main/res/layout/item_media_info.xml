@@ -6,7 +6,7 @@
     <data>
         <variable
             name="track"
-            type="tech.pixelw.castrender.ui.mediainfo.MediaInfo.Track" />
+            type="tech.pixelw.castrender.feature.mediainfo.MediaInfo.Track" />
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout

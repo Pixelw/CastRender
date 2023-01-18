@@ -7,13 +7,13 @@
 
         <variable
             name="vm"
-            type="tech.pixelw.castrender.ui.render.music.MusicViewModel" />
+            type="tech.pixelw.castrender.feature.render.music.MusicViewModel" />
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        tools:context=".ui.render.music.MusicPlayerActivity">
+        tools:context=".feature.render.music.MusicPlayerActivity">
 
         <androidx.constraintlayout.widget.Guideline
             android:id="@+id/guideline2"
@@ -27,7 +27,7 @@
             android:layout_width="@dimen/dip200"
             android:layout_height="@dimen/dip200"
             android:elevation="5dp"
-            app:imageSrc="@{vm.mediaEntity.mediaArtUrl}"
+            app:imageSrc="@{vm.media.mediaArtUrl}"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="@id/guideline2"
             app:layout_constraintStart_toStartOf="parent"
@@ -39,7 +39,7 @@
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginTop="@dimen/margin_b2"
-            android:text="@{vm.mediaEntity.title.trim()}"
+            android:text="@{vm.media.title.trim()}"
             android:textAppearance="@style/TextAppearance.AppCompat.Light.SearchResult.Subtitle"
             android:textStyle="bold"
             android:textColor="?editTextColor"
@@ -52,7 +52,7 @@
         <TextView
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:text="@{vm.mediaEntity.artist.trim() + ` ` +vm.mediaEntity.album.trim()}"
+            android:text="@{vm.media.artist.trim() + ` ` +vm.media.album.trim()}"
             android:textAppearance="@style/TextAppearance.MaterialComponents.Body2"
             app:layout_constraintEnd_toEndOf="@id/iv_album_art"
             app:layout_constraintStart_toStartOf="@id/iv_album_art"

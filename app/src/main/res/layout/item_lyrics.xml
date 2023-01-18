@@ -11,7 +11,7 @@
 
         <variable
             name="model"
-            type="tech.pixelw.castrender.ui.render.music.lrc.LyricsListModel" />
+            type="tech.pixelw.castrender.feature.render.music.lrc.LyricsListModel" />
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout

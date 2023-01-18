@@ -1,29 +1,36 @@
-<PreferenceScreen xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:android="http://schemas.android.com/apk/res/android">
+<PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
 
     <PreferenceCategory app:title="@string/app_settings">
         <SwitchPreferenceCompat
-            app:key="@string/k_autostart"
+            android:defaultValue="true"
             android:title="@string/start_on_device"
-            android:defaultValue="true" />
+            app:key="@string/k_autostart" />
     </PreferenceCategory>
 
     <PreferenceCategory app:title="@string/player_settings">
 
         <ListPreference
-            app:title="@string/player_surface_type"
+            app:defaultValue="@string/v_player_exo"
+            app:entries="@array/player_types"
+            app:entryValues="@array/player_types_values"
+            app:title="@string/player_type"
+            app:useSimpleSummaryProvider="true" />
+
+        <ListPreference
             app:defaultValue="@string/v_surface_surface_view"
             app:entries="@array/surface_type"
             app:entryValues="@array/surface_type_values"
             app:key="@string/k_player_surface_type"
+            app:title="@string/player_surface_type"
             app:useSimpleSummaryProvider="true" />
 
     </PreferenceCategory>
 
     <PreferenceCategory app:title="@string/about">
         <Preference
-            app:title="Version 1.0.1"
-            app:summary="@string/check_update" />
+            app:summary="@string/check_update"
+            app:title="Version 1.0.1" />
     </PreferenceCategory>
 
 </PreferenceScreen>

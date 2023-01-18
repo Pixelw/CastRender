@@ -19,6 +19,11 @@
     <string name="player_surface_type">Player Surface Type</string>
     <string name="check_update">Check Update</string>
     <string name="about">About</string>
+    <string name="surface_view">SurfaceView</string>
+    <string name="texture_view">TextureView</string>
+    <string name="player_type">Player Type</string>
+    <string name="exo_player">ExoPlayer</string>
+    <string name="sys_player">System MediaPlayer</string>
 
     <!-- Preference Titles -->
 </resources>

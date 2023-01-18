@@ -1,12 +1,22 @@
 <resources>
     <!-- Reply Preference -->
     <string-array name="surface_type">
-        <item>SurfaceView</item>
-        <item>TextureView</item>
+        <item>@string/surface_view</item>
+        <item>@string/texture_view</item>
     </string-array>
 
     <string-array name="surface_type_values">
-        <item>surface</item>
-        <item>texture</item>
+        <item>@string/v_surface_surface_view</item>
+        <item>@string/v_surface_texture_view</item>
+    </string-array>
+
+    <string-array name="player_types">
+        <item>@string/exo_player</item>
+        <item>@string/sys_player</item>
+    </string-array>
+
+    <string-array name="player_types_values">
+        <item>@string/v_player_exo</item>
+        <item>@string/v_player_system</item>
     </string-array>
 </resources>

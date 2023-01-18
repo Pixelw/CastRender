@@ -3,7 +3,7 @@ package tech.pixelw.castrender.receiver
 import android.content.BroadcastReceiver
 import android.content.Context
 import android.content.Intent
-import tech.pixelw.castrender.ui.render.RenderManager
+import tech.pixelw.castrender.feature.render.RenderManager
 
 class BootReceiver : BroadcastReceiver() {
     override fun onReceive(context: Context?, intent: Intent?) {

@@ -27,7 +27,7 @@ class KeyHandler constructor(private val player: IPlayer<*>) {
             } else {
                 player.seekForward()
             }
-            osdHelper.setSeekOsd(true, player.position, player.getDuration())
+            osdHelper.setSeekOsd(true, player.position, player.duration)
             handler.postDelayed(this, 300)
         }
     }

@@ -20,14 +20,6 @@ class RenderControlImpl(private val player: IPlayer<*>, private val activityCall
 
     private val handler = Handler(Looper.getMainLooper())
 
-    @Volatile
-    private var duration: Long = 0
-
-    @Volatile
-    private var position: Long = 0
-    private var speed = 0f
-    private var transportState = TransportState.NO_MEDIA_PRESENT
-
     override fun type() = TYPE
 
     override fun prepare(uri: String?, entity: MediaEntity?) {
@@ -35,8 +27,6 @@ class RenderControlImpl(private val player: IPlayer<*>, private val activityCall
             entity?.let { activityCallback.setMediaEntity(it) }
             uri?.let {
                 player.prepareMedia(it)
-                duration = 0
-                position = duration
             }
         }
     }
@@ -79,22 +69,25 @@ class RenderControlImpl(private val player: IPlayer<*>, private val activityCall
     }
 
     override fun getPosition(): Long {
+        val position = player.position
         LogUtil.d(TAG, "getPosition=$position")
         return position
     }
 
     override fun getDuration(): Long {
+        val duration = player.duration
         LogUtil.d(TAG, "getDuration=$duration")
         return duration
     }
 
     override fun getTransportState(): TransportState {
-        LogUtil.d(TAG, "getState=" + transportState.name)
-        return transportState
+        val state = player.mediaSessionState.toTransportState()
+        LogUtil.d(TAG, "getState=" + state.name)
+        return state
     }
 
     override fun getSpeed(): Float {
-        return speed
+        return player.speed
     }
 
     interface ActivityCallback {
@@ -103,6 +96,7 @@ class RenderControlImpl(private val player: IPlayer<*>, private val activityCall
     }
 
     companion object {
+
         private const val TAG = "RenderControlImpl"
         const val TYPE = 101
     }

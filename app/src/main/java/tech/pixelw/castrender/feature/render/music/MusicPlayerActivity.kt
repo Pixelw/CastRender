@@ -54,7 +54,9 @@ class MusicPlayerActivity : AppCompatActivity(), RenderControlImpl.ActivityCallb
         }
         player = ExoPlayerImplementation(this, audioType = C.AUDIO_CONTENT_TYPE_MUSIC)
         lyricAdapter.player = player
-
+        vm.connectToService(player) {
+            finish()
+        }
         onNewIntent(intent)
     }
 

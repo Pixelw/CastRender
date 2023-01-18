@@ -62,7 +62,7 @@ class PlayerActivity : AppCompatActivity() {
             retriever = MediaInfoRetriever(player.playerInstance() as ExoPlayer)
         }
         viewModel.playPosition.observe(this) {
-            val duration = player.getDuration()
+            val duration = player.duration
             if (duration > 0) {
                 viewModel.progressBarPercent.value = max(1f, player.position.toFloat() / duration.toFloat())
             } else {
@@ -72,7 +72,9 @@ class PlayerActivity : AppCompatActivity() {
         keyHandler = KeyHandler(player)
         osdHelper = OSDHelper(binding.clSafezone)
         keyHandler.attachOsd(osdHelper)
-
+        viewModel.connectToService(player) {
+            finish()
+        }
         onNewIntent(intent)
     }
 

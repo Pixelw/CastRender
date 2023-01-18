@@ -19,6 +19,11 @@ abstract class IPlayer<P> {
             }
         }
 
+    var duration: Long = 0
+        protected set
+
+    protected var ticks: Int = 0
+
     @State
     var mediaSessionState: Int = PlaybackStateCompat.STATE_NONE
         protected set(value) {
@@ -44,8 +49,6 @@ abstract class IPlayer<P> {
 
     abstract fun stop()
 
-    abstract fun getDuration(): Long
-
     abstract fun isPlaying(): Boolean
 
     abstract fun close()
@@ -64,7 +67,7 @@ abstract class IPlayer<P> {
     }
 
     open fun seekForward(length: Long = 5000) {
-        val pos = min(getDuration(), position + length)
+        val pos = min(duration, position + length)
         seekTo(pos)
     }
 

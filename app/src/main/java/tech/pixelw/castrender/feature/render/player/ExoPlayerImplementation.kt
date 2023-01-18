@@ -7,6 +7,7 @@ import com.google.android.exoplayer2.*
 import com.google.android.exoplayer2.audio.AudioAttributes
 import com.google.android.exoplayer2.ui.StyledPlayerView
 import tech.pixelw.castrender.utils.ktx.HandlerKtx.cancel
+import tech.pixelw.castrender.utils.ktx.HandlerKtx.runOnMain
 import tech.pixelw.castrender.utils.ktx.HandlerKtx.runOnMainDelayed
 
 class ExoPlayerImplementation(context: Context, audioType: Int = C.AUDIO_CONTENT_TYPE_MOVIE) : IPlayer<ExoPlayer>() {
@@ -24,10 +25,16 @@ class ExoPlayerImplementation(context: Context, audioType: Int = C.AUDIO_CONTENT
 
     private var playerView: StyledPlayerView? = null
 
+    // 刷新操作由各player自行实现
     private val pollTask = object : Runnable {
         override fun run() {
             position = exoPlayer.currentPosition
+            if (ticks % 4 == 0) {
+                duration = exoPlayer.duration
+                speed = exoPlayer.playbackParameters.speed
+            }
             runOnMainDelayed(positionPollInterval)
+            ticks++
         }
     }
 
@@ -35,15 +42,19 @@ class ExoPlayerImplementation(context: Context, audioType: Int = C.AUDIO_CONTENT
         exoPlayer.addListener(object : Player.Listener {
             override fun onPlaybackStateChanged(playbackState: Int) {
                 mediaSessionState = getMediaSessionPlaybackState(playbackState, exoPlayer.playWhenReady)
+                if (playbackState < 2 || playbackState > 3) {
+                    pollTask.cancel()
+                }
             }
 
             override fun onIsPlayingChanged(isPlaying: Boolean) {
                 playerView?.keepScreenOn = isPlaying
                 if (isPlaying) {
-                    pollTask.runOnMainDelayed(positionPollInterval)
+                    pollTask.runOnMain()
                 } else {
                     pollTask.cancel()
                 }
+                mediaSessionState = getMediaSessionPlaybackState(exoPlayer.playbackState, exoPlayer.playWhenReady)
                 callbacks.forEach { it.onIsPlayingChanged(isPlaying) }
             }
         })
@@ -55,6 +66,10 @@ class ExoPlayerImplementation(context: Context, audioType: Int = C.AUDIO_CONTENT
     }
 
     override var speed: Float = 1.0f
+        set(value) {
+            exoPlayer.setPlaybackSpeed(value)
+            field = value
+        }
 
     override fun pause() {
         exoPlayer.pause()
@@ -62,6 +77,7 @@ class ExoPlayerImplementation(context: Context, audioType: Int = C.AUDIO_CONTENT
 
     override fun stop() {
         exoPlayer.stop()
+        position = duration
     }
 
     override fun close() {
@@ -70,11 +86,7 @@ class ExoPlayerImplementation(context: Context, audioType: Int = C.AUDIO_CONTENT
     }
 
     override fun seekTo(millis: Long) {
-        exoPlayer.seekTo(position)
-    }
-
-    companion object {
-        private const val TAG = "ExoPlayerImpl"
+        exoPlayer.seekTo(millis)
     }
 
     override fun playerInstance() = exoPlayer
@@ -88,10 +100,6 @@ class ExoPlayerImplementation(context: Context, audioType: Int = C.AUDIO_CONTENT
 
     override fun play() {
         exoPlayer.play()
-    }
-
-    override fun getDuration(): Long {
-        return exoPlayer.duration
     }
 
     override fun isPlaying(): Boolean {
@@ -109,4 +117,7 @@ class ExoPlayerImplementation(context: Context, audioType: Int = C.AUDIO_CONTENT
         }
     }
 
+    companion object {
+        private const val TAG = "ExoPlayerImpl"
+    }
 }

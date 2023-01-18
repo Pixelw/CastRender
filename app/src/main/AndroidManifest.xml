@@ -38,8 +38,7 @@
         <activity
             android:configChanges="keyboard|keyboardHidden|orientation|screenSize|screenLayout|smallestScreenSize|uiMode"
             android:name=".feature.render.PlayerActivity"
-            android:exported="true"
-            android:screenOrientation="sensorLandscape" />
+            android:exported="true" />
         <activity
             android:name=".feature.main.MainActivity"
             android:exported="true">

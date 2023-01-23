@@ -29,7 +29,8 @@ import tech.pixelw.castrender.feature.render.player.PlayerViewHelper
 import tech.pixelw.castrender.feature.settings.Pref
 import tech.pixelw.castrender.utils.LogUtil
 import tech.pixelw.cling_common.entity.MediaEntity
-import java.lang.Float.max
+import java.lang.Float.min
+import kotlin.math.roundToLong
 
 class PlayerActivity : AppCompatActivity() {
 
@@ -40,11 +41,14 @@ class PlayerActivity : AppCompatActivity() {
     private lateinit var controllerCompat: WindowInsetsControllerCompat
     private val viewModel by viewModels<PlayerViewModel>()
     private var retriever: MediaInfoRetriever? = null
+    private var isUserDraggingSeekBar = false
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = DataBindingUtil.setContentView(this, R.layout.activity_player)
         binding.lifecycleOwner = this
+        binding.vm = viewModel
+        binding.handler = Handler()
         controllerCompat = WindowCompat.getInsetsController(window, binding.root)
 
         // TODO: SLY 2023/1/17 switch
@@ -62,9 +66,11 @@ class PlayerActivity : AppCompatActivity() {
             retriever = MediaInfoRetriever(player.playerInstance() as ExoPlayer)
         }
         viewModel.playPosition.observe(this) {
+            if (isUserDraggingSeekBar) return@observe
             val duration = player.duration
             if (duration > 0) {
-                viewModel.progressBarPercent.value = max(1f, player.position.toFloat() / duration.toFloat())
+                val percent = player.position.toFloat() / duration.toFloat()
+                viewModel.progressBarPercent.value = min(1f, percent)
             } else {
                 viewModel.progressBarPercent.value = 0f
             }
@@ -165,6 +171,19 @@ class PlayerActivity : AppCompatActivity() {
             intent.putExtra(K.EXTRA_KEY_META, entity)
             intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
             context?.startActivity(intent)
+        }
+    }
+
+    inner class Handler {
+        fun onSliderDragged(v: Float) {
+            if (v < 0.0f) {
+                isUserDraggingSeekBar = true
+            } else {
+                isUserDraggingSeekBar = false
+                // TODO: SLY 2023/1/18
+                player.seekTo((player.duration * v).roundToLong())
+            }
+
         }
     }
 }

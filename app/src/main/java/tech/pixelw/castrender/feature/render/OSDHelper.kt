@@ -56,7 +56,7 @@ class OSDHelper(private val safeZone: View) {
 
         tvSeekTime.text = TimeUtil.toTimeString(position) + "/" + TimeUtil.toTimeString(duration)
         val value = position.toFloat() / duration.toFloat() * 100
-        progressBar.setProgress(value.toInt())
+        progressBar.progress = value.toInt()
         handler.removeCallbacks(runnable)
         handler.postDelayed(runnable, 2000)
     }

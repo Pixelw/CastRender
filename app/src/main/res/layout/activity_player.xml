@@ -9,6 +9,10 @@
             name="vm"
             type="tech.pixelw.castrender.feature.render.PlayerViewModel" />
 
+        <variable
+            name="handler"
+            type="tech.pixelw.castrender.feature.render.PlayerActivity.Handler" />
+
         <import type="tech.pixelw.castrender.utils.TimeUtil" />
     </data>
 
@@ -76,9 +80,6 @@
             </LinearLayout>
 
             <LinearLayout
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintTop_toTopOf="parent"
                 android:id="@+id/ll_osd_ffwd"
                 style="@style/OSDStyle"
                 android:layout_width="wrap_content"
@@ -89,6 +90,9 @@
                 android:orientation="horizontal"
                 android:padding="6dp"
                 android:visibility="invisible"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
                 tools:visibility="visible">
 
                 <ImageView
@@ -105,7 +109,10 @@
                     tools:text="2.0x Skipping" />
             </LinearLayout>
 
+            <!--            controls-->
+
             <LinearLayout
+                android:id="@+id/ll_position_state"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginHorizontal="@dimen/margin_b1"
@@ -118,8 +125,8 @@
                     android:id="@+id/tv_position"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:textSize="@dimen/text_size_s4"
                     android:text="@{TimeUtil.toTimeString(vm.playPosition)}"
+                    android:textSize="@dimen/text_size_s4"
                     tools:text="00:01" />
 
                 <ImageView
@@ -130,7 +137,6 @@
                     android:visibility="gone" />
             </LinearLayout>
 
-            <!--            controls-->
 
             <TextView
                 android:id="@+id/tv_duration"
@@ -138,8 +144,8 @@
                 android:layout_height="wrap_content"
                 android:layout_gravity="end"
                 android:layout_marginHorizontal="@dimen/margin_b1"
-                android:textSize="@dimen/text_size_s4"
                 android:text="@{TimeUtil.toTimeString(vm.media.duration)}"
+                android:textSize="@dimen/text_size_s4"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
                 tools:text="17:41" />
@@ -150,27 +156,36 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginHorizontal="@dimen/margin_b1"
+                android:text="@{vm.media.title}"
                 android:textAppearance="?attr/textAppearanceHeadline5"
                 android:textSize="@dimen/text_size_s2"
                 android:textStyle="bold"
-                android:text="@{vm.media.title}"
                 app:layout_constraintBottom_toTopOf="@id/slider"
                 app:layout_constraintStart_toStartOf="@id/slider"
                 tools:text="Media Title" />
 
             <com.google.android.material.slider.Slider
-                app:sliderCustomListener="@{(value)->vm.onUserDragSlider(value)}"
                 android:id="@+id/slider"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginBottom="@dimen/margin_min_b3"
+                android:value="@{vm.progressBarPercent}"
+                android:valueFrom="0.0"
+                android:valueTo="1.0"
                 app:haloColor="?attr/colorOnSurface"
                 app:layout_constraintBottom_toTopOf="@id/tv_duration"
+                app:sliderCustomListener="@{(value)->handler.onSliderDragged(value)}"
                 app:thumbColor="?attr/colorOnSurface"
                 app:thumbRadius="6dp"
                 app:trackColorActive="?attr/colorOnSurface"
                 app:trackColorInactive="?attr/colorControlHighlight"
                 tools:value="0.5" />
+
+            <androidx.constraintlayout.widget.Group
+                android:id="@+id/controls"
+                app:constraint_referenced_ids="ll_position_state,slider,tv_duration,ctrl_title"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content" />
 
 
         </androidx.constraintlayout.widget.ConstraintLayout>

@@ -6,4 +6,5 @@ interface IPlayerCallback {
     fun onPlaybackStateChanged(@State state: Int) {}
     fun onIsPlayingChanged(isPlaying: Boolean) {}
     fun onPositionTick(position: Long) {}
+    fun onDurationChanged(duration: Long) {}
 }

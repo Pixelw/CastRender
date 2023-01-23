@@ -12,7 +12,6 @@ open class BasePlayerViewModel : ViewModel(), IPlayerCallback {
 
     val media = MutableLiveData<MediaEntity>()
     protected var service: DLNARendererService? = null
-    var isUserDraggingSeekBar = false
 
 
     fun connectToService(player: IPlayer<*>, activityFinish: () -> Unit) {
@@ -41,14 +40,12 @@ open class BasePlayerViewModel : ViewModel(), IPlayerCallback {
 
     }
 
-    fun onUserDragSlider(value: Float) {
-        if (value < 0.0f) {
-            isUserDraggingSeekBar = true
-        } else {
-            isUserDraggingSeekBar = false
-
+    override fun onDurationChanged(duration: Long) {
+        val entity = media.value
+        entity?.run {
+            entity.duration = duration
+            media.postValue(this)
         }
-
     }
 
 

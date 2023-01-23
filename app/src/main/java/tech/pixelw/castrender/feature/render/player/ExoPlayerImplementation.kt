@@ -57,6 +57,7 @@ class ExoPlayerImplementation(context: Context, audioType: Int = C.AUDIO_CONTENT
                 mediaSessionState = getMediaSessionPlaybackState(exoPlayer.playbackState, exoPlayer.playWhenReady)
                 callbacks.forEach { it.onIsPlayingChanged(isPlaying) }
             }
+
         })
     }
 

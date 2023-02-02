@@ -4,69 +4,98 @@
     xmlns:tools="http://schemas.android.com/tools">
 
     <data>
+
         <variable
             name="handle"
             type="tech.pixelw.castrender.feature.main.MainActivity.Handler" />
     </data>
 
-    <androidx.constraintlayout.widget.ConstraintLayout
+    <ScrollView
+        android:fillViewport="true"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        tools:context=".feature.main.MainActivity">
+        android:layout_height="match_parent">
 
-        <ImageView
-            android:id="@+id/iv_blur"
+        <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:scaleType="centerCrop"
-            tools:srcCompat="@tools:sample/backgrounds/scenic" />
-
-        <View
-            android:background="@color/music_mask_color"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent" />
-
-        <com.google.android.material.card.MaterialCardView
-            android:layout_width="120dp"
-            android:layout_height="80dp"
-            app:layout_constraintBottom_toBottomOf="parent"
-            android:onClick="@{handle::mediaBrowserOpen}"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent">
-
-            <androidx.appcompat.widget.AppCompatTextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center"
-                app:drawableTopCompat="@drawable/ic_baseline_perm_media_24"
-                android:text="Media Browser"
-                android:focusable="false"
-                android:clickable="false" />
-        </com.google.android.material.card.MaterialCardView>
-
-        <TextView
-            android:id="@+id/textView"
-            android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_marginBottom="16dp"
-            android:gravity="center"
-            android:onClick="@{handle::openOnClick}"
-            android:text="@string/make_sure_to_disable_the_mobile_data"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent" />
+            tools:context=".feature.main.MainActivity">
 
-        <androidx.appcompat.widget.AppCompatImageButton
-            android:layout_width="50dp"
-            style="@style/BorderlessImageButtonStyle"
-            app:srcCompat="@drawable/ic_baseline_settings_remote_24"
-            android:layout_height="50dp"
-            android:onClick="@{handle::controllerOpen}"
-            android:layout_marginBottom="32dp"
-            app:layout_constraintBottom_toTopOf="@+id/textView"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent" />
+            <ImageView
+                android:id="@+id/iv_blur"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:scaleType="centerCrop"
+                tools:srcCompat="@tools:sample/backgrounds/scenic" />
 
-    </androidx.constraintlayout.widget.ConstraintLayout>
+            <View
+                android:background="@color/music_mask_color"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent" />
+
+            <com.google.android.material.card.MaterialCardView
+                android:layout_width="120dp"
+                android:layout_height="80dp"
+                android:focusable="true"
+                android:clickable="true"
+                android:nextFocusDown="@id/ib_controller"
+                app:layout_constraintBottom_toBottomOf="parent"
+                android:onClick="@{handle::mediaBrowserOpen}"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent">
+
+                <androidx.appcompat.widget.AppCompatTextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    app:drawableTopCompat="@drawable/ic_baseline_perm_media_24"
+                    android:text="Media Browser"
+                    android:focusable="false"
+                    android:clickable="false" />
+            </com.google.android.material.card.MaterialCardView>
+
+            <TextView
+                android:id="@+id/textView"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="16dp"
+                android:gravity="center"
+                android:onClick="@{handle::openOnClick}"
+                android:text="@string/make_sure_to_disable_the_mobile_data"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent" />
+
+            <androidx.appcompat.widget.AppCompatImageButton
+                android:focusable="true"
+                android:clickable="true"
+                android:id="@+id/ib_controller"
+                android:layout_width="50dp"
+                style="@style/BorderlessImageButtonStyle"
+                app:srcCompat="@drawable/ic_baseline_settings_remote_24"
+                android:layout_height="50dp"
+                android:onClick="@{handle::controllerOpen}"
+                android:layout_marginBottom="32dp"
+                android:nextFocusRight="@id/ib_settings"
+                app:layout_constraintBottom_toTopOf="@+id/textView"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent" />
+
+            <androidx.appcompat.widget.AppCompatImageButton
+                android:focusable="true"
+                android:clickable="true"
+                android:id="@+id/ib_settings"
+                android:layout_width="50dp"
+                style="@style/BorderlessImageButtonStyle"
+                app:srcCompat="@drawable/ic_baseline_settings_24"
+                android:layout_height="50dp"
+                android:onClick="@{handle::settingsOpen}"
+                android:layout_margin="32dp"
+                app:layout_constraintBottom_toTopOf="@+id/textView"
+                app:layout_constraintEnd_toEndOf="parent" />
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+    </ScrollView>
+
+
 </layout>

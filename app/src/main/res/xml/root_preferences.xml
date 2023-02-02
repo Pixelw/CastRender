@@ -11,6 +11,7 @@
     <PreferenceCategory app:title="@string/player_settings">
 
         <ListPreference
+            app:key="@string/k_player_type"
             app:defaultValue="@string/v_player_exo"
             app:entries="@array/player_types"
             app:entryValues="@array/player_types_values"

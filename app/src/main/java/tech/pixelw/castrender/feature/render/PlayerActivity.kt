@@ -14,6 +14,7 @@ import androidx.core.view.WindowCompat
 import androidx.core.view.WindowInsetsCompat
 import androidx.core.view.WindowInsetsControllerCompat
 import androidx.databinding.DataBindingUtil
+import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.google.android.exoplayer2.ExoPlayer
@@ -25,6 +26,7 @@ import tech.pixelw.castrender.feature.mediainfo.MediaInfoListAdapter
 import tech.pixelw.castrender.feature.mediainfo.MediaInfoRetriever
 import tech.pixelw.castrender.feature.render.player.ExoPlayerImplementation
 import tech.pixelw.castrender.feature.render.player.IPlayer
+import tech.pixelw.castrender.feature.render.player.MediaPlayerImplementation
 import tech.pixelw.castrender.feature.render.player.PlayerViewHelper
 import tech.pixelw.castrender.feature.settings.Pref
 import tech.pixelw.castrender.utils.LogUtil
@@ -58,7 +60,7 @@ class PlayerActivity : AppCompatActivity() {
                 player = ExoPlayerImplementation(this)
             }
             Pref.V_PLAYER_SYS -> {
-                player // TODO: SLY 2023/1/18
+                player = MediaPlayerImplementation(lifecycleScope)
             }
         }
         player.bindView(binding.frPlayContainer.findViewById(R.id.view_player))
@@ -76,7 +78,7 @@ class PlayerActivity : AppCompatActivity() {
             }
         }
         keyHandler = KeyHandler(player)
-        osdHelper = OSDHelper(binding.clSafezone)
+        osdHelper = OSDHelper(binding.clSafezone, binding.controls)
         keyHandler.attachOsd(osdHelper)
         viewModel.connectToService(player) {
             finish()

@@ -14,6 +14,7 @@ import tech.pixelw.castrender.feature.browser.MediaBrowserActivity
 import tech.pixelw.castrender.feature.controller.ControllerActivity
 import tech.pixelw.castrender.feature.render.MediaPlayerTestActivity
 import tech.pixelw.castrender.feature.render.RenderManager.renderService
+import tech.pixelw.castrender.feature.settings.SettingsActivity
 import tech.pixelw.castrender.utils.ImageLoader
 
 class MainActivity : AppCompatActivity() {
@@ -50,6 +51,12 @@ class MainActivity : AppCompatActivity() {
                     this@MainActivity,
                     ControllerActivity::class.java
                 )
+            )
+        }
+
+        fun settingsOpen(v: View?) {
+            this@MainActivity.startActivity(
+                Intent(this@MainActivity, SettingsActivity::class.java)
             )
         }
     }

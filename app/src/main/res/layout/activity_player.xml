@@ -24,20 +24,14 @@
         tools:context=".feature.render.PlayerActivity">
 
         <FrameLayout
+            android:layout_gravity="center"
             android:id="@+id/fr_play_container"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             tools:background="@android:color/holo_green_dark" />
 
-        <!--        <com.google.android.exoplayer2.ui.PlayerView-->
-        <!--            android:id="@+id/exo_player_view"-->
-        <!--            android:layout_width="match_parent"-->
-        <!--            android:layout_height="match_parent"-->
-        <!--            android:keepScreenOn="true"-->
-        <!--            app:surface_type="surface_view"-->
-        <!--            app:use_controller="true" />-->
-
         <View
+            android:id="@+id/bg_mask"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:background="@drawable/bg_controls_gradient"

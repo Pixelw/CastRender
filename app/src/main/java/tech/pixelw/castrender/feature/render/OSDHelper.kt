@@ -7,6 +7,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.LinearLayout
 import android.widget.TextView
+import androidx.constraintlayout.widget.Group
 import androidx.core.graphics.Insets
 import com.google.android.material.progressindicator.LinearProgressIndicator
 import tech.pixelw.castrender.R
@@ -18,17 +19,30 @@ import kotlin.math.max
 /**
  * 管理播放器上的OSD
  */
-class OSDHelper(private val safeZone: View) {
+class OSDHelper(private val safeZone: View, private val controls: Group) {
 
     private var llSeekOsd: LinearLayout = safeZone.findViewById(R.id.ll_osd_seek)
     private var tvSeekTime: TextView = safeZone.findViewById(R.id.tv_seek_time)
     private var progressBar: LinearProgressIndicator = safeZone.findViewById(R.id.progress_seek)
     private var llFFWD: LinearLayout = safeZone.findViewById(R.id.ll_osd_ffwd)
     private var tvFFWD: TextView = safeZone.findViewById(R.id.tv_fast_forward)
+    private var isControlShowing = false
 
     private val handler = Handler(Looper.getMainLooper())
     private val runnable = Runnable {
         llSeekOsd.visibility = View.INVISIBLE
+    }
+    private val toggleControlShowHide = object : Runnable {
+        override fun run() {
+            if (isControlShowing) {
+                controls.visibility = View.GONE
+            } else {
+                controls.visibility = View.VISIBLE
+                handler.postDelayed(this, 5000)
+            }
+            isControlShowing = !isControlShowing
+
+        }
     }
 
     init {
@@ -44,6 +58,10 @@ class OSDHelper(private val safeZone: View) {
             lp.setMargins(horizontal, top, horizontal, bottom)
         }
 
+        safeZone.setOnClickListener {
+            handler.removeCallbacks(toggleControlShowHide)
+            handler.post(toggleControlShowHide)
+        }
     }
 
     @SuppressLint("SetTextI18n")

@@ -5,8 +5,6 @@ import androidx.lifecycle.viewModelScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
-import org.json.JSONObject
-import tech.pixelw.castrender.BuildConfig
 
 class MainViewModel : ViewModel() {
 
@@ -14,11 +12,11 @@ class MainViewModel : ViewModel() {
         viewModelScope.launch {
             withContext(Dispatchers.IO) {
                 val update = UpdateApi.INSTANCE.getUpdate()
-                val jsonObject = JSONObject(update)
-                val ver = jsonObject.getInt(UpdateApi.K_VERSION_CODE)
-                if (ver > BuildConfig.VERSION_CODE) {
-
-                }
+//                val jsonObject = JSONObject(update)
+//                val ver = jsonObject.getInt(UpdateApi.K_VERSION_CODE)
+//                if (ver > BuildConfig.VERSION_CODE) {
+//
+//                }
             }
         }
     }

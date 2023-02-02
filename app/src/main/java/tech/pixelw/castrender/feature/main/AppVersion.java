@@ -4,6 +4,7 @@ package tech.pixelw.castrender.feature.main;
  * @author Carl Su "Pixelw"
  * @date 2021/4/28
  */
+@Deprecated
 public class AppVersion {
     public static final String PLACEHOLDER_ABI = "_abi_";
     public static final String ABI_UNIVERSAL = "all";

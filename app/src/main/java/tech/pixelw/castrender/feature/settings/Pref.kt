@@ -12,4 +12,6 @@ object Pref {
     val K_PLAYER_TYPE = getString(R.string.k_player_type)
     val K_AUTOSTART = getString(R.string.k_autostart)
     val K_PLAYER_SURFACE_TYPE = getString(R.string.player_surface_type)
+    val K_INSTALL_ID = "install_id"
+
 }

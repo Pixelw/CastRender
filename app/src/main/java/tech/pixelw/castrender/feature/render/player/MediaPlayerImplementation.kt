@@ -78,7 +78,6 @@ class MediaPlayerImplementation(private val coroutineScope: CoroutineScope) :
 
                     })
                 }
-                LogUtil.e("115144", "done")
             }
 
             mediaPlayer.setOnVideoSizeChangedListener { _, videoWidth, videoHeight ->
@@ -105,7 +104,6 @@ class MediaPlayerImplementation(private val coroutineScope: CoroutineScope) :
         coroutineScope.launch(Dispatchers.Main) {
             mediaPlayer.reset()
             setDisplayJob?.join()
-            LogUtil.e("115144", "done2")
             mediaSessionState = PlaybackStateCompat.STATE_NONE
             mediaPlayer.setDataSource(url)
             mediaPlayer.prepareAsync()

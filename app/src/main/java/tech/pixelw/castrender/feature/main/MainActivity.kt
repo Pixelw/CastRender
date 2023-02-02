@@ -3,6 +3,7 @@ package tech.pixelw.castrender.feature.main
 import android.content.Intent
 import android.os.Bundle
 import android.view.View
+import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.lifecycleScope
@@ -19,11 +20,13 @@ import tech.pixelw.castrender.utils.ImageLoader
 
 class MainActivity : AppCompatActivity() {
     private lateinit var binding: ActivityMainBinding
+    private val vm by viewModels<MainViewModel>()
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = DataBindingUtil.setContentView(this, R.layout.activity_main)
         binding.handle = Handler()
         renderService.hello()
+        vm.checkUpdate()
 //        loadBlur()
     }
 

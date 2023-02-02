@@ -24,6 +24,12 @@
     <string name="player_type">Player Type</string>
     <string name="exo_player">ExoPlayer</string>
     <string name="sys_player">System MediaPlayer</string>
+    <string name="device_doesnt_support">Your device doesn\'t support the latest verison.</string>
+    <string name="update_available">Update Available</string>
+    <string name="later">Later</string>
+    <string name="download">Download</string>
+    <string name="store">Store</string>
+    <string name="update_prompt">Downloading...</string>
 
     <!-- Preference Titles -->
 </resources>

@@ -30,8 +30,8 @@ data class AppUpdate(
     companion object {
         const val PLACEHOLDER_ABI = "_abi_"
         const val ABI_UNIVERSAL = "all"
-        const val ABI_ARMV7 = "armeabi-v7a"
-        const val ABI_ARMV8 = "arm64-v8a"
-        const val ABI_X86 = "x86"
+//        const val ABI_ARMV7 = "armeabi-v7a"
+//        const val ABI_ARMV8 = "arm64-v8a"
+//        const val ABI_X86 = "x86"
     }
 }

@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">投屏渲染器</string>
+    <string name="back">返回</string>
+    <string name="make_sure_to_disable_the_mobile_data">请确保移动数据已关闭.</string>
+    <string name="title_activity_settings">设置</string>
+    <string name="playback_speed">播放速度</string>
+    <string name="video_audio_settings">音视频设置</string>
+    <string name="media_info">媒体信息</string>
+    <string name="close">关闭</string>
+    <string name="track">轨道</string>
+    <string name="unknown">位置</string>
+    <string name="xspeed_skip">倍快进中</string>
+    <string name="refresh">刷新</string>
+    <string name="app_settings">App设置</string>
+    <string name="start_on_device">开机自启</string>
+    <string name="player_settings">播放器设置</string>
+    <string name="player_surface_type">播放器Surface类型</string>
+    <string name="check_update">检查更新</string>
+    <string name="about">关于</string>
+    <string name="player_type">播放器类型</string>
+    <string name="sys_player">系统MediaPlayer</string>
+    <string name="device_doesnt_support">你的设备无法更新最新版本</string>
+    <string name="update_available">有更新</string>
+    <string name="later">以后</string>
+    <string name="download">下载</string>
+    <string name="store">商店</string>
+    <string name="update_prompt">正在下载…</string>
+</resources>

@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="k_player_surface_type">player_surface_type</string>
-    <string name="k_autostart">app_autostart</string>
-    <string name="k_player_type">player_type</string>
+    <string name="k_player_surface_type" translatable="false">player_surface_type</string>
+    <string name="k_autostart" translatable="false">app_autostart</string>
+    <string name="k_player_type" translatable="false">player_type</string>
 </resources>

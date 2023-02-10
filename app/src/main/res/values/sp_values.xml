@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="v_surface_surface_view">surface_surface_view</string>
-    <string name="v_surface_texture_view">surface_texture_view</string>
-    <string name="v_player_exo">player_exo</string>
-    <string name="v_player_system">player_system</string>
+    <string name="v_surface_surface_view" translatable="false">surface_surface_view</string>
+    <string name="v_surface_texture_view" translatable="false">surface_texture_view</string>
+    <string name="v_player_exo" translatable="false">player_exo</string>
+    <string name="v_player_system" translatable="false">player_system</string>
 </resources>

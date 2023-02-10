@@ -2,7 +2,7 @@
     <string name="app_name">CastRender</string>
     <string name="back">Back</string>
     <string name="make_sure_to_disable_the_mobile_data">Make sure to disable the mobile data.</string>
-    <string name="title_activity_settings">SettingsActivity</string>
+    <string name="title_activity_settings">Settings</string>
 
 
     <string name="playback_speed">Playback Speed</string>
@@ -19,17 +19,17 @@
     <string name="player_surface_type">Player Surface Type</string>
     <string name="check_update">Check Update</string>
     <string name="about">About</string>
-    <string name="surface_view">SurfaceView</string>
-    <string name="texture_view">TextureView</string>
+    <string name="surface_view" translatable="false">SurfaceView</string>
+    <string name="texture_view" translatable="false">TextureView</string>
     <string name="player_type">Player Type</string>
-    <string name="exo_player">ExoPlayer</string>
+    <string name="exo_player" translatable="false">ExoPlayer</string>
     <string name="sys_player">System MediaPlayer</string>
-    <string name="device_doesnt_support">Your device doesn\'t support the latest verison.</string>
+    <string name="device_doesnt_support">Your device doesn\'t support the latest version.</string>
     <string name="update_available">Update Available</string>
     <string name="later">Later</string>
     <string name="download">Download</string>
     <string name="store">Store</string>
-    <string name="update_prompt">Downloading...</string>
+    <string name="update_prompt">Downloading…</string>
 
     <!-- Preference Titles -->
 </resources>

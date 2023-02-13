@@ -37,8 +37,12 @@ object UpdateHelper {
     private fun checkInternal(coroutineScope: CoroutineScope) {
         coroutineScope.launch(Dispatchers.Main) {
             val context = CastRenderApp.getAppContext()
-            val appVersion = UpdateApi.INSTANCE.getUpdate()
-
+            val result = kotlin.runCatching {
+                UpdateApi.INSTANCE.getUpdate()
+            }.onFailure {
+                LogUtil.e(TAG, "error on check updates", it)
+            }
+            val appVersion = result.getOrNull() ?: return@launch
             if (appVersion.versionCode <= BuildConfig.VERSION_CODE) {
                 return@launch
             }

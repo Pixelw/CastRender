@@ -7,7 +7,7 @@ import retrofit2.http.GET
 interface UpdateApi {
 
     companion object {
-        private const val BASE_URL = "https://lapi.pixelw.tech/castrender"
+        private const val BASE_URL = "https://lapi.pixelw.tech/castrender/"
         val INSTANCE: UpdateApi by lazy(mode = LazyThreadSafetyMode.SYNCHRONIZED) {
             Retrofit.Builder().baseUrl(BASE_URL)
                 .addConverterFactory(MoshiConverterFactory.create())

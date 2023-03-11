@@ -11,12 +11,13 @@ android {
         applicationId "tech.pixelw.castrender"
         minSdk 17
         targetSdk 33
-        versionCode 1
-        versionName "1.0"
+        versionCode 1001
+        versionName "1.2.0-" + versionCode
         multiDexEnabled true
-        vectorDrawables.useSupportLibrary = true
-        renderscriptTargetApi 19
-        renderscriptSupportModeEnabled true
+        // gaussian blur
+//        vectorDrawables.useSupportLibrary = true
+//        renderscriptTargetApi 19
+//        renderscriptSupportModeEnabled true
     }
 
     buildTypes {
@@ -85,7 +86,8 @@ dependencies {
 
     implementation 'com.github.bumptech.glide:glide:4.13.0'
     kapt 'com.github.bumptech.glide:compiler:4.13.0'
-    implementation 'com.github.jrvansuita:GaussianBlur:1.0.3'
+    // blur
+//    implementation 'com.github.jrvansuita:GaussianBlur:1.0.3'
 
     // Bugly
     implementation 'com.tencent.bugly:crashreport:4.1.9'

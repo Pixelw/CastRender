@@ -1,24 +1,21 @@
 package tech.pixelw.castrender.utils
 
-import android.content.Context
+//import com.vansuita.gaussianblur.GaussianBlur
 import android.graphics.Bitmap
 import android.graphics.BitmapFactory
-import com.vansuita.gaussianblur.GaussianBlur
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.withContext
 import java.net.URL
 
 object ImageLoader {
     private const val TAG = "ImageLoader"
 
-    @JvmStatic
-    suspend fun loadBlurImage(url: String, context: Context): Bitmap? {
-        return withContext(Dispatchers.IO) {
-            syncLoadImageIntoBitmap(url)?.let {
-                syncRenderBlur(it, context)
-            }
-        }
-    }
+//    @JvmStatic
+//    suspend fun loadBlurImage(url: String, context: Context): Bitmap? {
+//        return withContext(Dispatchers.IO) {
+//            syncLoadImageIntoBitmap(url)?.let {
+//                syncRenderBlur(it, context)
+//            }
+//        }
+//    }
 
     fun syncLoadImageIntoBitmap(url: String): Bitmap? {
         kotlin.runCatching {
@@ -35,16 +32,16 @@ object ImageLoader {
         return null
     }
 
-    @JvmStatic
-    suspend fun renderBlur(bitmap: Bitmap, context: Context, radius: Int = 15): Bitmap {
-        return withContext(Dispatchers.Default) {
-            syncRenderBlur(bitmap, context, radius)
-        }
-    }
-
-    fun syncRenderBlur(bitmap: Bitmap, context: Context, radius: Int = 15): Bitmap {
-        return GaussianBlur.with(context).radius(radius).render(bitmap)
-    }
-
+//    @JvmStatic
+//    suspend fun renderBlur(bitmap: Bitmap, context: Context, radius: Int = 15): Bitmap {
+//        return withContext(Dispatchers.Default) {
+//            syncRenderBlur(bitmap, context, radius)
+//        }
+//    }
+//
+//    fun syncRenderBlur(bitmap: Bitmap, context: Context, radius: Int = 15): Bitmap {
+//        return GaussianBlur.with(context).radius(radius).render(bitmap)
+//    }
+//
 
 }

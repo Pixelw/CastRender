@@ -21,10 +21,8 @@ abstract class IPlayer<P> {
 
     var duration: Long = 0
         protected set(value) {
-            if (value != field) {
-                field = value
-                callbacks.forEach { it.onDurationChanged(value) }
-            }
+            field = value
+            callbacks.forEach { it.onDurationChanged(value) }
         }
 
     protected var ticks: Int = 0

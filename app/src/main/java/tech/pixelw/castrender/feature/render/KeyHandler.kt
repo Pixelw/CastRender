@@ -35,10 +35,10 @@ class KeyHandler constructor(private val player: IPlayer<*>) {
 
     private fun handleClick(keyCode: Int, event: KeyEvent): Boolean {
         LogUtil.d(TAG, "click$keyCode")
-        if (player.mediaSessionState.isReady()) return true
+        if (!player.mediaSessionState.isReady()) return true
         when (keyCode) {
             KeyEvent.KEYCODE_ENTER, KeyEvent.KEYCODE_DPAD_CENTER,
-            KeyEvent.KEYCODE_NUMPAD_ENTER, KeyEvent.KEYCODE_MEDIA_PLAY_PAUSE ->
+            KeyEvent.KEYCODE_NUMPAD_ENTER, KeyEvent.KEYCODE_MEDIA_PLAY_PAUSE, KeyEvent.KEYCODE_SPACE ->
                 if (player.isPlaying()) {
                     player.pause()
                 } else {
@@ -53,13 +53,13 @@ class KeyHandler constructor(private val player: IPlayer<*>) {
 
     private fun handleLongClick(keyCode: Int, event: KeyEvent): Boolean {
         LogUtil.d(TAG, "longClick$keyCode")
-        if (player.mediaSessionState.isReady()) return true
+        if (!player.mediaSessionState.isReady()) return true
         when (keyCode) {
             KeyEvent.KEYCODE_ENTER, KeyEvent.KEYCODE_DPAD_CENTER,
-            KeyEvent.KEYCODE_NUMPAD_ENTER ->
+            KeyEvent.KEYCODE_NUMPAD_ENTER, KeyEvent.KEYCODE_SPACE ->
                 if (player.isPlaying()) {
                     originalSpeed = player.speed
-                    player.speed = (2.0f)
+                    player.speed = 2.0f
                     osdHelper.setQuickFastForwardOsd(true, 2.0f)
                 }
             KeyEvent.KEYCODE_DPAD_LEFT -> {

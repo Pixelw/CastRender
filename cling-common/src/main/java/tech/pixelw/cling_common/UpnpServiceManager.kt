@@ -6,20 +6,23 @@ import android.content.Context
 import android.content.Intent
 import android.content.ServiceConnection
 import android.os.IBinder
+import java.util.concurrent.CopyOnWriteArrayList
 
 object UpnpServiceManager {
 
     private var binder: SharedUpnpService.SharedBinder? = null
-    private val callbacks = mutableListOf<BinderCallback>()
+    private val tempCallbacks = CopyOnWriteArrayList<BinderCallback>()
+    private var attachCount = 0
     private var bindCalled = false
 
     private val connection = object : ServiceConnection {
         override fun onServiceConnected(name: ComponentName?, service: IBinder?) {
             service?.let { iBinder ->
                 binder = iBinder as SharedUpnpService.SharedBinder
-                callbacks.forEach {
+                tempCallbacks.forEach {
                     it.onBinderAttached(binder!!)
                 }
+                tempCallbacks.clear()
             }
         }
 
@@ -42,15 +45,14 @@ object UpnpServiceManager {
                 )
                 bindCalled = true
             }
-            callbacks.add(callback)
+            tempCallbacks.add(callback)
         }
+        attachCount++
     }
 
     fun detachUpnpService(context: Context, callback: BinderCallback) {
-        val removed = callbacks.remove(callback)
-        if (removed && callbacks.size == 0) {
-            stopUpnpService(context)
-        }
+        attachCount--
+        if (attachCount <= 0) stopUpnpService(context)
     }
 
     fun stopUpnpService(context: Context) {

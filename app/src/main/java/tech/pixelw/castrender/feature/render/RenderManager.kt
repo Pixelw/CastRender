@@ -40,13 +40,13 @@ object RenderManager {
         val dlnaRendererService = DLNARendererService(
             deviceSettings,
             createNotification(
-                CastRenderApp.getAppContext(),
+                CastRenderApp.appContext,
                 "CastRender is Running Background.",
                 CHANNEL_ID,
                 "CastRender Background Service",
             )
         )
-        dlnaRendererService.start(CastRenderApp.getAppContext())
+        dlnaRendererService.start(CastRenderApp.appContext)
         dlnaRendererService
     }
 

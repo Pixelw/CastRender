@@ -5,6 +5,7 @@ import android.content.Context
 import android.media.AudioManager
 import android.media.MediaPlayer
 import android.net.Uri
+import android.os.Build
 import android.support.v4.media.session.PlaybackStateCompat
 import android.view.Gravity
 import android.view.SurfaceHolder
@@ -15,10 +16,13 @@ import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.launch
+import tech.pixelw.castrender.R
 import tech.pixelw.castrender.utils.LogUtil
 import tech.pixelw.castrender.utils.ktx.HandlerKtx.cancel
 import tech.pixelw.castrender.utils.ktx.HandlerKtx.runOnMain
 import tech.pixelw.castrender.utils.ktx.HandlerKtx.runOnMainDelayed
+import tech.pixelw.castrender.utils.ktx.getString
+import tech.pixelw.castrender.utils.ktx.toast
 import kotlin.coroutines.resume
 import kotlin.coroutines.suspendCoroutine
 
@@ -162,7 +166,11 @@ class MediaPlayerImplementation(private val coroutineScope: CoroutineScope) :
 
     }
 
-    override var speed = mediaPlayer.speed
+    override var speed
+        get() = mediaPlayer.speed
+        set(value) {
+            mediaPlayer.speed = value
+        }
 
     override fun seekTo(millis: Long) {
         try {
@@ -180,6 +188,16 @@ class MediaPlayerImplementation(private val coroutineScope: CoroutineScope) :
         var uri: Uri? = null
         var state = 0
         var speed = 1.0f
+            set(value) {
+                if (field != value) {
+                    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+                        playbackParams = playbackParams.setSpeed(value)
+                    } else {
+                        toast(getString(R.string.unsupported_speed))
+                    }
+                    field = value
+                }
+            }
         var isDisplaySet = false
 
         init {

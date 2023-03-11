@@ -6,9 +6,6 @@ import android.view.View
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import androidx.databinding.DataBindingUtil
-import androidx.lifecycle.lifecycleScope
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.launch
 import tech.pixelw.castrender.R
 import tech.pixelw.castrender.databinding.ActivityMainBinding
 import tech.pixelw.castrender.feature.browser.MediaBrowserActivity
@@ -16,7 +13,6 @@ import tech.pixelw.castrender.feature.controller.ControllerActivity
 import tech.pixelw.castrender.feature.render.MediaPlayerTestActivity
 import tech.pixelw.castrender.feature.render.RenderManager.renderService
 import tech.pixelw.castrender.feature.settings.SettingsActivity
-import tech.pixelw.castrender.utils.ImageLoader
 
 class MainActivity : AppCompatActivity() {
     private lateinit var binding: ActivityMainBinding
@@ -26,7 +22,7 @@ class MainActivity : AppCompatActivity() {
         binding = DataBindingUtil.setContentView(this, R.layout.activity_main)
         binding.handle = Handler()
         renderService.hello()
-        vm.checkUpdate()
+        vm.checkUpdate(this)
 //        loadBlur()
     }
 
@@ -62,6 +58,11 @@ class MainActivity : AppCompatActivity() {
                 Intent(this@MainActivity, SettingsActivity::class.java)
             )
         }
+
+        fun quitEntirely(view: View?) {
+            QuitHelper.quit()
+            finish()
+        }
     }
 
     /**
@@ -72,15 +73,15 @@ class MainActivity : AppCompatActivity() {
      * 设置UI背景
      */
     fun loadBlur() {
-        lifecycleScope.launch(Dispatchers.Main) {
-            val bitmap = ImageLoader.loadBlurImage(
-                "http://p4.music.126.net/RA7-38iWarhO2xmiZ6TAwg165334668007.jpg",
-                this@MainActivity
-            )
-            bitmap?.let {
-                binding.ivBlur.setImageBitmap(it)
-            }
-        }
+//        lifecycleScope.launch(Dispatchers.Main) {
+//            val bitmap = ImageLoader.loadBlurImage(
+//                "http://p4.music.126.net/RA7-38iWarhO2xmiZ6TAwg165334668007.jpg",
+//                this@MainActivity
+//            )
+//            bitmap?.let {
+//                binding.ivBlur.setImageBitmap(it)
+//            }
+//        }
     }
 
     companion object {

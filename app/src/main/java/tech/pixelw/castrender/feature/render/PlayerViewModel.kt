@@ -8,6 +8,8 @@ class PlayerViewModel : BasePlayerViewModel() {
 
     val progressBarPercent = MutableLiveData(0f)
 
+    val playerType = MutableLiveData("")
+
     override fun onPositionTick(position: Long) {
         playPosition.postValue(position)
     }

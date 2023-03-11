@@ -8,18 +8,18 @@ import tech.pixelw.castrender.feature.settings.Pref
 
 class BuglyReporter() : IThirdPartyReport {
     private val sp by lazy {
-        PreferenceManager.getDefaultSharedPreferences(CastRenderApp.getAppContext())
+        PreferenceManager.getDefaultSharedPreferences(CastRenderApp.appContext)
     }
 
     override fun preInit() {
     }
 
     override fun init() {
-        val strategy = CrashReport.UserStrategy(CastRenderApp.getAppContext())
+        val strategy = CrashReport.UserStrategy(CastRenderApp.appContext)
         strategy.deviceModel = Build.MODEL
         strategy.deviceID = sp.getString(Pref.K_INSTALL_ID, "")
         CrashReport.initCrashReport(
-            CastRenderApp.getAppContext(),
+            CastRenderApp.appContext,
             "9932c92997",
             false
         ) // always disable debug output

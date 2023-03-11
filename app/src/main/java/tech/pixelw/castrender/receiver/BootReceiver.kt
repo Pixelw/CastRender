@@ -10,7 +10,7 @@ import tech.pixelw.castrender.feature.settings.Pref
 
 class BootReceiver : BroadcastReceiver() {
     private val sp by lazy {
-        PreferenceManager.getDefaultSharedPreferences(CastRenderApp.getAppContext())
+        PreferenceManager.getDefaultSharedPreferences(CastRenderApp.appContext)
     }
 
     override fun onReceive(context: Context?, intent: Intent?) {

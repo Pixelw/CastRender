@@ -31,5 +31,7 @@
     <string name="store">Store</string>
     <string name="update_prompt">Downloading…</string>
 
+    <string name="unsupported_speed">This system\'s MediaPlayer doen\'t support changing speed.</string>
+
     <!-- Preference Titles -->
 </resources>

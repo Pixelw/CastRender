@@ -53,14 +53,15 @@ class PlayerActivity : AppCompatActivity() {
         binding.handler = Handler()
         controllerCompat = WindowCompat.getInsetsController(window, binding.root)
 
-        // TODO: SLY 2023/1/17 switch
         val pair = PlayerViewHelper.initPlayerView(this, binding.frPlayContainer)
         when (pair.first) {
             Pref.V_PLAYER_EXO -> {
                 player = ExoPlayerImplementation(this)
+                viewModel.playerType.value = getString(R.string.exo_player)
             }
             Pref.V_PLAYER_SYS -> {
                 player = MediaPlayerImplementation(lifecycleScope)
+                viewModel.playerType.value = getString(R.string.sys_player)
             }
         }
         player.bindView(binding.frPlayContainer.findViewById(R.id.view_player))

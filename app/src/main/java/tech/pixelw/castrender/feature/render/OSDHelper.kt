@@ -19,7 +19,7 @@ import kotlin.math.max
 /**
  * 管理播放器上的OSD
  */
-class OSDHelper(private val safeZone: View, private val controls: Group) {
+class OSDHelper(private val safeZone: ViewGroup, private val controls: Group) {
 
     private var llSeekOsd: LinearLayout = safeZone.findViewById(R.id.ll_osd_seek)
     private var tvSeekTime: TextView = safeZone.findViewById(R.id.tv_seek_time)
@@ -28,6 +28,16 @@ class OSDHelper(private val safeZone: View, private val controls: Group) {
     private var tvFFWD: TextView = safeZone.findViewById(R.id.tv_fast_forward)
     private var isControlShowing = false
 
+    //    var stayVisible = false
+//        set(value){
+//            if (!value){
+//                handler.removeCallbacks(toggleControlShowHide)
+//            } else{
+//                handler.removeCallbacks(toggleControlShowHide)
+//                handler.post(toggleControlShowHide)
+//            }
+//            field = value
+//        }
     private val handler = Handler(Looper.getMainLooper())
     private val runnable = Runnable {
         llSeekOsd.visibility = View.INVISIBLE
@@ -62,6 +72,8 @@ class OSDHelper(private val safeZone: View, private val controls: Group) {
             handler.removeCallbacks(toggleControlShowHide)
             handler.post(toggleControlShowHide)
         }
+//        safeZone.onInterceptTouchEvent() // TODO: SLY 2023/2/25
+        handler.post(toggleControlShowHide)
     }
 
     @SuppressLint("SetTextI18n")

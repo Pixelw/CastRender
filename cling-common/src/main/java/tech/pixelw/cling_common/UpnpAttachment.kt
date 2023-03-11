@@ -14,5 +14,9 @@ abstract class UpnpAttachment : BinderCallback {
         UpnpServiceManager.detachUpnpService(context, this)
     }
 
+    override fun onBinderDetaching() {
+        context?.let { stop(it) }
+    }
+
     open fun pause() {}
 }

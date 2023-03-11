@@ -26,4 +26,5 @@
     <string name="download">下载</string>
     <string name="store">商店</string>
     <string name="update_prompt">正在下载…</string>
+    <string name="unsupported_speed">该系统MediaPlayer不支持变速</string>
 </resources>

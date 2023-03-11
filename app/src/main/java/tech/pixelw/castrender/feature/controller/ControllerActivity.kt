@@ -46,7 +46,7 @@ class ControllerActivity : AppCompatActivity() {
         binding.vm = vm
         binding.handler = ControlHandler()
         service.pendingListener = vm
-        service.start(CastRenderApp.getAppContext())
+        service.start(CastRenderApp.appContext)
     }
 
     private fun observeVm() {
@@ -152,6 +152,11 @@ class ControllerActivity : AppCompatActivity() {
 
     private fun isPlaying(): Boolean {
         return vm.renderStateLiveData.value?.transportInfo?.currentTransportState == TransportState.PLAYING
+    }
+
+    override fun onDestroy() {
+        super.onDestroy()
+        service.stop(this)
     }
 
     companion object {

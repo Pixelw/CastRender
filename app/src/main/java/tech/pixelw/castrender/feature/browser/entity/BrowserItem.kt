@@ -59,7 +59,7 @@ data class BrowserItem(
             if (icons == null || icons.isEmpty()) return null
             return icons[0]?.data?.let {
                 BitmapDrawable(
-                    CastRenderApp.getAppContext().resources,
+                    CastRenderApp.appContext.resources,
                     BitmapFactory.decodeByteArray(it, 0, it.size)
                 )
             }

@@ -39,7 +39,7 @@ class MediaBrowserActivity : AppCompatActivity() {
         binding.rvBrowser.adapter = adapter
         observeVm()
         service.pendingListener = vm
-        service.start(CastRenderApp.getAppContext())
+        service.start(CastRenderApp.appContext)
     }
 
 
@@ -67,7 +67,7 @@ class MediaBrowserActivity : AppCompatActivity() {
 
     override fun onDestroy() {
         super.onDestroy()
-        service.stop(CastRenderApp.getAppContext())
+        service.stop(CastRenderApp.appContext)
     }
 
     inner class ItemHandler {

@@ -11,7 +11,7 @@ import tech.pixelw.castrender.feature.settings.Pref
 object PlayerViewHelper {
 
     private val sp by lazy {
-        PreferenceManager.getDefaultSharedPreferences(CastRenderApp.getAppContext())
+        PreferenceManager.getDefaultSharedPreferences(CastRenderApp.appContext)
     }
 
     private fun getPreferencePlayer(): String {

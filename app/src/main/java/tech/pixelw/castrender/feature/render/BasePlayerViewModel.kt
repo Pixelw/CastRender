@@ -42,6 +42,7 @@ open class BasePlayerViewModel : ViewModel(), IPlayerCallback {
 
     override fun onDurationChanged(duration: Long) {
         val entity = media.value
+        if (entity?.duration == duration) return
         entity?.run {
             entity.duration = duration
             media.postValue(this)

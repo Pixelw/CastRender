@@ -1,5 +1,6 @@
 package tech.pixelw.castrender.feature.main
 
+import android.app.Activity
 import android.app.DownloadManager
 import android.content.BroadcastReceiver
 import android.content.Context
@@ -8,6 +9,7 @@ import android.content.Intent
 import android.content.IntentFilter
 import android.net.Uri
 import android.os.Build
+import android.text.Html
 import android.widget.Toast
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import kotlinx.coroutines.CoroutineScope
@@ -24,19 +26,18 @@ import kotlin.random.Random
 object UpdateHelper {
 
     private var downloadApkId: Long? = null
-    private val mDownloadManager by lazy { CastRenderApp.getAppContext().getSystemService(DOWNLOAD_SERVICE) as DownloadManager }
+    private val mDownloadManager by lazy { CastRenderApp.appContext.getSystemService(DOWNLOAD_SERVICE) as DownloadManager }
 
-    fun check(coroutineScope: CoroutineScope) {
+    fun check(coroutineScope: CoroutineScope, activity: Activity) {
         try {
-            checkInternal(coroutineScope)
+            checkInternal(coroutineScope, activity)
         } catch (t: Throwable) {
             LogUtil.e(TAG, "check Update failed", t)
         }
     }
 
-    private fun checkInternal(coroutineScope: CoroutineScope) {
+    private fun checkInternal(coroutineScope: CoroutineScope, activity: Activity) {
         coroutineScope.launch(Dispatchers.Main) {
-            val context = CastRenderApp.getAppContext()
             val result = kotlin.runCatching {
                 UpdateApi.INSTANCE.getUpdate()
             }.onFailure {
@@ -48,23 +49,24 @@ object UpdateHelper {
             }
             val abi = matchBestAbi(appVersion.abis)
             if (appVersion.minSdk > Build.VERSION.SDK_INT || abi == null) {
-                Toast.makeText(context, R.string.device_doesnt_support, Toast.LENGTH_LONG).show();
+                Toast.makeText(activity, R.string.device_doesnt_support, Toast.LENGTH_LONG).show();
                 return@launch
             }
 
-            val updateDialog: MaterialAlertDialogBuilder = MaterialAlertDialogBuilder(context)
+            val s = "<b>${appVersion.versionName}</b><br>${appVersion.changeLog}"
+            val updateDialog: MaterialAlertDialogBuilder = MaterialAlertDialogBuilder(activity)
                 .setTitle(R.string.update_available)
-                .setMessage("${appVersion.versionName}\n${appVersion.changeLog}")
+                .setMessage(Html.fromHtml(s))
                 .setCancelable(true)
                 .setNegativeButton(R.string.later) { _, _ -> }
             if (appVersion.url.isNotEmpty()) {
                 updateDialog.setPositiveButton(R.string.download) { _, _ ->
-                    downloadAndInstallApk(appVersion, context, abi)
+                    downloadAndInstallApk(appVersion, activity, abi)
                 }
             }
-            if (appVersion.storeUrls.isNotEmpty()) {
+            if (appVersion.storeUrls?.isNotEmpty() == true) {
                 updateDialog.setNeutralButton(R.string.store) { _, _ ->
-                    context.startActivity(Intent(Intent.ACTION_VIEW, Uri.parse(appVersion.storeUrls[0])))
+                    appVersion.storeUrls.first().let { activity.startActivity(Intent(Intent.ACTION_VIEW, Uri.parse(it))) }
                 }
             }
             updateDialog.show()
@@ -91,7 +93,7 @@ object UpdateHelper {
     private fun downloadAndInstallApk(appVersion: AppUpdate, context: Context, targetAbi: String) {
         val set = mutableSetOf<String>()
         set.add(appVersion.url)
-        if (appVersion.alternativeApkUrl.isNotEmpty()) {
+        if (appVersion.alternativeApkUrl?.isNotEmpty() == true) {
             set.addAll(appVersion.alternativeApkUrl)
         }
         val url: String = getRandomUrl(set).replace(AppUpdate.PLACEHOLDER_ABI, targetAbi)

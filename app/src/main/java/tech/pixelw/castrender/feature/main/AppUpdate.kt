@@ -11,7 +11,7 @@ data class AppUpdate(
     @Json(name = "abis")
     val abis: List<String>,
     @Json(name = "alternativeApkUrl")
-    val alternativeApkUrl: List<String>,
+    val alternativeApkUrl: List<String>?,
     @Json(name = "changeLog")
     val changeLog: String,
     @Json(name = "minSdk")
@@ -19,7 +19,7 @@ data class AppUpdate(
     @Json(name = "sizeInByte")
     val sizeInByte: Int,
     @Json(name = "storeUrls")
-    val storeUrls: List<String>,
+    val storeUrls: List<String>?,
     @Json(name = "url")
     val url: String,
     @Json(name = "versionCode")

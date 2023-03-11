@@ -1,0 +1,14 @@
+{
+  "abis": [
+    "x86",
+    "armeabi-v7a",
+    "arm64-v8a",
+    "x86_64"
+  ],
+  "url": "https://lapi.pixelw.tech/castrender/app-_abi_-release.apk",
+  "versionName": "1.2.0-1000",
+  "changeLog": "<b>First version</b><br><p>123</p>",
+  "versionCode": 9999,
+  "minSdk": 17,
+  "sizeInByte": 3729575
+}

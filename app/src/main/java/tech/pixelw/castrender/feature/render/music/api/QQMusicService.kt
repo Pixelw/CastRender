@@ -5,6 +5,7 @@ import retrofit2.converter.scalars.ScalarsConverterFactory
 import retrofit2.http.GET
 import retrofit2.http.Headers
 import retrofit2.http.Query
+import tech.pixelw.castrender.utils.SharedOkhttpClient
 
 interface QQMusicService {
 
@@ -13,6 +14,7 @@ interface QQMusicService {
         val INSTANCE: QQMusicService by lazy(mode = LazyThreadSafetyMode.SYNCHRONIZED) {
             Retrofit.Builder().baseUrl(BASE_URL)
                 .addConverterFactory(ScalarsConverterFactory.create())
+                .client(SharedOkhttpClient.client)
                 .build().create(QQMusicService::class.java)
         }
     }

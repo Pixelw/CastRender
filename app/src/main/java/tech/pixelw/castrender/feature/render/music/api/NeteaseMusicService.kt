@@ -4,6 +4,7 @@ import retrofit2.Retrofit
 import retrofit2.converter.scalars.ScalarsConverterFactory
 import retrofit2.http.GET
 import retrofit2.http.Query
+import tech.pixelw.castrender.utils.SharedOkhttpClient
 
 /**
  * 网易云歌词 API
@@ -17,6 +18,7 @@ interface NeteaseMusicService {
         val INSTANCE: NeteaseMusicService by lazy(mode = LazyThreadSafetyMode.SYNCHRONIZED) {
             Retrofit.Builder().baseUrl(BASE_URL)
                 .addConverterFactory(ScalarsConverterFactory.create())
+                .client(SharedOkhttpClient.client)
                 .build()
                 .create(NeteaseMusicService::class.java)
         }

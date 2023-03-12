@@ -104,7 +104,7 @@ public class DLNARendererService extends UpnpAttachment {
         DeviceDetails details = new DeviceDetails(deviceSettings.name,
                 new ManufacturerDetails(android.os.Build.MANUFACTURER),
                 new ModelDetails(android.os.Build.MODEL, deviceSettings.description,
-                        "v" + deviceSettings.versionCode, deviceSettings.modelUrl));
+                        "v1", deviceSettings.modelUrl));
         Icon[] icons = null;
         BitmapDrawable drawable = ((BitmapDrawable) ContextCompat.getDrawable(context, R.drawable.tv));
         if (drawable != null) {

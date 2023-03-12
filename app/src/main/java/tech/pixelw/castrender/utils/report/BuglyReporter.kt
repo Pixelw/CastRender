@@ -6,7 +6,7 @@ import com.tencent.bugly.crashreport.CrashReport
 import tech.pixelw.castrender.CastRenderApp
 import tech.pixelw.castrender.feature.settings.Pref
 
-class BuglyReporter() : IThirdPartyReport {
+class BuglyReporter : IThirdPartyReport {
     private val sp by lazy {
         PreferenceManager.getDefaultSharedPreferences(CastRenderApp.appContext)
     }

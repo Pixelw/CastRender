@@ -20,6 +20,7 @@ import tech.pixelw.castrender.CastRenderApp
 import tech.pixelw.castrender.R
 import tech.pixelw.castrender.utils.ApkUtil
 import tech.pixelw.castrender.utils.LogUtil
+import tech.pixelw.castrender.utils.report.Reporter
 import kotlin.random.Random
 
 
@@ -29,48 +30,44 @@ object UpdateHelper {
     private val mDownloadManager by lazy { CastRenderApp.appContext.getSystemService(DOWNLOAD_SERVICE) as DownloadManager }
 
     fun check(coroutineScope: CoroutineScope, activity: Activity) {
-        try {
-            checkInternal(coroutineScope, activity)
-        } catch (t: Throwable) {
-            LogUtil.e(TAG, "check Update failed", t)
+        coroutineScope.launch(Dispatchers.Main) {
+            try {
+                checkInternal(activity)
+            } catch (t: Throwable) {
+                LogUtil.e(TAG, "check Update failed", t)
+                Reporter.submitException(t)
+            }
         }
     }
 
-    private fun checkInternal(coroutineScope: CoroutineScope, activity: Activity) {
-        coroutineScope.launch(Dispatchers.Main) {
-            val result = kotlin.runCatching {
-                UpdateApi.INSTANCE.getUpdate()
-            }.onFailure {
-                LogUtil.e(TAG, "error on check updates", it)
-            }
-            val appVersion = result.getOrNull() ?: return@launch
-            if (appVersion.versionCode <= BuildConfig.VERSION_CODE) {
-                return@launch
-            }
-            val abi = matchBestAbi(appVersion.abis)
-            if (appVersion.minSdk > Build.VERSION.SDK_INT || abi == null) {
-                Toast.makeText(activity, R.string.device_doesnt_support, Toast.LENGTH_LONG).show();
-                return@launch
-            }
-
-            val s = "<b>${appVersion.versionName}</b><br>${appVersion.changeLog}"
-            val updateDialog: MaterialAlertDialogBuilder = MaterialAlertDialogBuilder(activity)
-                .setTitle(R.string.update_available)
-                .setMessage(Html.fromHtml(s))
-                .setCancelable(true)
-                .setNegativeButton(R.string.later) { _, _ -> }
-            if (appVersion.url.isNotEmpty()) {
-                updateDialog.setPositiveButton(R.string.download) { _, _ ->
-                    downloadAndInstallApk(appVersion, activity, abi)
-                }
-            }
-            if (appVersion.storeUrls?.isNotEmpty() == true) {
-                updateDialog.setNeutralButton(R.string.store) { _, _ ->
-                    appVersion.storeUrls.first().let { activity.startActivity(Intent(Intent.ACTION_VIEW, Uri.parse(it))) }
-                }
-            }
-            updateDialog.show()
+    private suspend fun checkInternal(activity: Activity) {
+        val appVersion = UpdateApi.INSTANCE.getUpdate()
+        if (appVersion.versionCode <= BuildConfig.VERSION_CODE) {
+            return
         }
+        val abi = matchBestAbi(appVersion.abis)
+        if (appVersion.minSdk > Build.VERSION.SDK_INT || abi == null) {
+            Toast.makeText(activity, R.string.device_doesnt_support, Toast.LENGTH_LONG).show();
+            return
+        }
+
+        val s = "<b>${appVersion.versionName}</b><br>${appVersion.changeLog}"
+        val updateDialog: MaterialAlertDialogBuilder = MaterialAlertDialogBuilder(activity)
+            .setTitle(R.string.update_available)
+            .setMessage(Html.fromHtml(s))
+            .setCancelable(true)
+            .setNegativeButton(R.string.later) { _, _ -> }
+        if (appVersion.url.isNotEmpty()) {
+            updateDialog.setPositiveButton(R.string.download) { _, _ ->
+                downloadAndInstallApk(appVersion, activity, abi)
+            }
+        }
+        if (appVersion.storeUrls?.isNotEmpty() == true) {
+            updateDialog.setNeutralButton(R.string.store) { _, _ ->
+                appVersion.storeUrls.first().let { activity.startActivity(Intent(Intent.ACTION_VIEW, Uri.parse(it))) }
+            }
+        }
+        updateDialog.show()
     }
 
     private fun matchBestAbi(abis: List<String>): String? {
@@ -103,6 +100,10 @@ object UpdateHelper {
     }
 
     private fun getRandomUrl(set: MutableSet<String>): String {
+        val uu = if (Build.MODEL.startsWith("CM101")) {
+            set.find { it.startsWith("http://") }
+        } else null
+        if (uu != null) return uu
         if (set.size == 1) return set.elementAt(0)
         val i = Random.nextInt(set.size)
         return set.elementAt(i)
@@ -129,6 +130,7 @@ object UpdateHelper {
                     } catch (e: Exception) {
                         Toast.makeText(context, "Updated failed, and we reported this problem", Toast.LENGTH_SHORT).show()
                         e.printStackTrace()
+                        Reporter.submitException(e)
                     }
                     context.unregisterReceiver(this)
                 }

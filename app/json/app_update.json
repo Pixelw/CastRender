@@ -6,6 +6,9 @@
     "x86_64"
   ],
   "url": "https://lapi.pixelw.tech/castrender/app-_abi_-release.apk",
+  "alternativeApkUrl": [
+    "http://192.168.3.14/castrender/app-_abi_-release.apk"
+  ],
   "versionName": "1.2.0-1000",
   "changeLog": "<b>First version</b><br><p>123</p>",
   "versionCode": 9999,

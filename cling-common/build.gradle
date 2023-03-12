@@ -29,4 +29,7 @@ dependencies {
     api 'org.eclipse.jetty:jetty-server:8.1.21.v20160908'
     api 'org.eclipse.jetty:jetty-servlet:8.1.21.v20160908'
     api 'org.eclipse.jetty:jetty-client:8.1.21.v20160908'
+
+    // Bugly
+    api 'com.tencent.bugly:crashreport:4.1.9'
 }

@@ -4,6 +4,7 @@ import android.os.Parcel
 import android.os.Parcelable
 import android.text.TextUtils
 import android.util.Log
+import com.tencent.bugly.crashreport.CrashReport
 import org.fourthline.cling.model.ModelUtil
 import org.fourthline.cling.support.model.DIDLObject
 import org.fourthline.cling.support.model.item.AudioItem
@@ -89,6 +90,7 @@ class MediaEntity() : Parcelable {
                 }
             } catch (ex: Exception) {
                 Log.e("MediaEntity", "exception during ParseMetadataFromDIDL", ex)
+                CrashReport.postCatchedException(ex)
             }
             return null
         }

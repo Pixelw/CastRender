@@ -5,21 +5,25 @@ import java.net.InetAddress;
 import java.net.Socket;
 import java.security.KeyManagementException;
 import java.security.NoSuchAlgorithmException;
+import java.security.cert.X509Certificate;
 
 import javax.net.ssl.SSLContext;
 import javax.net.ssl.SSLSocket;
 import javax.net.ssl.SSLSocketFactory;
+import javax.net.ssl.TrustManager;
+import javax.net.ssl.X509TrustManager;
 
 
 public class PreLollipopTlsFactory extends SSLSocketFactory {
 
-    private final SSLSocketFactory internalSSLSocketFactory;
+    private SSLSocketFactory internalSSLSocketFactory;
 
-    public PreLollipopTlsFactory() throws KeyManagementException, NoSuchAlgorithmException {
+    public void init(X509TrustManager trustManager) throws KeyManagementException, NoSuchAlgorithmException {
         SSLContext context = SSLContext.getInstance("TLS");
-        context.init(null, null, null);
+        context.init(null, new TrustManager[]{trustManager}, null);
         internalSSLSocketFactory = context.getSocketFactory();
     }
+
 
     @Override
     public String[] getDefaultCipherSuites() {
@@ -66,5 +70,19 @@ public class PreLollipopTlsFactory extends SSLSocketFactory {
             ((SSLSocket) socket).setEnabledProtocols(new String[]{"TLSv1.1", "TLSv1.2"});
         }
         return socket;
+    }
+
+    static class MyTrustManager implements X509TrustManager {
+
+        public X509Certificate[] getAcceptedIssuers() {
+            return new X509Certificate[0];
+        }
+
+        public void checkServerTrusted(X509Certificate[] certs, String authType) {
+        }
+
+        public void checkClientTrusted(X509Certificate[] certs, String authType) {
+        }
+
     }
 }
